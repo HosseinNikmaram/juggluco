@@ -20,7 +20,9 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
     private boolean readerModeEnabled = false;
     private static    final int nfcflags=NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK; // restrict to NfcV only
     private Handler handler = new Handler();
+    private static volatile boolean scanning = false;
 
+    public static boolean isScanning() { return scanning; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +34,20 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
         // If launched via TECH_DISCOVERED intent, process the Tag directly
         Tag intentTag = getIntent() != null ? getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG) : null;
         if (intentTag != null) {
+            scanning = true;
             processTag(intentTag);
+            scanning = false;
             runOnUiThread(this::finish);
             return;
         }
 
         // Fallback to ReaderMode when there is no Tag in the intent
-        enableReaderMode();
-        handler.postDelayed(this::finishWithTimeout, 30000);
+        if (enableReaderMode()) {
+            scanning = true;
+            handler.postDelayed(this::finishWithTimeout, 30000);
+        } else {
+            scanning = false;
+        }
 
     }
 
@@ -88,10 +96,12 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
         // Process synchronously to avoid Tag becoming out-of-date
         handler.removeCallbacksAndMessages(null);
         processTag(tag);
+        scanning = false;
         runOnUiThread(this::finish);
     }
     private void finishWithTimeout() {
         // Toast.makeText(this, "Scan timed out", Toast.LENGTH_SHORT).show();
+        scanning = false;
         runOnUiThread(this::finish);
     }
 
@@ -107,6 +117,7 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
         super.onDestroy();
         disableReaderMode();
         handler.removeCallbacksAndMessages(null);
+        scanning = false;
     }
 
     private void processTag(Tag tag) {

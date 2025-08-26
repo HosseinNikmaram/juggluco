@@ -14,7 +14,6 @@ public class UsageExample {
     private HeadlessJugglucoManager jugglucoManager;
     private Context context;
     private boolean initialized = false;
-    private boolean nfcStarted = false;
     private boolean bleStarted = false;
     
     /**
@@ -25,21 +24,16 @@ public class UsageExample {
         if (initialized) return;
         this.context = activity;
         
-        // Enable headless NFC to avoid MainActivity NFC handling
         HeadlessConfig.enableHeadlessNfc();
-        // Default: NFC-only unless caller enables BLE
         HeadlessConfig.setBleEnabled(false);
         
-        // Create the headless manager
         jugglucoManager = new HeadlessJugglucoManager();
         
-        // Initialize the system
         if (!jugglucoManager.init(activity)) {
             Toast.makeText(activity, "Failed to initialize Juggluco", Toast.LENGTH_LONG).show();
             return;
         }
         
-        // Check and enable Bluetooth (only if enabled)
         if (HeadlessConfig.isBleEnabled()) {
             if (!jugglucoManager.ensurePermissionsAndBluetooth(context)) {
                 Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
@@ -47,7 +41,6 @@ public class UsageExample {
             }
         }
         
-        // Listeners
         jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
             String message = String.format("Glucose: %.1f mg/dL, Rate: %.1f", value, rate);
             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
@@ -63,20 +56,17 @@ public class UsageExample {
         Toast.makeText(activity, "Juggluco initialized successfully", Toast.LENGTH_SHORT).show();
     }
     
-    /** Enable or disable BLE functionality in headless mode. */
     public void setBleEnabled(boolean enabled) {
         HeadlessConfig.setBleEnabled(enabled);
     }
     
-    /** Start NFC scanning for Libre sensor pairing */
     public void startNfcScanning() {
         if (!initialized) return;
-        if (nfcStarted) return;
+        // Use real runtime state from the reader
+        if (jugglucoManager.isNfcScanning()) return;
         jugglucoManager.startNfcScanning();
-        nfcStarted = true;
     }
 
-    /** Handle NFC tag discovery (call this from your NFC callback) */
     public void handleNfcTag(Tag tag) {
         if (jugglucoManager == null) return;
         HeadlessNfcScanner.ScanResult result = jugglucoManager.scanNfcTag(context, tag);
@@ -131,7 +121,6 @@ public class UsageExample {
             jugglucoManager = null;
         }
         initialized = false;
-        nfcStarted = false;
         bleStarted = false;
         HeadlessConfig.disableHeadlessNfc();
     }

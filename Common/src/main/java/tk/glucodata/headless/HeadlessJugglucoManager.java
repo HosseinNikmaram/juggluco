@@ -58,6 +58,10 @@ public class HeadlessJugglucoManager {
         return true;
     }
     
+    public boolean isNfcScanning() {
+        return HeadlessNfcReader.isScanning();
+    }
+    
     /**
      * Set glucose listener for real-time glucose updates
      * @param listener Glucose listener implementation
