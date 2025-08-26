@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
-import tk.glucodata.Applic;
 import tk.glucodata.Log;
 import tk.glucodata.Natives;
-import tk.glucodata.ScanNfcV;
 
 /**
  * Headless NFC reader that implements NfcAdapter.ReaderCallback
@@ -104,8 +102,6 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
     private void processTag(Tag tag) {
         showToast("NFC Tag Discovered");
 
-
-
         HeadlessNfcScanner.ScanResult result = HeadlessNfcScanner.scanTag(this, tag);
 
         if (result.success) {
@@ -120,7 +116,7 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
     }
 
     private void showToast(String message) {
-        Applic.RunOnUiThread(() -> {
+        runOnUiThread(() -> {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             Log.d("HeadlessNfcReader", message);
         });
