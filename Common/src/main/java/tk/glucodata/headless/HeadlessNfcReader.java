@@ -28,6 +28,16 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
 
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        // If launched via TECH_DISCOVERED intent, process the Tag directly
+        Tag intentTag = getIntent() != null ? getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG) : null;
+        if (intentTag != null) {
+            processTag(intentTag);
+            runOnUiThread(this::finish);
+            return;
+        }
+
+        // Fallback to ReaderMode when there is no Tag in the intent
         enableReaderMode();
         handler.postDelayed(this::finishWithTimeout, 30000);
 
