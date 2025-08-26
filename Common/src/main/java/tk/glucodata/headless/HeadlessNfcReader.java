@@ -77,10 +77,10 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        // Process on background thread to avoid blocking NFC stack
-        new Thread(() -> {
-            processTag(tag);
-        }).start();
+        // Process synchronously to avoid Tag becoming out-of-date
+        handler.removeCallbacksAndMessages(null);
+        processTag(tag);
+        runOnUiThread(this::finish);
     }
     private void finishWithTimeout() {
         // Toast.makeText(this, "Scan timed out", Toast.LENGTH_SHORT).show();
