@@ -11,10 +11,22 @@ import android.widget.Toast;
  */
 public class UsageExample {
     
+    private static volatile UsageExample instance;
+    public static UsageExample getInstance() {
+        if (instance == null) {
+            synchronized (UsageExample.class) {
+                if (instance == null) instance = new UsageExample();
+            }
+        }
+        return instance;
+    }
+    
     private HeadlessJugglucoManager jugglucoManager;
     private Context context;
     private boolean initialized = false;
     private boolean bleStarted = false;
+    
+    private UsageExample() {}
     
     /**
      * Initialize the headless Juggluco system in your module
@@ -62,7 +74,6 @@ public class UsageExample {
     
     public void startNfcScanning() {
         if (!initialized) return;
-        // Use real runtime state from the reader
         if (jugglucoManager.isNfcScanning()) return;
         jugglucoManager.startNfcScanning();
     }
@@ -123,5 +134,6 @@ public class UsageExample {
         initialized = false;
         bleStarted = false;
         HeadlessConfig.disableHeadlessNfc();
+        // keep singleton instance for reuse
     }
 }
