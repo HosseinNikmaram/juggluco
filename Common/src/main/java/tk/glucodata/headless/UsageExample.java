@@ -23,6 +23,8 @@ public class UsageExample {
         
         // Enable headless NFC to avoid MainActivity NFC handling
         HeadlessConfig.enableHeadlessNfc();
+        // Default: NFC-only unless caller enables BLE
+        HeadlessConfig.setBleEnabled(false);
         
         // Create the headless manager
         jugglucoManager = new HeadlessJugglucoManager();
@@ -33,42 +35,38 @@ public class UsageExample {
             return;
         }
         
-        // Check and enable Bluetooth
-        if (!jugglucoManager.ensurePermissionsAndBluetooth(context)) {
-            Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
-            return;
+        // Check and enable Bluetooth (only if enabled)
+        if (HeadlessConfig.isBleEnabled()) {
+            if (!jugglucoManager.ensurePermissionsAndBluetooth(context)) {
+                Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
+                return;
+            }
         }
         
         // Set up glucose listener for real-time updates
         jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
-            // Handle real-time glucose data
             String message = String.format("Glucose: %.1f mg/dL, Rate: %.1f", value, rate);
             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-            
-            // You can also store this data in your own database
-            // saveGlucoseData(serial, mgdl, value, rate, alarm, timeMillis);
         });
         
         // Set up history listener
         jugglucoManager.setHistoryListener((serial, history) -> {
-            // Handle glucose history data
             Toast.makeText(activity, "Received " + history.length + " history points", Toast.LENGTH_SHORT).show();
-            
-            // Process history data
-            for (long[] point : history) {
-                long time = point[0];
-                long mgdl = point[1];
-                // Process each history point
-            }
         });
         
         // Set up stats listener
         jugglucoManager.setStatsListener((serial, stats) -> {
-            // Handle glucose statistics
             Toast.makeText(activity, "Statistics available for " + serial, Toast.LENGTH_SHORT).show();
         });
         
         Toast.makeText(activity, "Juggluco initialized successfully", Toast.LENGTH_SHORT).show();
+    }
+    
+    /**
+     * Enable or disable BLE functionality in headless mode.
+     */
+    public void setBleEnabled(boolean enabled) {
+        HeadlessConfig.setBleEnabled(enabled);
     }
     
     /**
@@ -93,72 +91,47 @@ public class UsageExample {
         HeadlessNfcScanner.ScanResult result = jugglucoManager.scanNfcTag(context, tag);
         
         if (result.success) {
-            // Handle successful scan
             if (result.glucoseValue > 0) {
                 String message = String.format("Glucose: %.1f mg/dL", (float) result.glucoseValue / 10.0f);
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             }
-            
-            // If this is a new sensor, you might want to start Bluetooth scanning
-            if (result.returnCode == 5 || result.returnCode == 7) {
+            if (HeadlessConfig.isBleEnabled() && (result.returnCode == 5 || result.returnCode == 7)) {
                 startBluetoothScanning();
             }
         } else {
-            // Handle failed scan
             Toast.makeText(context, "Scan failed: " + result.message, Toast.LENGTH_SHORT).show();
         }
     }
     
-    /**
-     * Start Bluetooth scanning for paired sensors
-     */
     public void startBluetoothScanning() {
-        if (jugglucoManager != null) {
+        if (jugglucoManager != null && HeadlessConfig.isBleEnabled()) {
             jugglucoManager.startBluetoothScanning();
             Toast.makeText(context, "Bluetooth scanning started", Toast.LENGTH_SHORT).show();
         }
     }
     
-    /**
-     * Stop Bluetooth scanning
-     */
     public void stopBluetoothScanning() {
         if (jugglucoManager != null) {
             jugglucoManager.stopBluetoothScanning();
         }
     }
     
-    /**
-     * Get glucose history for a sensor
-     * @param serial Sensor serial number
-     */
     public void getGlucoseHistory(String serial) {
         if (jugglucoManager != null) {
             jugglucoManager.getGlucoseHistory(serial);
         }
     }
     
-    /**
-     * Get glucose statistics for a sensor
-     * @param serial Sensor serial number
-     */
     public void getGlucoseStats(String serial) {
         if (jugglucoManager != null) {
             jugglucoManager.getGlucoseStats(serial);
         }
     }
     
-    /**
-     * Check if Bluetooth streaming is active
-     * @return true if streaming is active
-     */
     public boolean isStreamingActive() {
         return jugglucoManager != null && jugglucoManager.isBluetoothStreamingActive();
     }
     
-    /**
-     * Clean up resources when your module is done
-     */
     public void cleanup() {
         if (jugglucoManager != null) {
             jugglucoManager.cleanup();
@@ -166,47 +139,4 @@ public class UsageExample {
         }
         HeadlessConfig.disableHeadlessNfc();
     }
-    
-    // Example of how to implement NFC callback in your activity
-    /*
-    public class MyActivity extends Activity implements NfcAdapter.ReaderCallback {
-        private UsageExample jugglucoExample;
-        
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            
-            // Initialize Juggluco
-            jugglucoExample = new UsageExample();
-            jugglucoExample.initializeJuggluco(this);
-        }
-        
-        @Override
-        public void onTagDiscovered(Tag tag) {
-            // Handle NFC tag discovery
-            jugglucoExample.handleNfcTag(tag);
-        }
-        
-        @Override
-        protected void onResume() {
-            super.onResume();
-            // Start NFC scanning
-            jugglucoExample.startNfcScanning();
-        }
-        
-        @Override
-        protected void onPause() {
-            super.onPause();
-            // Stop NFC scanning
-            jugglucoExample.stopNfcScanning();
-        }
-        
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-            // Clean up
-            jugglucoExample.cleanup();
-        }
-    }
-    */
 }

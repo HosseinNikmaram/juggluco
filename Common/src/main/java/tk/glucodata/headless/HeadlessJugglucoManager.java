@@ -19,6 +19,7 @@ public class HeadlessJugglucoManager {
     private HeadlessNfcReader nfcReader;
     private HeadlessHistory historyManager;
     private HeadlessStats statsManager;
+    private static volatile boolean nativesInitialized = false;
     
     /**
      * Initialize the headless Juggluco system
@@ -27,11 +28,14 @@ public class HeadlessJugglucoManager {
      */
     public boolean init(Activity ctx) {
         try {
-            // Initialize native libraries and core system
-            Natives.setfilesdir(ctx.getFilesDir().getAbsolutePath(), "IR", ctx.getApplicationInfo().nativeLibraryDir);
-            Natives.initjuggluco(ctx.getFilesDir().getAbsolutePath());
-            Natives.onCreate();
-            Natives.setusebluetooth(true);
+            // Initialize native libraries and core system (idempotent)
+            if (!nativesInitialized) {
+                Natives.setfilesdir(ctx.getFilesDir().getAbsolutePath(), "IR", ctx.getApplicationInfo().nativeLibraryDir);
+                Natives.initjuggluco(ctx.getFilesDir().getAbsolutePath());
+                Natives.onCreate();
+                nativesInitialized = true;
+            }
+            Natives.setusebluetooth(HeadlessConfig.isBleEnabled());
             this.activity = ctx;
             return true;
         } catch (Exception e) {
