@@ -17,7 +17,7 @@ public class MyActivity extends AppCompatActivity{
             super.onCreate(savedInstanceState);
 
             // Initialize Juggluco
-            jugglucoExample = new UsageExample();
+            jugglucoExample = UsageExample.getInstance();
             jugglucoExample.initializeJuggluco(this);
             jugglucoExample.startBluetoothScanning();
             jugglucoExample.startNfcScanning();
