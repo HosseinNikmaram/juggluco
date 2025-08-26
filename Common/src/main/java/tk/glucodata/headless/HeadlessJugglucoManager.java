@@ -159,6 +159,7 @@ public class HeadlessJugglucoManager {
      * Start Bluetooth scanning for paired sensors
      */
     public void startBluetoothScanning() {
+        if (SensorBluetooth.isActive()) return;
         SensorBluetooth.start(true);
     }
     
@@ -166,6 +167,7 @@ public class HeadlessJugglucoManager {
      * Stop Bluetooth scanning
      */
     public void stopBluetoothScanning() {
+        if (!SensorBluetooth.isActive()) return;
         SensorBluetooth.stopScanning();
     }
     
