@@ -2,6 +2,8 @@ package tk.glucodata.headless;
 
 import android.content.Context;
 import android.nfc.Tag;
+import android.nfc.TagLostException;
+import android.nfc.tech.NfcV;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.VibratorManager;
@@ -45,6 +47,10 @@ public final class HeadlessNfcScanner {
         if (!Natives.gethaslibrary()) {
             return new ScanResult(false, 0, 0x100000, null, "Library not available");
         }
+        // Ensure NfcV tech is present
+        if (NfcV.get(tag) == null) {
+            return new ScanResult(false, 0, 17, null, "Unsupported tag tech (need NfcV)");
+        }
         Vibrator vibrator = getVibrator(context);
         startVibration(vibrator);
         try {
@@ -65,76 +71,82 @@ public final class HeadlessNfcScanner {
                 }
             } else {
                 byte[] data;
-                if ((data = AlgNfcV.readNfcTag(tag, uid, info)) != null) {
-                    Log.d(LOG_ID, "Read Tag");
-                    int uit = Natives.nfcdata(uid, info, data);
-                    int value = uit & 0xFFFF;
-                    Log.format("glucose=%.1f\n", (float) value / mgdLmult);
-                    int ret = uit >> 16;
-                    String serialNumber = Natives.getserial(uid, info);
-                    if (newDeviceUid != null && Arrays.equals(newDeviceUid, uid)) {
-                        if (value != 0 || (ret & 0xFF) == 5 || (ret & 0xFF) == 7) {
-                            if (SensorBluetooth.resetDevice(serialNumber)) askPermission = true;
-                            newDeviceUid = null;
-                        }
-                    }
-                    vibrator.cancel();
-                    switch (ret & 0xFF) {
-                        case 8: {
-                            boolean streamingEnabled = mayEnableStreaming(tag, uid, info);
-                            if (streamingEnabled) showToast(context, "Streaming enabled for " + serialNumber);
-                            return new ScanResult(true, value, 0, serialNumber, "Streaming enabled");
-                        }
-                        case 9: {
-                            if (SensorBluetooth.resetDevice(serialNumber)) askPermission = true;
-                            showToast(context, "Streaming enabled for " + serialNumber);
-                            return new ScanResult(true, value, 0, serialNumber, "Streaming enabled");
-                        }
-                        case 4:
-                            SensorBluetooth.sensorEnded(serialNumber);
-                            showToast(context, "Sensor ended: " + serialNumber);
-                            return new ScanResult(true, value, ret, serialNumber, "Sensor ended");
-                        case 3: {
-                            if (value == 0) {
-                                boolean actSuccess = AlgNfcV.activate(tag, info, uid);
-                                if (actSuccess) {
-                                    newDeviceUid = uid;
-                                    showToast(context, "Sensor activated successfully");
-                                    return new ScanResult(true, value, ret, serialNumber, "Sensor activated");
-                                } else {
-                                    failure(vibrator);
-                                    showToast(context, "Sensor activation failed");
-                                    return new ScanResult(false, value, ret, serialNumber, "Activation failed");
-                                }
+                try {
+                    if ((data = AlgNfcV.readNfcTag(tag, uid, info)) != null) {
+                        Log.d(LOG_ID, "Read Tag");
+                        int uit = Natives.nfcdata(uid, info, data);
+                        int value = uit & 0xFFFF;
+                        Log.format("glucose=%.1f\n", (float) value / mgdLmult);
+                        int ret = uit >> 16;
+                        String serialNumber = Natives.getserial(uid, info);
+                        if (newDeviceUid != null && Arrays.equals(newDeviceUid, uid)) {
+                            if (value != 0 || (ret & 0xFF) == 5 || (ret & 0xFF) == 7) {
+                                if (SensorBluetooth.resetDevice(serialNumber)) askPermission = true;
+                                newDeviceUid = null;
                             }
-                            break;
                         }
-                        case 0x85:
-                            mayEnableStreaming(tag, uid, info);
-                            ret &= ~0x80;
-                        case 5: {
-                            final long[] newsensorWait = {50, 300, 100, 10};
-                            if (android.os.Build.VERSION.SDK_INT < 26) vibrator.vibrate(newsensorWait, -1);
-                            else vibrator.vibrate(VibrationEffect.createWaveform(newsensorWait, -1));
-                            showToast(context, "New sensor detected: " + serialNumber);
-                            return new ScanResult(true, value, ret, serialNumber, "New sensor");
+                        vibrator.cancel();
+                        switch (ret & 0xFF) {
+                            case 8: {
+                                boolean streamingEnabled = mayEnableStreaming(tag, uid, info);
+                                if (streamingEnabled) showToast(context, "Streaming enabled for " + serialNumber);
+                                return new ScanResult(true, value, 0, serialNumber, "Streaming enabled");
+                            }
+                            case 9: {
+                                if (SensorBluetooth.resetDevice(serialNumber)) askPermission = true;
+                                showToast(context, "Streaming enabled for " + serialNumber);
+                                return new ScanResult(true, value, 0, serialNumber, "Streaming enabled");
+                            }
+                            case 4:
+                                SensorBluetooth.sensorEnded(serialNumber);
+                                showToast(context, "Sensor ended: " + serialNumber);
+                                return new ScanResult(true, value, ret, serialNumber, "Sensor ended");
+                            case 3: {
+                                if (value == 0) {
+                                    boolean actSuccess = AlgNfcV.activate(tag, info, uid);
+                                    if (actSuccess) {
+                                        newDeviceUid = uid;
+                                        showToast(context, "Sensor activated successfully");
+                                        return new ScanResult(true, value, ret, serialNumber, "Sensor activated");
+                                    } else {
+                                        failure(vibrator);
+                                        showToast(context, "Sensor activation failed");
+                                        return new ScanResult(false, value, ret, serialNumber, "Activation failed");
+                                    }
+                                }
+                                break;
+                            }
+                            case 0x85:
+                                mayEnableStreaming(tag, uid, info);
+                                ret &= ~0x80;
+                            case 5: {
+                                final long[] newsensorWait = {50, 300, 100, 10};
+                                if (android.os.Build.VERSION.SDK_INT < 26) vibrator.vibrate(newsensorWait, -1);
+                                else vibrator.vibrate(VibrationEffect.createWaveform(newsensorWait, -1));
+                                showToast(context, "New sensor detected: " + serialNumber);
+                                return new ScanResult(true, value, ret, serialNumber, "New sensor");
+                            }
+                            case 0x87:
+                                mayEnableStreaming(tag, uid, info);
+                                ret &= ~0x80;
+                            case 7: {
+                                final long[] newsensorVib = {50, 150, 50, 50, 12, 8, 15, 73};
+                                if (android.os.Build.VERSION.SDK_INT < 26) vibrator.vibrate(newsensorVib, -1);
+                                else vibrator.vibrate(VibrationEffect.createWaveform(newsensorVib, -1));
+                                showToast(context, "New sensor detected: " + serialNumber);
+                                return new ScanResult(true, value, ret, serialNumber, "New sensor");
+                            }
                         }
-                        case 0x87:
-                            mayEnableStreaming(tag, uid, info);
-                            ret &= ~0x80;
-                        case 7: {
-                            final long[] newsensorVib = {50, 150, 50, 50, 12, 8, 15, 73};
-                            if (android.os.Build.VERSION.SDK_INT < 26) vibrator.vibrate(newsensorVib, -1);
-                            else vibrator.vibrate(VibrationEffect.createWaveform(newsensorVib, -1));
-                            showToast(context, "New sensor detected: " + serialNumber);
-                            return new ScanResult(true, value, ret, serialNumber, "New sensor");
-                        }
+                        showToast(context, "Glucose: " + (float) value / mgdLmult + " mg/dL");
+                        return new ScanResult(true, value, ret, serialNumber, "Scan successful");
+                    } else {
+                        vibrator.cancel();
+                        return new ScanResult(false, 0, 17, null, "Failed to read tag data");
                     }
-                    showToast(context, "Glucose: " + (float) value / mgdLmult + " mg/dL");
-                    return new ScanResult(true, value, ret, serialNumber, "Scan successful");
-                } else {
+                } catch (TagLostException | IllegalStateException te) {
                     vibrator.cancel();
-                    return new ScanResult(false, 0, 17, null, "Failed to read tag data");
+                    Log.d(LOG_ID, "Tag lost or invalid during read: " + te);
+                    return new ScanResult(false, 0, 0x100000, null, "Scan error: Tag out of date");
                 }
             }
         } catch (Exception e) {
