@@ -1,0 +1,49 @@
+{
+  "buildFiles": [
+    "/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/hossein/Android/Sdk/cmake/3.31.6/bin/ninja",
+      "-C",
+      "/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/hossein/Android/Sdk/cmake/3.31.6/bin/ninja",
+    "-C",
+    "/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "g::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "x86_64",
+      "artifactName": "g",
+      "output": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86_64/libg.so",
+      "runtimeFiles": []
+    },
+    "libnative.so::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "x86_64",
+      "artifactName": "libnative.so",
+      "output": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86_64/libnative.so",
+      "runtimeFiles": [
+        "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86_64/libg.so"
+      ]
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/home/hossein/Android/Sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/home/hossein/Android/Sdk/ndk/29.0.13599879/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

@@ -1,0 +1,1 @@
+../../../../mobileSiNogoogle/java/tk/glucodata/ZXing.java

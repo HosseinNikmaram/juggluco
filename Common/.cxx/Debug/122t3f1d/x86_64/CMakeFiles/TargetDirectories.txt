@@ -1,0 +1,4 @@
+/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86_64/CMakeFiles/g.dir
+/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86_64/CMakeFiles/libnative.so.dir
+/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86_64/CMakeFiles/edit_cache.dir
+/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86_64/CMakeFiles/rebuild_cache.dir

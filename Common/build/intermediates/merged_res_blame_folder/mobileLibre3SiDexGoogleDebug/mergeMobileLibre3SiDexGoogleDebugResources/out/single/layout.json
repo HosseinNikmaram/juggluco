@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/alarm.xml",
+        "source": "tk.glucodata.Common-main-41:/layout/alarm.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/bluesensor.xml",
+        "source": "tk.glucodata.Common-mobile-42:/layout/bluesensor.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/smallnotification.xml",
+        "source": "tk.glucodata.Common-main-41:/layout/smallnotification.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/arrowandvalue.xml",
+        "source": "tk.glucodata.Common-main-41:/layout/arrowandvalue.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/glucose_widget.xml",
+        "source": "tk.glucodata.Common-mobile-42:/layout/glucose_widget.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/numalarm.xml",
+        "source": "tk.glucodata.Common-main-41:/layout/numalarm.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/text.xml",
+        "source": "tk.glucodata.Common-main-41:/layout/text.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/ambilwarna_dialog.xml",
+        "source": "tk.glucodata.Common-mobile-42:/layout/ambilwarna_dialog.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/menus.xml",
+        "source": "tk.glucodata.Common-mobile-42:/layout/menus.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mergeMobileLibre3SiDexGoogleDebugResources-35:/layout/librenumoptions.xml",
+        "source": "tk.glucodata.Common-mobile-42:/layout/librenumoptions.xml"
+    }
+]

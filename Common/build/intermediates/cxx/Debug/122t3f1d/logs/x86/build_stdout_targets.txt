@@ -1,0 +1,13 @@
+ninja: Entering directory `/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86'
+[1/4] Building CXX object CMakeFiles/g.dir/dofirst.cpp.o
+/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/dofirst.cpp:53:13: warning: unused function 'getpathworks' [-Wunused-function]
+   53 | static bool     getpathworks() {
+      |                 ^~~~~~~~~~~~
+1 warning generated.
+[2/4] Building CXX object CMakeFiles/g.dir/settings/settings.cpp.o
+/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/settings/settings.cpp:127:12: warning: unused function 'overwritename' [-Wunused-function]
+  127 | static int overwritename() {
+      |            ^~~~~~~~~~~~~
+1 warning generated.
+[3/4] Linking CXX shared library /home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86/libg.so
+[4/4] Linking CXX executable /home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86/libnative.so

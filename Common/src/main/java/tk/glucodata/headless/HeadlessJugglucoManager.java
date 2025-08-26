@@ -1,0 +1,173 @@
+package tk.glucodata.headless;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.bluetooth.BluetoothAdapter;
+
+import tk.glucodata.Natives;
+import tk.glucodata.SensorBluetooth;
+
+/**
+ * Main headless manager for Juggluco Libre sensor integration
+ * Provides NFC scanning, BLE management, and glucose data access
+ */
+public class HeadlessJugglucoManager {
+    public static GlucoseListener glucoseListener;
+    private Activity activity;
+    private HeadlessNfcReader nfcReader;
+    private HeadlessHistory historyManager;
+    private HeadlessStats statsManager;
+    
+    /**
+     * Initialize the headless Juggluco system
+     * @param ctx Android context
+     * @return true if initialization was successful
+     */
+    public boolean init(Activity ctx) {
+        try {
+            // Initialize native libraries and core system
+            Natives.setfilesdir(ctx.getFilesDir().getAbsolutePath(), "IR", ctx.getApplicationInfo().nativeLibraryDir);
+            Natives.initjuggluco(ctx.getFilesDir().getAbsolutePath());
+            Natives.setusebluetooth(true);
+            this.activity = ctx;
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Check and enable Bluetooth if needed
+     * @param ctx Android context
+     * @return true if Bluetooth is available and enabled
+     */
+    public boolean ensurePermissionsAndBluetooth(Context ctx) {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter == null) return false;
+        
+        if (!adapter.isEnabled()) {
+            adapter.enable();
+        }
+        return true;
+    }
+    
+    /**
+     * Set glucose listener for real-time glucose updates
+     * @param listener Glucose listener implementation
+     */
+    public void setGlucoseListener(GlucoseListener listener) {
+        glucoseListener = listener;
+    }
+    
+    /**
+     * Set history listener for glucose history data
+     * @param listener History listener implementation
+     */
+    public void setHistoryListener(HistoryListener listener) {
+        if (listener != null) {
+            historyManager = new HeadlessHistory(listener);
+        }
+    }
+    
+    /**
+     * Set stats listener for glucose statistics
+     * @param listener Stats listener implementation
+     */
+    public void setStatsListener(StatsListener listener) {
+        if (listener != null) {
+            statsManager = new HeadlessStats(listener);
+        }
+    }
+    
+    /**
+     * Start NFC scanning for Libre sensor pairing
+     * @return true if NFC scanning was started successfully
+     */
+    public void startNfcScanning() {
+        if(activity==null) return;
+        nfcReader = new HeadlessNfcReader();
+        Intent intent = new Intent(activity, HeadlessNfcReader.class);
+        activity.startActivity(intent);
+    }
+    
+    /**
+     * Check if NFC is available
+     * @return true if NFC is available and enabled
+     */
+    public boolean isNfcAvailable() {
+        return nfcReader != null && nfcReader.isNfcAvailable();
+    }
+    
+    /**
+     * Manually scan an NFC tag (useful for testing or custom NFC handling)
+     * @param ctx Android context
+     * @param tag NFC tag from onTagDiscovered
+     * @return Scan result with detailed information
+     */
+    public HeadlessNfcScanner.ScanResult scanNfcTag(Context ctx, android.nfc.Tag tag) {
+        return HeadlessNfcScanner.scanTag(ctx, tag);
+    }
+    
+    /**
+     * Mark a new device for pairing (call before scanning)
+     * @param uid Device UID bytes
+     */
+    public void markNewDevice(byte[] uid) {
+        HeadlessNfcScanner.markNewDevice(uid);
+    }
+    
+    /**
+     * Get current glucose history for a sensor
+     * @param serial Sensor serial number
+     */
+    public void getGlucoseHistory(String serial) {
+        if (historyManager != null) {
+            historyManager.emitFromNativeLast(serial);
+        }
+    }
+    
+    /**
+     * Get glucose statistics for a sensor
+     * @param serial Sensor serial number
+     */
+    public void getGlucoseStats(String serial) {
+        if (statsManager != null) {
+            statsManager.emitIfReady(serial);
+        }
+    }
+    
+    /**
+     * Check if Bluetooth streaming is active
+     * @return true if Bluetooth streaming is active
+     */
+    public boolean isBluetoothStreamingActive() {
+        return SensorBluetooth.isActive();
+    }
+    
+    /**
+     * Start Bluetooth scanning for paired sensors
+     */
+    public void startBluetoothScanning() {
+        SensorBluetooth.start(true);
+    }
+    
+    /**
+     * Stop Bluetooth scanning
+     */
+    public void stopBluetoothScanning() {
+        SensorBluetooth.stopScanning();
+    }
+    
+    /**
+     * Clean up resources
+     */
+    public void cleanup() {
+        stopBluetoothScanning();
+        SensorBluetooth.destructor();
+        glucoseListener = null;
+    }
+}
+
+

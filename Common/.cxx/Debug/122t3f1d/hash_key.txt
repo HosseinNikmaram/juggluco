@@ -1,0 +1,30 @@
+# Values used to calculate the hash in this folder name.
+# Should not depend on the absolute path of the project itself.
+#   - AGP: 8.9.1.
+#   - $NDK is the path to NDK 29.0.13599879.
+#   - $PROJECT is the path to the parent folder of the root Gradle build file.
+#   - $ABI is the ABI to be built with. The specific value doesn't contribute to the value of the hash.
+#   - $HASH is the hash value computed from this text.
+#   - $CMAKE is the path to CMake 3.31.6.
+#   - $NINJA is the path to Ninja.
+-H$PROJECT/Common/src/main/cpp
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=26
+-DANDROID_PLATFORM=android-26
+-DANDROID_ABI=$ABI
+-DCMAKE_ANDROID_ARCH_ABI=$ABI
+-DANDROID_NDK=$NDK
+-DCMAKE_ANDROID_NDK=$NDK
+-DCMAKE_TOOLCHAIN_FILE=$NDK/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=$NINJA
+-DCMAKE_C_FLAGS= -DAPPID="quotes(tk.glucodata)"   -DAPPVERSION="quotes(9.7.7)"     -DDEXCOM=1     -DSIBIONICS=1     -DLIBRE3=1  -DDEBUG=1 -DSCANLOG=1 -DAPPSUFFIX="quotes(.debug)" -DNDK_DEBUG=1 -UNDEBUG
+-DCMAKE_CXX_FLAGS= -DAPPID="quotes(tk.glucodata)"   -DAPPVERSION="quotes(9.7.7)"     -DDEXCOM=1     -DSIBIONICS=1     -DLIBRE3=1  -std=gnu++26 -DDEBUG=1 -DSCANLOG=1 -DAPPSUFFIX="quotes(.debug)" -DNDK_DEBUG=1 -UNDEBUG
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=$PROJECT/Common/build/intermediates/cxx/Debug/$HASH/obj/$ABI
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=$PROJECT/Common/build/intermediates/cxx/Debug/$HASH/obj/$ABI
+-DCMAKE_BUILD_TYPE=Debug
+-B$PROJECT/Common/.cxx/Debug/$HASH/$ABI
+-GNinja
+-DJUGGLUCO_APP=TRUE -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=TRUE
+-DDEXCOM=TRUE
+-Dlibre3=TRUE

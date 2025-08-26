@@ -1,0 +1,1222 @@
+[
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_last_page_24.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_last_page_24.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_backward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_backward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_back_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_back_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_first_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_first_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_last_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_last_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_backward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_backward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_first_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_first_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_verylow.mp3.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/verylow.mp3"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-anydpi-v24_numalarm.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-anydpi-v24/numalarm.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_alarm.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/layout/alarm.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_arrow_back_24.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_arrow_back_24.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-anydpi-v24_loss.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-anydpi-v24/loss.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_last_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_last_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_first_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_first_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_backward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_backward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_backward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_backward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_next_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_next_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_dialogbackground.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/dialogbackground.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_back_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_back_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_backward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_backward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_next_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_next_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_veryhigh.mp3.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/veryhigh.mp3"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_hide.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/hide.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_before_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_before_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_last_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_last_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_next_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_next_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_first_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_first_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_before_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_before_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_before_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_before_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_loss.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/loss.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_next_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_next_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_backward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_backward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_back_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_back_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-nodpi_widget.png.flat",
+        "source": "tk.glucodata.Common-mobile-42:/drawable-nodpi/widget.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_backward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_backward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_back_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_back_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_backward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_backward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_ambilwarna_arrow_down.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/ambilwarna_arrow_down.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_first_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_first_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_arrow_back_18.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_arrow_back_18.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_novalue.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/novalue.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_first_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_first_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_first_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_first_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_last_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_last_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_next_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_next_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_last_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_last_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_first_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_first_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_before_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_before_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_classic.mp3.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/classic.mp3"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_elves.ogg.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/elves.ogg"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_siren.mp3.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/siren.mp3"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_show.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/show.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_before_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_before_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_back_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_back_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_first_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_first_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_before_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_before_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_next_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_next_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_before_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_before_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_last_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_last_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_last_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_last_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_back_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_back_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_menus.xml.flat",
+        "source": "tk.glucodata.Common-mobile-42:/layout/menus.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_first_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_first_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_last_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_last_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_arrow_forward_24.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_arrow_forward_24.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_password_visible.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/password_visible.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_before_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_before_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_show.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/show.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_next_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_next_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_before_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_before_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_before_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_before_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_ambilwarna_arrow_down.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/ambilwarna_arrow_down.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_back_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_back_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_first_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_first_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_before_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_before_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_next_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_next_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_navigate_before_24.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_navigate_before_24.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_back_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_back_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_first_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_first_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/xml_nfc_tech_filter.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/xml/nfc_tech_filter.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_text.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/layout/text.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_back_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_back_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_ambilwarna_arrow_right.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/ambilwarna_arrow_right.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_show.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/show.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_ambilwarna_cursor.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/ambilwarna_cursor.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_hide.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/hide.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_last_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_last_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_backward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_backward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_last_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_last_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_before_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_before_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_last_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_last_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_arrow_back_36.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_arrow_back_36.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_first_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_first_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_novalue.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/novalue.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_backward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_backward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_before_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_before_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_last_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_last_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_backward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_backward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_next_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_next_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_last_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_last_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_ambilwarna_cursor.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/ambilwarna_cursor.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_numalarm.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/numalarm.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_backward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_backward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_forward_20.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_forward_20.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_ambilwarna_alphacheckered.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/ambilwarna_alphacheckered.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-hdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_back_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_back_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-mdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_backward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_backward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_numalarm.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/numalarm.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_last_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_last_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_next_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_next_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_before_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_before_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_ambilwarna_alphacheckered_tiled.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/ambilwarna_alphacheckered_tiled.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_backward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_backward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_first_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_first_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_back_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_back_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_back_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_back_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-ldpi_ambilwarna_arrow_down.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-ldpi/ambilwarna_arrow_down.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_smallnotification.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/layout/smallnotification.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_next_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_next_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_next_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_next_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_hide.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/hide.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_before_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_before_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_ambilwarna_target.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/ambilwarna_target.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_back_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_back_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_first_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_first_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_first_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_first_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_backward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_backward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_last_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_last_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_back_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_back_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_first_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_first_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_back_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_back_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/xml_automotive_app_desc.xml.flat",
+        "source": "tk.glucodata.Common-mobile-42:/xml/automotive_app_desc.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_before_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_before_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_backward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_backward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_show.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/show.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_next_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_next_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_next_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_next_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_last_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_last_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_ambilwarna_arrow_right.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/ambilwarna_arrow_right.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_last_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_last_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_ambilwarna_cursor.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/ambilwarna_cursor.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_bonded.mp3.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/bonded.mp3"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_next_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_next_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_backward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_backward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_before_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_before_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_first_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_first_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_before_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_before_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_back_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_back_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_navigate_next_24.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_navigate_next_24.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_first_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_first_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-ldpi_ambilwarna_cursor.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-ldpi/ambilwarna_cursor.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_ghost.ogg.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/ghost.ogg"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_arrow_forward_18.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_arrow_forward_18.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_numalarm.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/layout/numalarm.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_first_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_first_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_next_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_next_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_before_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_before_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_hide.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/hide.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_back_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_back_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_next_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_next_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_ambilwarna_hue.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/ambilwarna_hue.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_first_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_first_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/font_opensans.ttf.flat",
+        "source": "tk.glucodata.Common-mobileSi-44:/font/opensans.ttf"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_ambilwarna_arrow_down.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/ambilwarna_arrow_down.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_before_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_before_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_backward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_backward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_ambilwarna_dialog.xml.flat",
+        "source": "tk.glucodata.Common-mobile-42:/layout/ambilwarna_dialog.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_before_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_before_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_next_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_next_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_arrow_forward_36.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_arrow_forward_36.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-ldpi_ambilwarna_arrow_right.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-ldpi/ambilwarna_arrow_right.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_first_page_24.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_first_page_24.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_last_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_last_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_hide.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/hide.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/xml_locales_config.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/xml/locales_config.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_before_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_before_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_backward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_backward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_arrowandvalue.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/layout/arrowandvalue.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_back_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_back_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_novalue.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/novalue.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_backward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_backward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_backward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_backward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_navigate_next_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_navigate_next_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_last_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_last_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_backward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_backward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_before_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_before_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_numalarm.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/numalarm.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_next_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_next_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_bluesensor.xml.flat",
+        "source": "tk.glucodata.Common-mobile-42:/layout/bluesensor.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-v24/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_back_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_back_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_before_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_before_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_loss.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/loss.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_highsoon.mp3.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/highsoon.mp3"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_next_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_next_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_ic_launcher_background.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_back_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_back_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_arrow_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_arrow_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_lowsoon.mp3.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/lowsoon.mp3"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_back_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_back_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_forward_24.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_forward_24.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_helpbackground.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/helpbackground.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_backward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_backward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_forward_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_forward_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/raw_nudge.ogg.flat",
+        "source": "tk.glucodata.Common-main-41:/raw/nudge.ogg"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_back_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_back_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_first_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_first_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_arrow_forward_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_arrow_forward_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_back_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_back_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_show.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/show.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_last_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_last_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_ambilwarna_target.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/ambilwarna_target.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable_baseline_arrow_back_20.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable/baseline_arrow_back_20.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_last_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_last_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_last_page_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_last_page_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_last_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_last_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_first_page_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_first_page_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_librenumoptions.xml.flat",
+        "source": "tk.glucodata.Common-mobile-42:/layout/librenumoptions.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/xml_glucose_widget_info.xml.flat",
+        "source": "tk.glucodata.Common-mobile-42:/xml/glucose_widget_info.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_ambilwarna_arrow_right.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/ambilwarna_arrow_right.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_first_page_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_first_page_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_next_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_next_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_arrow_back_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_arrow_back_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_navigate_next_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_navigate_next_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_forward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_forward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_novalue.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/novalue.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_numalarm.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/numalarm.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_arrow_back_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_arrow_back_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_navigate_before_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_navigate_before_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_loss.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/loss.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_arrow_forward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_arrow_forward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_backward_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_backward_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/layout_glucose_widget.xml.flat",
+        "source": "tk.glucodata.Common-mobile-42:/layout/glucose_widget.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_baseline_last_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/baseline_last_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxhdpi_loss.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxhdpi/loss.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_backward_white_36.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_backward_white_36.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_ambilwarna_target.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/ambilwarna_target.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-anydpi-v24_novalue.xml.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-anydpi-v24/novalue.xml"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "tk.glucodata.Common-main-41:/mipmap-xhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-hdpi_baseline_first_page_white_48.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-hdpi/baseline_first_page_white_48.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_navigate_next_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_navigate_next_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-mdpi_baseline_forward_white_24.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-mdpi/baseline_forward_white_24.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xhdpi_baseline_last_page_white_18.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xhdpi/baseline_last_page_white_18.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-xxxhdpi_baseline_navigate_next_white_20.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-xxxhdpi/baseline_navigate_next_white_20.png"
+    },
+    {
+        "merged": "tk.glucodata.Common-mobileLibre3SiDexGoogleDebug-36:/drawable-ldpi_ambilwarna_target.png.flat",
+        "source": "tk.glucodata.Common-main-41:/drawable-ldpi/ambilwarna_target.png"
+    }
+]
