@@ -79,7 +79,7 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
     public void onTagDiscovered(Tag tag) {
         // Process on background thread to avoid blocking NFC stack
         new Thread(() -> {
-            ScanNfcV.scan(this,tag);
+            processTag(tag);
         }).start();
     }
     private void finishWithTimeout() {
