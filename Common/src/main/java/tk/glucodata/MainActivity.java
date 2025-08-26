@@ -404,16 +404,8 @@ void handleIntent(Intent intent) {
     var action= intent.getAction();
 
        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0&&"android.nfc.action.TECH_DISCOVERED".intern()==action) {
-           curve.waitnfc=true;
-           {if(doLog) {Log.d(LOG_ID,"TECH_DISCOVERED");};};
-           try {
-               Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-               startnfc(tag);
-               }
-           catch(Throwable th) {
-                Log.stack(LOG_ID,"handleIntent",th);
-                }
-       return;
+           {if(doLog) {Log.d(LOG_ID,"TECH_DISCOVERED intent ignored; using ReaderMode only");};};
+           return;
        }
       if("androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE".intern() ==action)  {
         help.help(R.string.healthpermission,this);
