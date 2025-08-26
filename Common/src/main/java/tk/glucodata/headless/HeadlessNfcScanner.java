@@ -56,14 +56,14 @@ public final class HeadlessNfcScanner {
             }
             boolean isLibre3 = uid.length == 8 && uid[6] != 7;
             byte[] info = AlgNfcV.nfcinfotimes(tag, (isLibre3 || doLog) ? 1 : 15);
-/*            if (info == null || info.length != 6) {
+            if (info == null || info.length != 6) {
                 if (isLibre3) {
                     return libre3Scan(context, vibrator, tag);
                 } else {
                     vibrator.cancel();
                     return new ScanResult(false, 0, 17, null, "Read Tag Info Error");
                 }
-            } else {*/
+            } else {
                 byte[] data;
                 if ((data = AlgNfcV.readNfcTag(tag, uid, info)) != null) {
                     Log.d(LOG_ID, "Read Tag");
@@ -136,7 +136,7 @@ public final class HeadlessNfcScanner {
                     vibrator.cancel();
                     return new ScanResult(false, 0, 17, null, "Failed to read tag data");
                 }
-           // }
+            }
         } catch (Exception e) {
             vibrator.cancel();
             Log.stack(LOG_ID, "scanTag error", e);
