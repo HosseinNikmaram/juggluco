@@ -108,6 +108,7 @@ import java.util.List;
 //import androidx.activity.OnBackPressedCallback;
 //import androidx.activity.OnBackPressedDispatcher;
 //import com.google.android.apps.auto.sdk.CarActivity;
+import tk.glucodata.headless.HeadlessConfig;
 ;
 
 //import static tk.glucodata.Natives.hidescanresults;
@@ -458,6 +459,10 @@ private static boolean askNFC=true;
 private static    final int nfcflags=NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_NFC_A|NfcAdapter.FLAG_READER_NFC_B|NfcAdapter.FLAG_READER_NFC_F|NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK| NfcAdapter.FLAG_READER_NFC_BARCODE; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
 public void setnfc() {
 try {
+    if (HeadlessConfig.isHeadlessNfcEnabled()) {
+        {if(doLog) {Log.i(LOG_ID,"Headless NFC enabled: skip setnfc in MainActivity");};};
+        return;
+    }
     if (mNfcAdapter == null) {
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
     }
@@ -716,6 +721,10 @@ void activateresult(boolean res) {
 
     @Override
     public  void onTagDiscovered(Tag tag) {
+    if (HeadlessConfig.isHeadlessNfcEnabled()) {
+        {if(doLog) {Log.i(LOG_ID,"Headless NFC enabled: skip onTagDiscovered in MainActivity");};};
+        return;
+    }
     startnfc(tag);
     }
     @Override

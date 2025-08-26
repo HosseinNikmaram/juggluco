@@ -21,6 +21,9 @@ public class UsageExample {
     public void initializeJuggluco(Activity activity) {
         this.context = activity;
         
+        // Enable headless NFC to avoid MainActivity NFC handling
+        HeadlessConfig.enableHeadlessNfc();
+        
         // Create the headless manager
         jugglucoManager = new HeadlessJugglucoManager();
         
@@ -161,6 +164,7 @@ public class UsageExample {
             jugglucoManager.cleanup();
             jugglucoManager = null;
         }
+        HeadlessConfig.disableHeadlessNfc();
     }
     
     // Example of how to implement NFC callback in your activity
