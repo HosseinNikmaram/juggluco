@@ -30,6 +30,7 @@ public class HeadlessJugglucoManager {
             // Initialize native libraries and core system
             Natives.setfilesdir(ctx.getFilesDir().getAbsolutePath(), "IR", ctx.getApplicationInfo().nativeLibraryDir);
             Natives.initjuggluco(ctx.getFilesDir().getAbsolutePath());
+            Natives.onCreate();
             Natives.setusebluetooth(true);
             this.activity = ctx;
             return true;

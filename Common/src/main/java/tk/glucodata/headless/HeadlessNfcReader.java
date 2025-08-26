@@ -18,7 +18,7 @@ import tk.glucodata.Natives;
 public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCallback {
     private NfcAdapter nfcAdapter;
     private boolean readerModeEnabled = false;
-    private static    final int nfcflags=NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_NFC_A|NfcAdapter.FLAG_READER_NFC_B|NfcAdapter.FLAG_READER_NFC_F|NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK| NfcAdapter.FLAG_READER_NFC_BARCODE; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
+    private static    final int nfcflags=NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK; // restrict to NfcV only
     private Handler handler = new Handler();
 
 
