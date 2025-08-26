@@ -48,8 +48,19 @@ public final class HeadlessNfcScanner {
             return new ScanResult(false, 0, 0x100000, null, "Library not available");
         }
         // Ensure NfcV tech is present
-        if (NfcV.get(tag) == null) {
+        final NfcV nfcv = NfcV.get(tag);
+        if (nfcv == null) {
             return new ScanResult(false, 0, 17, null, "Unsupported tag tech (need NfcV)");
+        }
+        // Pre-connect check to fail fast if the Tag is already stale
+        try {
+            nfcv.connect();
+        } catch (SecurityException | IllegalStateException | TagLostException pre) {
+            return new ScanResult(false, 0, 0x100000, null, "Scan error: Tag out of date");
+        } catch (Throwable t) {
+            // Ignore other transient errors here; main flow will re-attempt
+        } finally {
+            try { nfcv.close(); } catch (Throwable ignore) {}
         }
         Vibrator vibrator = getVibrator(context);
         startVibration(vibrator);
@@ -61,7 +72,13 @@ public final class HeadlessNfcScanner {
                 Log.i(LOG_ID, "TAG::sensid=" + sensId);
             }
             boolean isLibre3 = uid.length == 8 && uid[6] != 7;
-            byte[] info = AlgNfcV.nfcinfotimes(tag, (isLibre3 || doLog) ? 1 : 15);
+            byte[] info;
+            try {
+                info = AlgNfcV.nfcinfotimes(tag, (isLibre3 || doLog) ? 1 : 15);
+            } catch (SecurityException se) {
+                vibrator.cancel();
+                return new ScanResult(false, 0, 0x100000, null, "Scan error: Tag out of date");
+            }
             if (info == null || info.length != 6) {
                 if (isLibre3) {
                     return libre3Scan(context, vibrator, tag);
@@ -143,9 +160,9 @@ public final class HeadlessNfcScanner {
                         vibrator.cancel();
                         return new ScanResult(false, 0, 17, null, "Failed to read tag data");
                     }
-                } catch (TagLostException | IllegalStateException te) {
+                } catch (TagLostException | IllegalStateException | SecurityException te) {
                     vibrator.cancel();
-                    Log.d(LOG_ID, "Tag lost or invalid during read: " + te);
+                    Log.d(LOG_ID, "Tag lost/invalid during read: " + te);
                     return new ScanResult(false, 0, 0x100000, null, "Scan error: Tag out of date");
                 }
             }
