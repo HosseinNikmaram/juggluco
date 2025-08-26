@@ -56,8 +56,6 @@ public final class HeadlessNfcScanner {
         } catch (SecurityException | IllegalStateException | TagLostException pre) {
             return new ScanResult(false, 0, 0x100000, null, "Scan error: Tag out of date");
         } catch (Throwable t) {
-        } finally {
-            try { nfcv.close(); } catch (Throwable ignore) {}
         }
         Vibrator vibrator = getVibrator(context);
         startVibration(vibrator);
@@ -71,7 +69,7 @@ public final class HeadlessNfcScanner {
             boolean isLibre3 = uid.length == 8 && uid[6] != 7;
             byte[] info;
             try {
-                info = AlgNfcV.nfcinfotimes(tag, (isLibre3 || doLog) ? 1 : 15);
+                info = AlgNfcV.nfcinfotimes(nfcv, (isLibre3 || doLog) ? 1 : 15);
             } catch (SecurityException se) {
                 vibrator.cancel();
                 return new ScanResult(false, 0, 0x100000, null, "Scan error: Tag out of date");
@@ -86,7 +84,7 @@ public final class HeadlessNfcScanner {
             } else {
                 byte[] data;
                 try {
-                    if ((data = AlgNfcV.readNfcTag(tag, uid, info)) != null) {
+                    if ((data = AlgNfcV.readNfcTag(nfcv, uid, info)) != null) {
                         Log.d(LOG_ID, "Read Tag");
                         int uit = Natives.nfcdata(uid, info, data);
                         int value = uit & 0xFFFF;
@@ -163,6 +161,8 @@ public final class HeadlessNfcScanner {
             vibrator.cancel();
             Log.stack(LOG_ID, "scanTag error", e);
             return new ScanResult(false, 0, 0x100000, null, "Scan error: " + e.getMessage());
+        } finally {
+            try { nfcv.close(); } catch (Throwable ignore) {}
         }
     }
 
