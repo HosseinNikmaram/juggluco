@@ -39,7 +39,8 @@ public final class HeadlessStats {
     private HeadlessStatsSummary computeSummary(long[] flat) {
         int n = flat.length / 2;
         if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null,
-                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
+                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl,
+                new HeadlessTirBreakdown(0, 0, 0, 0, 0));
         long firstMillis = flat[0] * 1000L;
         long lastMillis = flat[(n - 1) * 2] * 1000L;
         double sum = 0.0;
@@ -63,8 +64,9 @@ public final class HeadlessStats {
         // Simple A1C/GMI estimates from mean mg/dL
         Double estA1C = (mean > 0) ? ((mean + 46.7) / 28.7) : null; // NGSP %
         Double gmi = (mean > 0) ? (3.31 + 0.02392 * mean) : null;
+        HeadlessTirBreakdown tir = new HeadlessTirBreakdown(n, countBelow70, count70to180, count181to250, countAbove250);
         return new HeadlessStatsSummary(n, mean, sd, gv, durationDays, timeActivePercent, estA1C, gmi,
-                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
+                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl, tir);
     }
 
     // Build TIR string for logs using current thresholds
@@ -87,7 +89,7 @@ public final class HeadlessStats {
         double pVeryHigh = veryHigh * 100.0 / n;
         return " TIR <" + String.format("%.0f", lowThresholdMgdl) + "=" + String.format("%.1f", pBelow)
                 + "% " + String.format("%.0f", lowThresholdMgdl) + "-" + String.format("%.0f", inRangeUpperThresholdMgdl) + "=" + String.format("%.1f", pIn)
-                + "% " + String.format("%.0f", inRangeUpperThresholdMgdl + 1) + "-" + String.format("%.0f", highUpperThresholdMgdl) + "=" + String.format("%.1f", pHigh)
+                + "% " + String.format("%.0f", Math.floor(inRangeUpperThresholdMgdl + 1)) + "-" + String.format("%.0f", highUpperThresholdMgdl) + "=" + String.format("%.1f", pHigh)
                 + "% >" + String.format("%.0f", highUpperThresholdMgdl) + "=" + String.format("%.1f", pVeryHigh) + "%";
     }
 
