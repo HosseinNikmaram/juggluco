@@ -157,6 +157,14 @@ public class HeadlessJugglucoManager {
             statsManager.emitIfReady(serial);
         }
     }
+    /**
+     * Get glucose statistics for a sensor within an optional time range
+     */
+    public void getGlucoseStats(String serial, Long startMillis, Long endMillis) {
+        if (statsManager != null) {
+            statsManager.emitIfReady(serial, startMillis, endMillis);
+        }
+    }
     
     /**
      * Check if Bluetooth streaming is active
