@@ -174,16 +174,47 @@
         <activity
             android:name="tk.glucodata.MainActivity"
             android:allowEmbedded="true"
+            android:autoRemoveFromRecents="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|fontScale|locale"
+            android:excludeFromRecents="false"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
-            android:screenOrientation="reverseLandscape" >
+            android:screenOrientation="reverseLandscape"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
             <intent-filter>
                 <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
         </activity>
 
+        <activity-alias
+            android:name="tk.glucodata.glucodata"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity="tk.glucodata.MainActivity" >
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+        </activity-alias>
         <activity-alias
             android:name="tk.glucodata.ViewPermissionUsageActivity"
             android:exported="true"
@@ -228,38 +259,6 @@
                     android:scheme="wear" />
             </intent-filter>
         </service>
-
-        <activity
-            android:name="tk.glucodata.MyActivity"
-            android:autoRemoveFromRecents="false"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|fontScale|locale"
-            android:excludeFromRecents="false"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:stateNotNeeded="true"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="tk.glucodata.headless.HeadlessNfcReader"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:taskAffinity=""
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <receiver
             android:name="tk.glucodata.NumAlarm"

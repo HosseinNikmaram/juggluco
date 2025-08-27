@@ -57,6 +57,8 @@ import static tk.glucodata.Log.doLog;
 //import static tk.glucodata.Log.showScanSettings;
 //import static tk.glucodata.Log.showScanfilters;
 
+import tk.glucodata.headless.HeadlessHooks;
+
 public class SensorBluetooth {
 static void    setAutoconnect(boolean val) {
     Natives.setAndroid13(val);
@@ -82,6 +84,27 @@ public static void startscan() {
  static   private BluetoothAdapter mBluetoothAdapter;
     private BroadcastReceiver mBluetoothAdapterReceiver =null; ;
 static    private BluetoothManager mBluetoothManager=null;
+
+// Headless wrappers: when a HeadlessHooks.Provider is installed, use it instead of Applic/MainActivity
+private static void toaster(int resId) {
+    var p = HeadlessHooks.getProvider();
+    if(p != null) p.toast(resId);
+    else Applic.Toaster(resId);
+}
+private static boolean canBluetooth() {
+    var p = HeadlessHooks.getProvider();
+    return p != null ? p.canUseBluetooth() : Applic.canBluetooth();
+}
+private static boolean mayScan() {
+    var p = HeadlessHooks.getProvider();
+    return p != null ? p.mayScanBluetooth() : Applic.mayscan();
+}
+private static boolean hasFinePermission() {
+    var p = HeadlessHooks.getProvider();
+    if(p != null) return p.hasBluetoothPermission();
+    var main=MainActivity.thisone;
+    return (main!=null)&&main.finepermission();
+}
 
  @SuppressLint("MissingPermission")
  void enableBluetooth() {
@@ -120,7 +143,7 @@ static void othersworking(SuperGattCallback current ,long timmsec) {
  public boolean connectToActiveDevice(long delayMillis) {
  {if(doLog) {Log.i(LOG_ID, "connectToActiveDevice("+delayMillis+")");};};
     if(!bluetoothIsEnabled()) {
-        Applic.Toaster(R.string.enable_bluetooth);
+        toaster(R.string.enable_bluetooth);
         return false;
         }
         boolean scan=false;
@@ -163,8 +186,8 @@ private SuperGattCallback  getCallback(BluetoothDevice device) {
         return null;
     } catch(Throwable e) {
         Log.stack(LOG_ID,    "getCallback",e);
-        if(!Applic.canBluetooth())
-            Applic.Toaster(R.string.turn_on_nearby_devices_permission);
+        if(!canBluetooth())
+            toaster(R.string.turn_on_nearby_devices_permission);
         return null;
     }
 }
@@ -209,8 +232,8 @@ private boolean checkdevice(BluetoothDevice device) {
         return false;
     } catch (Throwable e) {
         Log.stack(LOG_ID, "checkdevice", e);
-        if (Build.VERSION.SDK_INT > 30 && !Applic.mayscan())
-            Applic.Toaster(R.string.turn_on_nearby_devices_permission);
+        if (Build.VERSION.SDK_INT > 30 && !mayScan())
+            toaster(R.string.turn_on_nearby_devices_permission);
         return true;
     }
 }
@@ -335,7 +358,7 @@ private int scanTries=0;
                  } 
              catch (Throwable e) {
                 Log.stack(LOG_ID, e);
-                if (Build.VERSION.SDK_INT > 30 && !Applic.mayscan()) Applic.Toaster(R.string.turn_on_nearby_devices_permission);
+                if (Build.VERSION.SDK_INT > 30 && !mayScan()) toaster(R.string.turn_on_nearby_devices_permission);
                 return false;
                 }
            return true;
@@ -442,14 +465,13 @@ final private Runnable scanRunnable = new Runnable() {
  };
 private     boolean startScan(long delayMillis) {
       {if(doLog) {Log.i(LOG_ID,"startScan("+delayMillis+")");};};
-      var main=MainActivity.thisone;
-        if(!((main==null&&Applic.mayscan())||(main!=null&&main.finepermission())) ) {
-          Applic.Toaster((Build.VERSION.SDK_INT > 30)?R.string.turn_on_nearby_devices_permission: R.string.turn_on_location_permission );
+        if(!(mayScan()||hasFinePermission())) {
+          toaster((Build.VERSION.SDK_INT > 30)?R.string.turn_on_nearby_devices_permission: R.string.turn_on_location_permission );
          return true;
          }
 
     if(!bluetoothIsEnabled()) {
-        Applic.Toaster(R.string.bluetooth_is_turned_off);
+        toaster(R.string.bluetooth_is_turned_off);
         return false;
         }
          scanstart=true;    
@@ -601,7 +623,7 @@ public void connectDevice(String id,long delayMillis) {
         }
 public boolean connectDevices(long delayMillis) {
     if(!bluetoothIsEnabled()) {
-        Applic.Toaster(R.string.enable_bluetooth);
+        toaster(R.string.enable_bluetooth);
         return false;
         }
         boolean scan=false;
@@ -720,8 +742,7 @@ boolean checkandconnect(SuperGattCallback  cb,long delay) {
          cb.setDeviceAddress(null);
         }
 
-    var main=MainActivity.thisone;
-    if((main==null&&Applic.mayscan())||main.finepermission()) {
+    if(mayScan()||hasFinePermission()) {
         connectToActiveDevice(cb, delay);
         return false;
         }
@@ -1027,8 +1048,8 @@ private void removeBondStateReceiver() {
 
 private boolean initializeBluetooth() {
         {if(doLog) {Log.v(LOG_ID,"initializeBluetooth");};};
-        if(!Applic.canBluetooth()) {
-                Applic.Toaster(R.string.turn_on_nearby_devices_permission);
+        if(!canBluetooth()) {
+                toaster(R.string.turn_on_nearby_devices_permission);
                 Log.e(LOG_ID,"No Blueotooth permission");
                 return false;
                 } 

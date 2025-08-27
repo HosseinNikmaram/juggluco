@@ -127,6 +127,9 @@ public static Handler getHandler() {
 static public MainActivity getActivity() {
    return MainActivity.thisone;
     }
+static public android.app.Activity getActivity(android.app.Activity activity) {
+   return activity;
+    }
 static public Context getContext() {
       Context cont=getActivity();
       if(cont!=null)

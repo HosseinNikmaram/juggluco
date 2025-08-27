@@ -371,7 +371,7 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
             JugglucoSend.broadcastglucose(SerialNumber,mgdl,gl,rate,alarm,timmsec);
         if(!isWearable) {
             app.numdata.sendglucose(SerialNumber, tim, gl, thresholdchange(rate), alarm|0x10);
-            GlucoseWidget.update();
+          //  GlucoseWidget.update();
             }
         if(tim>nexttime) {
             nexttime=tim+mininterval;
@@ -428,6 +428,7 @@ protected void handleGlucoseResult(long res,long timmsec) {
             try {
                 var lis = tk.glucodata.headless.HeadlessJugglucoManager.glucoseListener;
                 if(lis!=null) lis.onGlucose(SerialNumber, glumgdl, gl, rate, alarm, timmsec, sensorstartmsec, sensorgen);
+                // Also emit history updates for listeners when new data arrives
             } catch(Throwable ignore) {}
           /*  charcha[0] = timmsec;
             if(!isWearable) {

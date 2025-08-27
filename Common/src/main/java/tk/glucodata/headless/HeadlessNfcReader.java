@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
-import tk.glucodata.Applic;
 import tk.glucodata.Log;
 import tk.glucodata.Natives;
-import tk.glucodata.ScanNfcV;
 
 /**
  * Headless NFC reader that implements NfcAdapter.ReaderCallback
@@ -20,9 +18,11 @@ import tk.glucodata.ScanNfcV;
 public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCallback {
     private NfcAdapter nfcAdapter;
     private boolean readerModeEnabled = false;
-    private static    final int nfcflags=NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_NFC_A|NfcAdapter.FLAG_READER_NFC_B|NfcAdapter.FLAG_READER_NFC_F|NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK| NfcAdapter.FLAG_READER_NFC_BARCODE; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
+    private static    final int nfcflags=NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK; // restrict to NfcV only
     private Handler handler = new Handler();
+    private static volatile boolean scanning = false;
 
+    public static boolean isScanning() { return scanning; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,24 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
 
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        enableReaderMode();
-        handler.postDelayed(this::finishWithTimeout, 30000);
+
+        // If launched via TECH_DISCOVERED intent, process the Tag directly
+        Tag intentTag = getIntent() != null ? getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG) : null;
+        if (intentTag != null) {
+            scanning = true;
+            processTag(intentTag);
+            scanning = false;
+            runOnUiThread(this::finish);
+            return;
+        }
+
+        // Fallback to ReaderMode when there is no Tag in the intent
+        if (enableReaderMode()) {
+            scanning = true;
+            handler.postDelayed(this::finishWithTimeout, 30000);
+        } else {
+            scanning = false;
+        }
 
     }
 
@@ -77,13 +93,15 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        // Process on background thread to avoid blocking NFC stack
-        new Thread(() -> {
-            ScanNfcV.scan(this,tag);
-        }).start();
+        // Process synchronously to avoid Tag becoming out-of-date
+        handler.removeCallbacksAndMessages(null);
+        processTag(tag);
+        scanning = false;
+        runOnUiThread(this::finish);
     }
     private void finishWithTimeout() {
         // Toast.makeText(this, "Scan timed out", Toast.LENGTH_SHORT).show();
+        scanning = false;
         runOnUiThread(this::finish);
     }
 
@@ -99,12 +117,11 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
         super.onDestroy();
         disableReaderMode();
         handler.removeCallbacksAndMessages(null);
+        scanning = false;
     }
 
     private void processTag(Tag tag) {
         showToast("NFC Tag Discovered");
-
-
 
         HeadlessNfcScanner.ScanResult result = HeadlessNfcScanner.scanTag(this, tag);
 
@@ -120,7 +137,7 @@ public class HeadlessNfcReader extends Activity implements NfcAdapter.ReaderCall
     }
 
     private void showToast(String message) {
-        Applic.RunOnUiThread(() -> {
+        runOnUiThread(() -> {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             Log.d("HeadlessNfcReader", message);
         });

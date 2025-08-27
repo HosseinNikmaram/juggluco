@@ -210,6 +210,39 @@ static private byte[] wholenfccmdtimes(final Tag tag, final byte[] cmd,int times
         return null;
     }
 
+    // Reuse an already created NfcV connection for a whole transceive, trying up to 'times'
+    static private byte[] wholenfccmdtimes(final NfcV nfcvTag, final byte[] cmd,int times) {
+        if(nfcvTag == null) return null;
+        if(doLog) {Log.i(LOG_ID,"wholenfccmdtimes(NfcV) "+times);} ;
+        try {
+            final long endReadingTime = System.currentTimeMillis() + nfcReadTimeout;
+            byte[] infodata = null;
+            int it = times;
+            do {
+                try {
+                    infodata = nfcvTag.transceive(cmd);
+                } catch(Throwable error) {
+                    String mess=error!=null?error.toString():null;
+                    if(mess==null) mess="error";
+                    if(doLog) {Log.i(LOG_ID,"transceive(NfcV) "+ mess);} ;
+                    if ((System.currentTimeMillis() > endReadingTime)) {
+                        if(doLog) {Log.i(LOG_ID, "tag read timeout (NfcV) " + System.currentTimeMillis());} ;
+                        return null;
+                    }
+                    try { Thread.sleep(20); } catch (InterruptedException ie) { }
+                }
+                if(goodnfc(infodata))  {
+                    return infodata;
+                }
+            } while (--it != 0);
+            if(doLog) {Log.i(LOG_ID, "tried(NfcV) "+times+" times");} ;
+            return null;
+        } catch (Throwable e) {
+            if(doLog) {Log.i(LOG_ID,"connect(NfcV): "+ e.toString());} ;
+            return null;
+        }
+    }
+
 static private byte[] nfccmd(final Tag tag, final byte[] cmd) {
     byte[] res=wholenfccmd(tag, cmd);
     if(res==null)
@@ -225,6 +258,13 @@ static private byte[] nfccmdtimes(final Tag tag, final byte[] cmd,int times) {
    public static byte[] nfcinfotimes(final Tag tag,int times) {
         log("nfcinfotimes");
         return nfccmdtimes(tag, new byte[]{2, -95, 7},times);
+    }
+    // Overload: reuse existing NfcV connection
+   public static byte[] nfcinfotimes(final NfcV nfcv,int times) {
+        log("nfcinfotimes(NfcV)");
+        byte[] res=wholenfccmdtimes(nfcv, new byte[]{2, -95, 7},times);
+        if(res==null) return null;
+        return Arrays.copyOfRange(res, 1, res.length);
     }
     static byte[] nfcinfo(final Tag tag) {
         log("nfcinfo");
@@ -261,6 +301,18 @@ static private byte[] nfccmdtimes(final Tag tag, final byte[] cmd,int times) {
             nfcvTag.close();
             return uit;
         } catch (IOException e) {
+            Log.stack(LOG_ID, e);
+            return null;
+        }
+    }
+
+    // Overload: reuse existing NfcV connection
+    public static byte[] readNfcTag(NfcV nfcv, byte[] uid, byte[] info) {
+        log("readNfcTag(NfcV)");
+        try {
+            byte[] uit = readpatchdata(nfcv, uid, info);
+            return uit;
+        } catch (Throwable e) {
             Log.stack(LOG_ID, e);
             return null;
         }

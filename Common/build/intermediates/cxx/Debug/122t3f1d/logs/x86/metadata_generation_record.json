@@ -2,7 +2,7 @@
   {
     "level_": 0,
     "message_": "Start JSON generation. Platform version: 26 min SDK version: x86",
-    "file_": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/CMakeLists.txt",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
     "tag_": "mobileLibre3SiDexGoogleDebug|x86",
     "diagnosticCode_": 0,
     "memoizedIsInitialized": 1,
@@ -14,8 +14,125 @@
   },
   {
     "level_": 0,
-    "message_": "JSON \u0027/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86/android_gradle_build.json\u0027 was up-to-date",
-    "file_": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/CMakeLists.txt",
+    "message_": "rebuilding JSON /home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86/android_gradle_build.json due to:",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "- a hard configure file changed, will remove stale configuration folder",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "  - /home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86/metadata_generation_command.txt (LAST_MODIFIED_CHANGED)",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "removing stale contents from \u0027/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86\u0027",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "created folder \u0027/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86\u0027",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "executing cmake /home/hossein/Android/Sdk/cmake/3.31.6/bin/cmake \\\n  -H/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp \\\n  -DCMAKE_SYSTEM_NAME\u003dAndroid \\\n  -DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON \\\n  -DCMAKE_SYSTEM_VERSION\u003d26 \\\n  -DANDROID_PLATFORM\u003dandroid-26 \\\n  -DANDROID_ABI\u003dx86 \\\n  -DCMAKE_ANDROID_ARCH_ABI\u003dx86 \\\n  -DANDROID_NDK\u003d/home/hossein/Android/Sdk/ndk/29.0.13599879 \\\n  -DCMAKE_ANDROID_NDK\u003d/home/hossein/Android/Sdk/ndk/29.0.13599879 \\\n  -DCMAKE_TOOLCHAIN_FILE\u003d/home/hossein/Android/Sdk/ndk/29.0.13599879/build/cmake/android.toolchain.cmake \\\n  -DCMAKE_MAKE_PROGRAM\u003d/home/hossein/Android/Sdk/cmake/3.31.6/bin/ninja \\\n  \"-DCMAKE_C_FLAGS\u003d -DAPPID\u003d\\\"quotes(tk.glucodata)\\\"   -DAPPVERSION\u003d\\\"quotes(9.7.7)\\\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\\\"quotes(.debug)\\\" -DNDK_DEBUG\u003d1 -UNDEBUG\" \\\n  \"-DCMAKE_CXX_FLAGS\u003d -DAPPID\u003d\\\"quotes(tk.glucodata)\\\"   -DAPPVERSION\u003d\\\"quotes(9.7.7)\\\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -std\u003dgnu++26 -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\\\"quotes(.debug)\\\" -DNDK_DEBUG\u003d1 -UNDEBUG\" \\\n  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86 \\\n  -DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86 \\\n  -DCMAKE_BUILD_TYPE\u003dDebug \\\n  -B/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86 \\\n  -GNinja \\\n  \"-DJUGGLUCO_APP\u003dTRUE -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES\u003dTRUE\" \\\n  -DDEXCOM\u003dTRUE \\\n  -Dlibre3\u003dTRUE\n",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "/home/hossein/Android/Sdk/cmake/3.31.6/bin/cmake \\\n  -H/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp \\\n  -DCMAKE_SYSTEM_NAME\u003dAndroid \\\n  -DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON \\\n  -DCMAKE_SYSTEM_VERSION\u003d26 \\\n  -DANDROID_PLATFORM\u003dandroid-26 \\\n  -DANDROID_ABI\u003dx86 \\\n  -DCMAKE_ANDROID_ARCH_ABI\u003dx86 \\\n  -DANDROID_NDK\u003d/home/hossein/Android/Sdk/ndk/29.0.13599879 \\\n  -DCMAKE_ANDROID_NDK\u003d/home/hossein/Android/Sdk/ndk/29.0.13599879 \\\n  -DCMAKE_TOOLCHAIN_FILE\u003d/home/hossein/Android/Sdk/ndk/29.0.13599879/build/cmake/android.toolchain.cmake \\\n  -DCMAKE_MAKE_PROGRAM\u003d/home/hossein/Android/Sdk/cmake/3.31.6/bin/ninja \\\n  \"-DCMAKE_C_FLAGS\u003d -DAPPID\u003d\\\"quotes(tk.glucodata)\\\"   -DAPPVERSION\u003d\\\"quotes(9.7.7)\\\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\\\"quotes(.debug)\\\" -DNDK_DEBUG\u003d1 -UNDEBUG\" \\\n  \"-DCMAKE_CXX_FLAGS\u003d -DAPPID\u003d\\\"quotes(tk.glucodata)\\\"   -DAPPVERSION\u003d\\\"quotes(9.7.7)\\\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -std\u003dgnu++26 -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\\\"quotes(.debug)\\\" -DNDK_DEBUG\u003d1 -UNDEBUG\" \\\n  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86 \\\n  -DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86 \\\n  -DCMAKE_BUILD_TYPE\u003dDebug \\\n  -B/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86 \\\n  -GNinja \\\n  \"-DJUGGLUCO_APP\u003dTRUE -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES\u003dTRUE\" \\\n  -DDEXCOM\u003dTRUE \\\n  -Dlibre3\u003dTRUE\n",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "Received process result: 0",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "Exiting generation of /home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86/compile_commands.json.bin normally",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
+    "tag_": "mobileLibre3SiDexGoogleDebug|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 0
+  },
+  {
+    "level_": 0,
+    "message_": "done executing cmake",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
     "tag_": "mobileLibre3SiDexGoogleDebug|x86",
     "diagnosticCode_": 0,
     "memoizedIsInitialized": 1,
@@ -28,7 +145,7 @@
   {
     "level_": 0,
     "message_": "JSON generation completed without problems",
-    "file_": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/CMakeLists.txt",
+    "file_": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
     "tag_": "mobileLibre3SiDexGoogleDebug|x86",
     "diagnosticCode_": 0,
     "memoizedIsInitialized": 1,
