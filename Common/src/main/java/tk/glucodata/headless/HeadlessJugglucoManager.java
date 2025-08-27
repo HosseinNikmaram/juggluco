@@ -3,7 +3,6 @@ package tk.glucodata.headless;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.bluetooth.BluetoothAdapter;
 
 import tk.glucodata.Natives;
@@ -15,7 +14,6 @@ import tk.glucodata.SensorBluetooth;
  */
 public class HeadlessJugglucoManager {
     public static GlucoseListener glucoseListener;
-    private static HeadlessHistory staticHistoryManager;
     private Activity activity;
     private HeadlessNfcReader nfcReader;
     private HeadlessHistory historyManager;
@@ -78,7 +76,6 @@ public class HeadlessJugglucoManager {
     public void setHistoryListener(HistoryListener listener) {
         if (listener != null) {
             historyManager = new HeadlessHistory(listener);
-            staticHistoryManager = historyManager;
         }
     }
     
@@ -208,19 +205,8 @@ public class HeadlessJugglucoManager {
         stopBluetoothScanning();
         SensorBluetooth.destructor();
         glucoseListener = null;
-        staticHistoryManager = null;
     }
 
-    /**
-     * Emit latest history to the registered listener, if any.
-     * Safe to call from BLE callbacks when new data arrives.
-     */
-    public static void emitLatestHistoryIfAny(String serial) {
-        HeadlessHistory hm = staticHistoryManager;
-        if (hm != null) {
-            hm.emitFromNativeRange(serial, null, null);
-        }
-    }
 }
 
 

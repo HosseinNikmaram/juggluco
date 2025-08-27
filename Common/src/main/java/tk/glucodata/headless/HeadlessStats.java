@@ -22,16 +22,6 @@ public final class HeadlessStats {
         var hist = HeadlessHistoryAccessor.getAll();
         if (hist == null || hist.length < 2) return;
         HeadlessStatsSummary stats = computeSummary(hist);
-        Log.d(TAG, "Stats for " + serial +
-                ": n=" + stats.numberOfMeasurements +
-                ", avg=" + String.format("%.1f", stats.averageGlucose) +
-                ", sd=" + String.format("%.2f", stats.standardDeviation) +
-                ", gv%=" + String.format("%.1f", stats.glucoseVariabilityPercent) +
-                ", durDays=" + String.format("%.1f", stats.durationDays) +
-                ", active%=" + String.format("%.1f", stats.timeActivePercent) +
-                ", A1C%=" + (stats.estimatedA1CPercent==null?"-":String.format("%.2f", stats.estimatedA1CPercent)) +
-                ", GMI%=" + (stats.gmiPercent==null?"-":String.format("%.2f", stats.gmiPercent))
-        );
         listener.onStats(serial, stats);
     }
 
@@ -43,16 +33,6 @@ public final class HeadlessStats {
         var ranged = HeadlessHistoryAccessor.filter(hist, startMillis, endMillis);
         if (ranged == null || ranged.length < 2) return;
         HeadlessStatsSummary stats = computeSummary(ranged);
-        Log.d(TAG, "Stats for " + serial +
-                ": n=" + stats.numberOfMeasurements +
-                ", avg=" + String.format("%.1f", stats.averageGlucose) +
-                ", sd=" + String.format("%.2f", stats.standardDeviation) +
-                ", gv%=" + String.format("%.1f", stats.glucoseVariabilityPercent) +
-                ", durDays=" + String.format("%.1f", stats.durationDays) +
-                ", active%=" + String.format("%.1f", stats.timeActivePercent) +
-                ", A1C%=" + (stats.estimatedA1CPercent==null?"-":String.format("%.2f", stats.estimatedA1CPercent)) +
-                ", GMI%=" + (stats.gmiPercent==null?"-":String.format("%.2f", stats.gmiPercent))
-        );
         listener.onStats(serial, stats);
     }
 

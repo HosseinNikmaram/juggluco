@@ -60,6 +60,7 @@ public class UsageExample {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
             jugglucoManager.getGlucoseStats(serial);
+            jugglucoManager.getGlucoseHistory(serial);
         });
 
         jugglucoManager.setHistoryListener((serial, history) -> {
@@ -84,8 +85,12 @@ public class UsageExample {
                     ", gv%=" + String.format("%.1f", stats.glucoseVariabilityPercent) +
                     ", durDays=" + String.format("%.1f", stats.durationDays) +
                     ", active%=" + String.format("%.1f", stats.timeActivePercent) +
-                    ", A1C%=" + (stats.estimatedA1CPercent==null?"-":String.format("%.2f", stats.estimatedA1CPercent)) +
-                    ", GMI%=" + (stats.gmiPercent==null?"-":String.format("%.2f", stats.gmiPercent))
+                    ", A1C%=" + (stats.estimatedA1CPercent==null ? "-" : String.format("%.2f", stats.estimatedA1CPercent)) +
+                    ", GMI%=" + (stats.gmiPercent==null ? "-" : String.format("%.2f", stats.gmiPercent)) +
+                    ", below%=" + String.format("%.1f", stats.percentBelow) +
+                    ", inRange%=" + String.format("%.1f", stats.percentInRange) +
+                    ", high%=" + String.format("%.1f", stats.percentHigh) +
+                    ", veryHigh%=" + String.format("%.1f", stats.percentVeryHigh)
             );
             activity.runOnUiThread(() -> {
                 Toast.makeText(activity, "Stats ready: n=" + stats.numberOfMeasurements,
