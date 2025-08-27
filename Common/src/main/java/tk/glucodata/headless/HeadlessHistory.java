@@ -9,8 +9,9 @@ public final class HeadlessHistory {
         this.listener = listener;
     }
 
-    // Uses Natives.getlastGlucose() which returns a flat long[];
-    // we transform it into pairs [timeMillis, mgdl].
+    // Uses Natives.getlastGlucose() which returns a flat long[] as
+    // [timeSeconds0, packed0, timeSeconds1, packed1, ...].
+    // We transform it into pairs [timeMillis, mgdl].
     public void emitFromNativeLast(String serial) {
         if (listener == null) return;
         long[] flat = Natives.getlastGlucose();
@@ -27,22 +28,24 @@ public final class HeadlessHistory {
 
     private static long[][] toPairs(long[] flat, Long startMillis, Long endMillis) {
         int totalPairs = flat.length / 2;
-        // First pass: count matches to allocate exact array
         int count = 0;
+        // First pass: count matches to allocate exact array
         for (int i = 0; i < totalPairs; i++) {
-            long t = flat[2 * i];
-            if (startMillis != null && t < startMillis) continue;
-            if (endMillis != null && t > endMillis) continue;
+            long tMillis = flat[2 * i] * 1000L; // native gives seconds
+            if (startMillis != null && tMillis < startMillis) continue;
+            if (endMillis != null && tMillis > endMillis) continue;
             count++;
         }
         long[][] hist = new long[count][2];
         int idx = 0;
         for (int i = 0; i < totalPairs; i++) {
-            long t = flat[2 * i];
-            if (startMillis != null && t < startMillis) continue;
-            if (endMillis != null && t > endMillis) continue;
-            hist[idx][0] = t;
-            hist[idx][1] = flat[2 * i + 1];
+            long tMillis = flat[2 * i] * 1000L;
+            if (startMillis != null && tMillis < startMillis) continue;
+            if (endMillis != null && tMillis > endMillis) continue;
+            long packed = flat[2 * i + 1];
+            long mgdl = (int) (packed & 0xFFFFFFFFL);
+            hist[idx][0] = tMillis;
+            hist[idx][1] = mgdl;
             idx++;
         }
         return hist;

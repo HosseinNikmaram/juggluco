@@ -30,12 +30,13 @@ public final class HeadlessStats {
     private static HeadlessStatsSummary computeSummary(long[] flat) {
         int n = flat.length / 2;
         if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null);
-        long first = flat[0];
-        long last = flat[(n - 1) * 2];
+        long firstMillis = flat[0] * 1000L;
+        long lastMillis = flat[(n - 1) * 2] * 1000L;
         double sum = 0.0;
         double sumSq = 0.0;
         for (int i = 0; i < n; i++) {
-            double g = flat[2 * i + 1];
+            long packed = flat[2 * i + 1];
+            double g = (int)(packed & 0xFFFFFFFFL);
             sum += g;
             sumSq += g * g;
         }
@@ -43,7 +44,7 @@ public final class HeadlessStats {
         double variance = Math.max(0.0, (sumSq / n) - (mean * mean));
         double sd = Math.sqrt(variance);
         double gv = mean > 0 ? (sd * 100.0 / mean) : 0.0;
-        double durationDays = (last > first) ? (last - first) / 86_400_000.0 : 0.0;
+        double durationDays = (lastMillis > firstMillis) ? (lastMillis - firstMillis) / 86_400_000.0 : 0.0;
         // Rough time active based on expected 5-min intervals (Libre3 history)
         double expected = durationDays > 0 ? (durationDays * 24 * 12) : n;
         double timeActivePercent = expected > 0 ? Math.min(100.0, n * 100.0 / expected) : 0.0;
