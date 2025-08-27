@@ -59,13 +59,21 @@ public class UsageExample {
             activity.runOnUiThread(() -> {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
+            jugglucoManager.getGlucoseStats(serial);
         });
 
         jugglucoManager.setHistoryListener((serial, history) -> {
-            Log.d(TAG, "Received " + history.length + " history points from " + serial);
-            activity.runOnUiThread(() -> {
-                Toast.makeText(activity, "Received " + history.length + " history points", Toast.LENGTH_SHORT).show();
-            });
+            Log.d(TAG, "History count=" + history.length + " from " + serial);
+            // history: long[points][2] -> [timeMillis, mgdl]
+            for (int i = 0; i < history.length; i++) {
+                long timeMillis = history[i][0];
+                long mgdl = history[i][1];
+                Log.d(TAG, "idx=" + i + " time=" + timeMillis + " mgdl=" + mgdl);
+            }
+
+            activity.runOnUiThread(() ->
+                    Toast.makeText(activity, "History points: " + history.length, Toast.LENGTH_SHORT).show()
+            );
         });
 
         jugglucoManager.setStatsListener((serial, stats) -> {
