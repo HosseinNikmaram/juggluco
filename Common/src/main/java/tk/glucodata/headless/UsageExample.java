@@ -24,8 +24,7 @@ public class UsageExample {
     private HeadlessJugglucoManager jugglucoManager;
     private Context context;
     private boolean initialized = false;
-    private boolean bleStarted = false;
-    
+
     private UsageExample() {}
     
     /**
@@ -36,7 +35,6 @@ public class UsageExample {
         if (initialized) return;
         this.context = activity;
         
-        HeadlessConfig.enableHeadlessNfc();
 
         jugglucoManager = new HeadlessJugglucoManager();
         
@@ -45,12 +43,11 @@ public class UsageExample {
             return;
         }
         
-        if (HeadlessConfig.isBleEnabled()) {
             if (!jugglucoManager.ensurePermissionsAndBluetooth(context)) {
                 Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
                 return;
             }
-        }
+
         
         jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
             String message = String.format("Glucose: %.1f mg/dL, Rate: %.1f", value, rate);
@@ -77,9 +74,7 @@ public class UsageExample {
 
     public void startBluetoothScanning() {
         if (jugglucoManager != null) {
-            if (bleStarted) return;
             jugglucoManager.startBluetoothScanning();
-            bleStarted = true;
             Toast.makeText(context, "Bluetooth scanning started", Toast.LENGTH_SHORT).show();
         }
     }
@@ -87,7 +82,6 @@ public class UsageExample {
     public void stopBluetoothScanning() {
         if (jugglucoManager != null) {
             jugglucoManager.stopBluetoothScanning();
-            bleStarted = false;
         }
     }
     
@@ -113,6 +107,5 @@ public class UsageExample {
             jugglucoManager = null;
         }
         initialized = false;
-        bleStarted = false;
     }
 }
