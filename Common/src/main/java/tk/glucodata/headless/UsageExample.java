@@ -37,7 +37,6 @@ public class UsageExample {
         this.context = activity;
         
         HeadlessConfig.enableHeadlessNfc();
-        HeadlessConfig.setBleEnabled(false);
         
         jugglucoManager = new HeadlessJugglucoManager();
         
