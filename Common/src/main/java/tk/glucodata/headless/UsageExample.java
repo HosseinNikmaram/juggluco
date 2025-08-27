@@ -2,7 +2,6 @@ package tk.glucodata.headless;
 
 import android.app.Activity;
 import android.content.Context;
-import android.nfc.Tag;
 import android.widget.Toast;
 
 /**
@@ -35,23 +34,17 @@ public class UsageExample {
     public void initializeJuggluco(Activity activity) {
         if (initialized) return;
         this.context = activity;
-        
-        HeadlessConfig.enableHeadlessNfc();
-        HeadlessConfig.setBleEnabled(false);
-        
         jugglucoManager = new HeadlessJugglucoManager();
-        
         if (!jugglucoManager.init(activity)) {
             Toast.makeText(activity, "Failed to initialize Juggluco", Toast.LENGTH_LONG).show();
             return;
         }
         
-        if (HeadlessConfig.isBleEnabled()) {
             if (!jugglucoManager.ensurePermissionsAndBluetooth(context)) {
                 Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
                 return;
             }
-        }
+
         
         jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
             String message = String.format("Glucose: %.1f mg/dL, Rate: %.1f", value, rate);
@@ -68,9 +61,7 @@ public class UsageExample {
         Toast.makeText(activity, "Juggluco initialized successfully", Toast.LENGTH_SHORT).show();
     }
     
-    public void setBleEnabled(boolean enabled) {
-        HeadlessConfig.setBleEnabled(enabled);
-    }
+
     
     public void startNfcScanning() {
         if (!initialized) return;
@@ -78,24 +69,8 @@ public class UsageExample {
         jugglucoManager.startNfcScanning();
     }
 
-    public void handleNfcTag(Tag tag) {
-        if (jugglucoManager == null) return;
-        HeadlessNfcScanner.ScanResult result = jugglucoManager.scanNfcTag(context, tag);
-        if (result.success) {
-            if (result.glucoseValue > 0) {
-                String message = String.format("Glucose: %.1f mg/dL", (float) result.glucoseValue / 10.0f);
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-            }
-            if (HeadlessConfig.isBleEnabled() && (result.returnCode == 5 || result.returnCode == 7)) {
-                startBluetoothScanning();
-            }
-        } else {
-            Toast.makeText(context, "Scan failed: " + result.message, Toast.LENGTH_SHORT).show();
-        }
-    }
-    
     public void startBluetoothScanning() {
-        if (jugglucoManager != null && HeadlessConfig.isBleEnabled()) {
+        if (jugglucoManager != null) {
             if (bleStarted) return;
             jugglucoManager.startBluetoothScanning();
             bleStarted = true;
@@ -133,7 +108,5 @@ public class UsageExample {
         }
         initialized = false;
         bleStarted = false;
-        HeadlessConfig.disableHeadlessNfc();
-        // keep singleton instance for reuse
     }
 }

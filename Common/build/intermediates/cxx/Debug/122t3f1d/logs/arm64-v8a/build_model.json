@@ -8,9 +8,9 @@
     "triple": "aarch64-linux-android",
     "llvmTriple": "aarch64-none-linux-android"
   },
-  "cxxBuildFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/arm64-v8a",
-  "soFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a",
-  "soRepublishFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cmake/mobileLibre3SiDexGoogleDebug/obj/arm64-v8a",
+  "cxxBuildFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/arm64-v8a",
+  "soFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a",
+  "soRepublishFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cmake/mobileLibre3SiDexGoogleDebug/obj/arm64-v8a",
   "abiPlatformVersion": 26,
   "cmake": {
     "effectiveConfiguration": {
@@ -56,13 +56,13 @@
     "implicitBuildTargetSet": [],
     "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
     "module": {
-      "cxxFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx",
-      "intermediatesBaseFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates",
-      "intermediatesFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx",
+      "cxxFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx",
+      "intermediatesBaseFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates",
+      "intermediatesFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx",
       "gradleModulePathName": ":Common",
-      "moduleRootFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common",
-      "moduleBuildFile": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build.gradle",
-      "makeFile": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/CMakeLists.txt",
+      "moduleRootFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common",
+      "moduleBuildFile": "/home/hossein/AndroidStudioProjects/juggluco/Common/build.gradle",
+      "makeFile": "/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt",
       "buildSystem": "CMAKE",
       "ndkFolder": "/home/hossein/Android/Sdk/ndk/29.0.13599879",
       "ndkFolderBeforeSymLinking": "/home/hossein/Android/Sdk/ndk/29.0.13599879",
@@ -152,7 +152,7 @@
         "SYSTEM": {}
       },
       "project": {
-        "rootBuildGradleFolder": "/home/hossein/AndroidStudioProjects/juggluco-test",
+        "rootBuildGradleFolder": "/home/hossein/AndroidStudioProjects/juggluco",
         "sdkFolder": "/home/hossein/Android/Sdk",
         "isBuildOnlyTargetAbiEnabled": true,
         "ideBuildTargetAbi": "arm64-v8a,armeabi-v7a,armeabi",
@@ -172,12 +172,12 @@
   "buildSettings": {
     "environmentVariables": []
   },
-  "prefabFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/prefab/arm64-v8a",
+  "prefabFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/prefab/arm64-v8a",
   "isActiveAbi": true,
   "fullConfigurationHash": "122t3f1d2ab3y4ji67q1f5c3o365e1l2v1m6o2h3h6j2q3mq4p5y1x384v3w",
   "fullConfigurationHashKey": "# Values used to calculate the hash in this folder name.\n# Should not depend on the absolute path of the project itself.\n#   - AGP: 8.9.1.\n#   - $NDK is the path to NDK 29.0.13599879.\n#   - $PROJECT is the path to the parent folder of the root Gradle build file.\n#   - $ABI is the ABI to be built with. The specific value doesn\u0027t contribute to the value of the hash.\n#   - $HASH is the hash value computed from this text.\n#   - $CMAKE is the path to CMake 3.31.6.\n#   - $NINJA is the path to Ninja.\n-H$PROJECT/Common/src/main/cpp\n-DCMAKE_SYSTEM_NAME\u003dAndroid\n-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\n-DCMAKE_SYSTEM_VERSION\u003d26\n-DANDROID_PLATFORM\u003dandroid-26\n-DANDROID_ABI\u003d$ABI\n-DCMAKE_ANDROID_ARCH_ABI\u003d$ABI\n-DANDROID_NDK\u003d$NDK\n-DCMAKE_ANDROID_NDK\u003d$NDK\n-DCMAKE_TOOLCHAIN_FILE\u003d$NDK/build/cmake/android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003d$NINJA\n-DCMAKE_C_FLAGS\u003d -DAPPID\u003d\"quotes(tk.glucodata)\"   -DAPPVERSION\u003d\"quotes(9.7.7)\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\"quotes(.debug)\" -DNDK_DEBUG\u003d1 -UNDEBUG\n-DCMAKE_CXX_FLAGS\u003d -DAPPID\u003d\"quotes(tk.glucodata)\"   -DAPPVERSION\u003d\"quotes(9.7.7)\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -std\u003dgnu++26 -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\"quotes(.debug)\" -DNDK_DEBUG\u003d1 -UNDEBUG\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d$PROJECT/Common/build/intermediates/cxx/Debug/$HASH/obj/$ABI\n-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d$PROJECT/Common/build/intermediates/cxx/Debug/$HASH/obj/$ABI\n-DCMAKE_BUILD_TYPE\u003dDebug\n-B$PROJECT/Common/.cxx/Debug/$HASH/$ABI\n-GNinja\n-DJUGGLUCO_APP\u003dTRUE -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES\u003dTRUE\n-DDEXCOM\u003dTRUE\n-Dlibre3\u003dTRUE",
   "configurationArguments": [
-    "-H/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp",
+    "-H/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp",
     "-DCMAKE_SYSTEM_NAME\u003dAndroid",
     "-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON",
     "-DCMAKE_SYSTEM_VERSION\u003d26",
@@ -190,14 +190,14 @@
     "-DCMAKE_MAKE_PROGRAM\u003d/home/hossein/Android/Sdk/cmake/3.31.6/bin/ninja",
     "-DCMAKE_C_FLAGS\u003d -DAPPID\u003d\"quotes(tk.glucodata)\"   -DAPPVERSION\u003d\"quotes(9.7.7)\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\"quotes(.debug)\" -DNDK_DEBUG\u003d1 -UNDEBUG",
     "-DCMAKE_CXX_FLAGS\u003d -DAPPID\u003d\"quotes(tk.glucodata)\"   -DAPPVERSION\u003d\"quotes(9.7.7)\"     -DDEXCOM\u003d1     -DSIBIONICS\u003d1     -DLIBRE3\u003d1  -std\u003dgnu++26 -DDEBUG\u003d1 -DSCANLOG\u003d1 -DAPPSUFFIX\u003d\"quotes(.debug)\" -DNDK_DEBUG\u003d1 -UNDEBUG",
-    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a",
-    "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a",
+    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a",
+    "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a",
     "-DCMAKE_BUILD_TYPE\u003dDebug",
-    "-B/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/arm64-v8a",
+    "-B/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/arm64-v8a",
     "-GNinja",
     "-DJUGGLUCO_APP\u003dTRUE -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES\u003dTRUE",
     "-DDEXCOM\u003dTRUE",
     "-Dlibre3\u003dTRUE"
   ],
-  "intermediatesParentFolder": "/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d"
+  "intermediatesParentFolder": "/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d"
 }

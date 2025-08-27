@@ -35,7 +35,7 @@ public class HeadlessJugglucoManager {
                 Natives.onCreate();
                 nativesInitialized = true;
             }
-            Natives.setusebluetooth(HeadlessConfig.isBleEnabled());
+            Natives.setusebluetooth(true);
             this.activity = ctx;
             return true;
         } catch (Exception e) {

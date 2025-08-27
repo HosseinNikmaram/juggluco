@@ -91,36 +91,31 @@ public final class HeadlessNfcScanner {
                         Log.format("glucose=%.1f\n", (float) value / mgdLmult);
                         int ret = uit >> 16;
                         String serialNumber = Natives.getserial(uid, info);
-                        if (HeadlessConfig.isBleEnabled()) {
                             if (newDeviceUid != null && Arrays.equals(newDeviceUid, uid)) {
                                 if (value != 0 || (ret & 0xFF) == 5 || (ret & 0xFF) == 7) {
                                     if (SensorBluetooth.resetDevice(serialNumber)) askPermission = true;
                                     newDeviceUid = null;
                                 }
                             }
-                        }
+
                         vibrator.cancel();
                         switch (ret & 0xFF) {
                             case 8: {
-                                if (HeadlessConfig.isBleEnabled()) {
                                     boolean streamingEnabled = mayEnableStreaming(tag, uid, info);
                                     if (streamingEnabled) showToast(context, "Streaming enabled for " + serialNumber);
-                                }
+
                                 return new ScanResult(true, value, 0, serialNumber, "Scan ok");
                             }
                             case 9: {
-                                if (HeadlessConfig.isBleEnabled()) {
                                     if (SensorBluetooth.resetDevice(serialNumber)) askPermission = true;
                                     showToast(context, "Streaming enabled for " + serialNumber);
-                                }
                                 return new ScanResult(true, value, 0, serialNumber, "Scan ok");
                             }
                             case 4:
-                                if (HeadlessConfig.isBleEnabled()) SensorBluetooth.sensorEnded(serialNumber);
+                                 SensorBluetooth.sensorEnded(serialNumber);
                                 return new ScanResult(true, value, ret, serialNumber, "Sensor ended");
                             case 3: {
                                 if (value == 0) {
-                                    if (HeadlessConfig.isBleEnabled()) {
                                         boolean actSuccess = AlgNfcV.activate(tag, info, uid);
                                         if (actSuccess) {
                                             newDeviceUid = uid;
@@ -131,17 +126,16 @@ public final class HeadlessNfcScanner {
                                             showToast(context, "Sensor activation failed");
                                             return new ScanResult(false, value, ret, serialNumber, "Activation failed");
                                         }
-                                    }
                                 }
                                 break;
                             }
                             case 0x85:
-                                if (HeadlessConfig.isBleEnabled()) mayEnableStreaming(tag, uid, info);
+                                 mayEnableStreaming(tag, uid, info);
                                 ret &= ~0x80;
                             case 5:
                                 return new ScanResult(true, value, ret, serialNumber, "New sensor");
                             case 0x87:
-                                if (HeadlessConfig.isBleEnabled()) mayEnableStreaming(tag, uid, info);
+                                 mayEnableStreaming(tag, uid, info);
                                 ret &= ~0x80;
                             case 7:
                                 return new ScanResult(true, value, ret, serialNumber, "New sensor");
@@ -151,7 +145,7 @@ public final class HeadlessNfcScanner {
                         vibrator.cancel();
                         return new ScanResult(false, 0, 17, null, "Failed to read tag data");
                     }
-                } catch (TagLostException | IllegalStateException | SecurityException te) {
+                } catch (IllegalStateException | SecurityException te) {
                     vibrator.cancel();
                     Log.d(LOG_ID, "Tag lost/invalid during read: " + te);
                     return new ScanResult(false, 0, 0x100000, null, "Scan error: Tag out of date");

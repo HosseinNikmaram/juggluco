@@ -21,11 +21,7 @@
 
 package tk.glucodata;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
 import static android.content.Intent.EXTRA_PERMISSION_GROUP_NAME;
-import static android.graphics.Color.BLUE;
-import static android.graphics.Color.WHITE;
 import static android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS;
 import static android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM;
 import static android.view.View.GONE;
@@ -48,7 +44,6 @@ import static tk.glucodata.GlucoseCurve.STEPBACK;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Log.showbytes;
 import static tk.glucodata.Natives.getInvertColors;
-import static tk.glucodata.Natives.hasData;
 import static tk.glucodata.Natives.hasNeedScan;
 import static tk.glucodata.Natives.setShownintro;
 import static tk.glucodata.Natives.wakelibreview;
@@ -68,7 +63,6 @@ import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -78,11 +72,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.Settings;
-import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
@@ -108,202 +99,254 @@ import java.util.List;
 //import androidx.activity.OnBackPressedCallback;
 //import androidx.activity.OnBackPressedDispatcher;
 //import com.google.android.apps.auto.sdk.CarActivity;
-import tk.glucodata.headless.HeadlessConfig;
-;
+import tk.glucodata.headless.UsageExample;
 
 //import static tk.glucodata.Natives.hidescanresults;
 
 
 //public class MainActivity extends ComponentActivity implements NfcAdapter.ReaderCallback  {
-public class MainActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback  {
-public MainActivity() {
-    clearonback() ;
+public class MainActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+    private UsageExample jugglucoExample;
+
+    public MainActivity() {
+        clearonback();
     }
 // Extending from AppCompatActivity requires to use an AppCompat theme for the Activity.
 // In the manifest, for the activity, use android:theme="@style/Theme.AppCompat"
 
-//public class MainActivity extends CarActivity implements NfcAdapter.ReaderCallback  {
+    //public class MainActivity extends CarActivity implements NfcAdapter.ReaderCallback  {
 //    boolean    hideSystem=true;
-    LaunchShit  permHealth=isWearable?null:new LaunchShit(this);
-    public GlucoseCurve curve=null;
-//    Button okbutton=null;
+    LaunchShit permHealth = isWearable ? null : new LaunchShit(this);
+    public GlucoseCurve curve = null;
+    //    Button okbutton=null;
     private static final String LOG_ID = "MainActivity";
-    private NfcAdapter mNfcAdapter=null;
-private boolean started=false;
-private void startall() {
-     if(doLog) {Log.d(LOG_ID, "startall");};
-     if(!started) {
-        startdisplay();
-        netinitstep();
-        if(!isWearable||Natives.hasData())  {
-           final int unit=Natives.getunit();
-           if(!(unit==1||unit==2)) {
-          Applic.postDelayed(()->tk.glucodata.settings.Settings.set(this),1000L);
-          }
-         }
-        else {
-           Specific.initScreen(this);
-           }
-       }
-   }
-boolean askNotify() {
-      if(Build.VERSION.SDK_INT >=33)  {
-        var perm= Manifest.permission.POST_NOTIFICATIONS;
-        if(ContextCompat.checkSelfPermission(this, perm)!= PackageManager.PERMISSION_GRANTED)  {
-            {if(doLog) {Log.i(LOG_ID,"askNotify");};};
-            var permar=new String[]{perm};
-            if(shouldShowRequestPermissionRationale(perm) ) {
-                 help.help(R.string.notificationpermission,this,l-> {
-                    requestPermissions(permar, NOTIFICATION_PERMISSION_REQUEST_CODE);
+    private NfcAdapter mNfcAdapter = null;
+    private boolean started = false;
+
+    private void startall() {
+        if (doLog) {
+            Log.d(LOG_ID, "startall");
+        }
+        ;
+        if (!started) {
+            startdisplay();
+            netinitstep();
+            if (!isWearable || Natives.hasData()) {
+                final int unit = Natives.getunit();
+                if (!(unit == 1 || unit == 2)) {
+                    Applic.postDelayed(() -> tk.glucodata.settings.Settings.set(this), 1000L);
+                }
+            } else {
+                Specific.initScreen(this);
+            }
+        }
+    }
+
+    boolean askNotify() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            var perm = Manifest.permission.POST_NOTIFICATIONS;
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "askNotify");
+                    }
+                    ;
+                }
+                ;
+                var permar = new String[]{perm};
+                if (shouldShowRequestPermissionRationale(perm)) {
+                    help.help(R.string.notificationpermission, this, l -> {
+                        requestPermissions(permar, NOTIFICATION_PERMISSION_REQUEST_CODE);
                     });
+                } else {
+                    requestPermissions(permar, NOTIFICATION_PERMISSION_REQUEST_CODE);
                 }
-            else   {
-                requestPermissions(permar, NOTIFICATION_PERMISSION_REQUEST_CODE);
-                }
-            return false;
+                return false;
             }
         }
-    explicit(this);
-   return true;
+        explicit(this);
+        return true;
     }
-public static int systembarTop=0;
-public static int systembarBottom=0;
-public static int systembarLeft=0;
-public static int systembarRight=0;
-//public static int navigationbarLeft=0;
-private void startdisplay() {
-   if(doLog) {Log.i(LOG_ID,"startdisplay");};
-   Applic app=    (Applic)getApplication();
-    app.setbackgroundcolor(this) ;
-    if(Applic.Nativesloaded)
-        app.needsnatives() ;
 
-    curve = new GlucoseCurve(this);
-   {if(doLog) {Log.i(LOG_ID,"After curve = new GlucoseCurve(this);");};};
-   if(!isWearable) {
-      if(Build.VERSION.SDK_INT >= 30) {
-         setOnApplyWindowInsetsListener(curve,(v, windowInsets) -> {
-         setsizes(this);
-         if(screenwidth>= screenheight) {
-             Insets  insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-             {if(doLog) {Log.i(LOG_ID, "systemBars: left="+insets.left+ " right="+insets.right+ " bottom="+insets.bottom+ " top="+insets.top);};};
-             Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
+    public static int systembarTop = 0;
+    public static int systembarBottom = 0;
+    public static int systembarLeft = 0;
+    public static int systembarRight = 0;
 
-            systembarLeft=insets.left;
-            systembarTop=insets.top;
-            systembarRight=insets.right;
-            systembarBottom=insets.bottom;
-
-             requestRender();
-             if(getlibrary.showintro) {
-               getlibrary.showintro=false;
-               help.help(R.string.introhelp,this,l->setShownintro(true));
-               }
-               }
-            return windowInsets;
-      });
-    // showSystemBarsAppearance();
-      }
-      lightBars(!getInvertColors( ));
-      }
-    setContentView(curve);
-   try {
-      setRequestedOrientation(Natives.getScreenOrientation( ));
-       }
-   catch(       Throwable  error) {
-      String mess=error!=null?error.getMessage():null;
-      if(mess==null) {
-         mess="error";
-         }
-          Log.stack(LOG_ID ,mess,error);
-      }
-    getlibrary.getlibrary(this);//after setfilesdir for settings
-    handleIntent(getIntent());
-    var langstring=getString(R.string.language);
-    var lang=util.getlocale().getLanguage();
-    if(doLog) {Log.i(LOG_ID,"curlang="+Applic.curlang+" newlang="+langstring+" locale="+lang);};
-    if(!lang.equals(Applic.curlang)) {
-        Natives.setlocale(lang);
-        Applic.curlang=lang;
-        if(!DontTalk) {
-            if(Talker.istalking())    
-                SuperGattCallback.newtalker(this);
-              }
+    //public static int navigationbarLeft=0;
+    private void startdisplay() {
+        if (doLog) {
+            Log.i(LOG_ID, "startdisplay");
         }
-   }
-static int openglversion=0;
-boolean glversion() {
-    if(openglversion==0) {
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
-        openglversion=Natives.openglversion();
+        ;
+        Applic app = (Applic) getApplication();
+        app.setbackgroundcolor(this);
+        if (Applic.Nativesloaded)
+            app.needsnatives();
+
+        curve = new GlucoseCurve(this);
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "After curve = new GlucoseCurve(this);");
+            }
+            ;
+        }
+        ;
+        if (!isWearable) {
+            if (Build.VERSION.SDK_INT >= 30) {
+                setOnApplyWindowInsetsListener(curve, (v, windowInsets) -> {
+                    setsizes(this);
+                    if (screenwidth >= screenheight) {
+                        Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                        {
+                            if (doLog) {
+                                Log.i(LOG_ID, "systemBars: left=" + insets.left + " right=" + insets.right + " bottom=" + insets.bottom + " top=" + insets.top);
+                            }
+                            ;
+                        }
+                        ;
+                        Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
+
+                        systembarLeft = insets.left;
+                        systembarTop = insets.top;
+                        systembarRight = insets.right;
+                        systembarBottom = insets.bottom;
+
+                        requestRender();
+                        if (getlibrary.showintro) {
+                            getlibrary.showintro = false;
+                            help.help(R.string.introhelp, this, l -> setShownintro(true));
+                        }
+                    }
+                    return windowInsets;
+                });
+                // showSystemBarsAppearance();
+            }
+            lightBars(!getInvertColors());
+        }
+        setContentView(curve);
         try {
-        {if(doLog) {Log.i(LOG_ID,"OpenGl "+Double.parseDouble(configurationInfo.getGlEsVersion()));};};
-        if(( configurationInfo.reqGlEsVersion>>16)<openglversion) {
-            help.help("This program requires OpenGL ES "+openglversion+".0 or higher. This device has OpenGL ES "+ Double.parseDouble(configurationInfo.getGlEsVersion())+" so can't be used.\n\n\n\n\n",this,l->finish());
-            return false;
+            setRequestedOrientation(Natives.getScreenOrientation());
+        } catch (Throwable error) {
+            String mess = error != null ? error.getMessage() : null;
+            if (mess == null) {
+                mess = "error";
             }
-           } catch(Throwable e){
-               Log.stack(LOG_ID,"glversion",e);
-               
-               }
-    //    if(configurationInfo.reqGlEsVersion >=0x30000) openglversion=3;
+            Log.stack(LOG_ID, mess, error);
         }
-    return true;
+        getlibrary.getlibrary(this);//after setfilesdir for settings
+        handleIntent(getIntent());
+        var langstring = getString(R.string.language);
+        var lang = util.getlocale().getLanguage();
+        if (doLog) {
+            Log.i(LOG_ID, "curlang=" + Applic.curlang + " newlang=" + langstring + " locale=" + lang);
+        }
+        ;
+        if (!lang.equals(Applic.curlang)) {
+            Natives.setlocale(lang);
+            Applic.curlang = lang;
+            if (!DontTalk) {
+                if (Talker.istalking())
+                    SuperGattCallback.newtalker(this);
+            }
+        }
     }
-//static int initscreenwidth;
+
+    static int openglversion = 0;
+
+    boolean glversion() {
+        if (openglversion == 0) {
+            ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
+            openglversion = Natives.openglversion();
+            try {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "OpenGl " + Double.parseDouble(configurationInfo.getGlEsVersion()));
+                    }
+                    ;
+                }
+                ;
+                if ((configurationInfo.reqGlEsVersion >> 16) < openglversion) {
+                    help.help("This program requires OpenGL ES " + openglversion + ".0 or higher. This device has OpenGL ES " + Double.parseDouble(configurationInfo.getGlEsVersion()) + " so can't be used.\n\n\n\n\n", this, l -> finish());
+                    return false;
+                }
+            } catch (Throwable e) {
+                Log.stack(LOG_ID, "glversion", e);
+
+            }
+            //    if(configurationInfo.reqGlEsVersion >=0x30000) openglversion=3;
+        }
+        return true;
+    }
+
+    //static int initscreenwidth;
 //FragmentManager fragmentManager = getSupportFragmentManager();
 //public static boolean wearable=false;
-static MainActivity thisone=null;
-static void alarmsExact(Context context) {
-    if(TargetSDK>30) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            AlarmManager manager= (AlarmManager) context.getSystemService(ALARM_SERVICE);
-                if(manager.canScheduleExactAlarms()){
-                   {if(doLog) {Log.d(LOG_ID, "canScheduleExactAlarms");};};
-                   }
-                else {
-                   {if(doLog) {Log.d(LOG_ID, "not canScheduleExactAlarms");};};
-                   try {
-                       Intent intent=new Intent();
-                       intent.setAction(ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                       context.startActivity(intent);
-                       } catch(Throwable th) {
-                           Log.stack(LOG_ID,"ACTION_REQUEST_SCHEDULE_EXACT_ALARM",th);
+    static MainActivity thisone = null;
 
-                           }
-                   }
+    static void alarmsExact(Context context) {
+        if (TargetSDK > 30) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                AlarmManager manager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+                if (manager.canScheduleExactAlarms()) {
+                    {
+                        if (doLog) {
+                            Log.d(LOG_ID, "canScheduleExactAlarms");
+                        }
+                        ;
+                    }
+                    ;
+                } else {
+                    {
+                        if (doLog) {
+                            Log.d(LOG_ID, "not canScheduleExactAlarms");
+                        }
+                        ;
+                    }
+                    ;
+                    try {
+                        Intent intent = new Intent();
+                        intent.setAction(ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                        context.startActivity(intent);
+                    } catch (Throwable th) {
+                        Log.stack(LOG_ID, "ACTION_REQUEST_SCHEDULE_EXACT_ALARM", th);
+
+                    }
+                }
+            }
         }
     }
+
+    /*
+    void setDirection(Locale locale) {
+        Resources resources =getResources();
+        Configuration config = resources.getConfiguration();
+           config.setLayoutDirection(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
-/*
-void setDirection(Locale locale) {
-    Resources resources =getResources();
-    Configuration config = resources.getConfiguration();
-       config.setLayoutDirection(locale);
-    resources.updateConfiguration(config, resources.getDisplayMetrics());
-}
-private void supportLTR() {
-    setDirection(Locale.US);
-    }
-private void supportRTL() {
-    setDirection(new Locale("iw"));
-    } */
-public void lightBars(boolean light) {
-      if(Build.VERSION.SDK_INT >= 30) {
-         var win=getWindow();
-         var view= win.getDecorView();
-         WindowInsetsControllerCompat windowInsetsController =WindowCompat.getInsetsController(win, view);
-         windowInsetsController.setAppearanceLightStatusBars(light);
-         windowInsetsController.setAppearanceLightNavigationBars(light);
-    // win.setNavigationBarColor(Color.TRANSPARENT);
+    private void supportLTR() {
+        setDirection(Locale.US);
+        }
+    private void supportRTL() {
+        setDirection(new Locale("iw"));
+        } */
+    public void lightBars(boolean light) {
+        if (Build.VERSION.SDK_INT >= 30) {
+            var win = getWindow();
+            var view = win.getDecorView();
+            WindowInsetsControllerCompat windowInsetsController = WindowCompat.getInsetsController(win, view);
+            windowInsetsController.setAppearanceLightStatusBars(light);
+            windowInsetsController.setAppearanceLightNavigationBars(light);
+            // win.setNavigationBarColor(Color.TRANSPARENT);
 //     win.setNavigationBarColor(BLUE);
 //   {if(doLog) {Log.i(LOG_ID,"getNavigationBarColor()="+win.getNavigationBarColor());};};
- //  {if(doLog) {Log.i(LOG_ID,"isNavigationBarContrastEnforced() "+win.isNavigationBarContrastEnforced());};};
-      }
+            //  {if(doLog) {Log.i(LOG_ID,"isNavigationBarContrastEnforced() "+win.isNavigationBarContrastEnforced());};};
+        }
 
-   }
-//s/android.view.WindowInsetsController.\([A-Z_]*\),/if((status\&android.view.WindowInsetsController.\1)!=0)  {message+=" "+"\1";};/g
+    }
+
+    //s/android.view.WindowInsetsController.\([A-Z_]*\),/if((status\&android.view.WindowInsetsController.\1)!=0)  {message+=" "+"\1";};/g
 //s/\([A-Z_]*\),/if((status\&android.view.WindowInsetsController.\1)!=0)  {message+=" "+"\1";};/g
     /*
 void showSystemBarsAppearance() {
@@ -330,688 +373,813 @@ void showSystemBarsAppearance() {
    } */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    if(android.os.Build.VERSION.SDK_INT >= 21) {
-         Log.i(LOG_ID,"sdk 21 or larger") ;
-        }
-    else
-        Log.i(LOG_ID,"smaller than sdk 21") ;
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Log.i(LOG_ID, "sdk 21 or larger");
+        } else
+            Log.i(LOG_ID, "smaller than sdk 21");
 
-        if(isWearable) {
-           Specific.splash(this);
-         }
+        if (isWearable) {
+            Specific.splash(this);
+        }
         super.onCreate(savedInstanceState);
-        if(Build.VERSION.SDK_INT >= 30)  {
-           if(!isWearable)
-               EdgeToEdge.enable(this);
-           }
-      thisone=this;
-      if(Applic.stopprogram >0){
-         Log.e(LOG_ID,"Stop program");
-         if(Applic.stopprogram ==1)
-            outofStorageSpace();
-         else {
-            makefilesfailed();
+        if (Build.VERSION.SDK_INT >= 30) {
+            if (!isWearable)
+                EdgeToEdge.enable(this);
+        }
+        thisone = this;
+        if (Applic.stopprogram > 0) {
+            Log.e(LOG_ID, "Stop program");
+            if (Applic.stopprogram == 1)
+                outofStorageSpace();
+            else {
+                makefilesfailed();
             }
-         return;
-         }
-      DisplayMetrics metrics= this.getResources().getDisplayMetrics();
-      screenheight= metrics.heightPixels;
-      screenwidth= metrics.widthPixels;
-      {if(doLog) {Log.i(LOG_ID,"onCreate start target="+ TargetSDK);};};
-      if(TargetSDK>30) {
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            alarmsExact(this);
+            return;
+        }
+        DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+        screenheight = metrics.heightPixels;
+        screenwidth = metrics.widthPixels;
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "onCreate start target=" + TargetSDK);
             }
-         }
-      showSystemUI();
-      if(!glversion())
-         return;
-      startall();
-      Natives.onCreate();
-      if(Menus.on)
-           Menus.show(this);
+            ;
+        }
+        ;
+        if (TargetSDK > 30) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                alarmsExact(this);
+            }
+        }
+        showSystemUI();
+        if (!glversion())
+            return;
+        startall();
+      //  Natives.onCreate();
+        if (Menus.on)
+            Menus.show(this);
 
 //        var gestureListener= new Layout.ScrollListener(); mGestureDetector = new GestureDetector(this, gestureListener);
-       if(doLog) {Log.i(LOG_ID,"onCreate end");};
+        if (doLog) {
+            Log.i(LOG_ID, "onCreate end");
+        }
+        initialJuggluco();
     }
 
-//GestureDetector mGestureDetector;
-void handleIntent(Intent intent) {
-    if(intent==null)
-        return;
-    final Bundle extras = intent.getExtras();
-    if(extras!=null)  {
-        if(extras.getBoolean(Notify.fromnotification, false)) {
-            {if(doLog) {Log.i(LOG_ID,"fromnotification");};};
-            Notify.stopalarm();
+    private void initialJuggluco() {
+        // Initialize Juggluco
+        jugglucoExample = UsageExample.getInstance();
+        jugglucoExample.initializeJuggluco(this);
+        jugglucoExample.startBluetoothScanning();
+    }
+
+    //GestureDetector mGestureDetector;
+    void handleIntent(Intent intent) {
+        if (intent == null)
             return;
-            }
-        else   {
-            {if(doLog) {Log.i(LOG_ID,"not fromnotification");};};
-            if(extras.containsKey(setbluetoothon)) {
-                Applic.setbluetooth(this,extras.getBoolean(setbluetoothon,false) );
+        final Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.getBoolean(Notify.fromnotification, false)) {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "fromnotification");
+                    }
+                    ;
+                }
+                ;
+                Notify.stopalarm();
                 return;
-              }
-            var message=extras.getString("alarmMessage");
-                if(message!=null) {
-                var cancel=extras.getBoolean("Cancel",false);
-                {if(doLog) {Log.i(LOG_ID,"alarmMessage "+message+" cancel="+cancel);};};
-                showindialog(message,cancel);
-                return;
+            } else {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "not fromnotification");
+                    }
+                    ;
+                }
+                ;
+                if (extras.containsKey(setbluetoothon)) {
+                    Applic.setbluetooth(this, extras.getBoolean(setbluetoothon, false));
+                    return;
+                }
+                var message = extras.getString("alarmMessage");
+                if (message != null) {
+                    var cancel = extras.getBoolean("Cancel", false);
+                    {
+                        if (doLog) {
+                            Log.i(LOG_ID, "alarmMessage " + message + " cancel=" + cancel);
+                        }
+                        ;
+                    }
+                    ;
+                    showindialog(message, cancel);
+                    return;
                 }
             }
         }
-    var action= intent.getAction();
+        var action = intent.getAction();
 
-       if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0&&"android.nfc.action.TECH_DISCOVERED".intern()==action) {
-           {if(doLog) {Log.d(LOG_ID,"TECH_DISCOVERED intent ignored; using ReaderMode only");};};
-           return;
-       }
-      if("androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE".intern() ==action)  {
-        help.help(R.string.healthpermission,this);
-        return;
-        }
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-      if("android.intent.action.VIEW_PERMISSION_USAGE".intern()==action) {
-          if (extras != null) {
-              final String groupname;
-              groupname = extras.getString(EXTRA_PERMISSION_GROUP_NAME);
-              switch (groupname) {
-                  case "android.permission-group.HEALTH" ->
-                          help.help(R.string.healthpermission, this);
-                  case "android.permission-group.NOTIFICATIONS" ->
-                          help.help(R.string.notificationpermission, this);
-                  case "android.permission-group.NEARBY_DEVICES" ->
-                          help.help(R.string.nearbypermission, this);
-                  case "android.permission-group.CAMERA" ->
-                          help.help(R.string.camerapermission, this);
-                  default -> {if(doLog) {Log.i(LOG_ID, "EXTRA_PERMISSION_GROUP_NAME=" + groupname);};}
-              }
-              ;
-              }
-              }
+        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0 && "android.nfc.action.TECH_DISCOVERED".intern() == action) {
+            curve.waitnfc = true;
+            {
+                if (doLog) {
+                    Log.d(LOG_ID, "TECH_DISCOVERED");
+                }
+                ;
+            }
+            ;
+            try {
+                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                startnfc(tag);
+            } catch (Throwable th) {
+                Log.stack(LOG_ID, "handleIntent", th);
+            }
             return;
-          }
+        }
+        if ("androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE".intern() == action) {
+            help.help(R.string.healthpermission, this);
+            return;
+        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            if ("android.intent.action.VIEW_PERMISSION_USAGE".intern() == action) {
+                if (extras != null) {
+                    final String groupname;
+                    groupname = extras.getString(EXTRA_PERMISSION_GROUP_NAME);
+                    switch (groupname) {
+                        case "android.permission-group.HEALTH" ->
+                                help.help(R.string.healthpermission, this);
+                        case "android.permission-group.NOTIFICATIONS" ->
+                                help.help(R.string.notificationpermission, this);
+                        case "android.permission-group.NEARBY_DEVICES" ->
+                                help.help(R.string.nearbypermission, this);
+                        case "android.permission-group.CAMERA" ->
+                                help.help(R.string.camerapermission, this);
+                        default -> {
+                            if (doLog) {
+                                Log.i(LOG_ID, "EXTRA_PERMISSION_GROUP_NAME=" + groupname);
+                            }
+                            ;
+                        }
+                    }
+                    ;
+                }
+            }
+            return;
+        }
 
 //       else hideSystem=true;
-   }
-static final String setbluetoothon="setbluetoothon";
+    }
+
+    static final String setbluetoothon = "setbluetoothon";
 
     @Override
     protected void onNewIntent(Intent intent) {
-        {if(doLog) {Log.d(LOG_ID,"onNewIntent");};};
-        super.onNewIntent(intent);
-    handleIntent(intent);
-    }
-
-public static boolean hasnfc=false;
-
-private static boolean askNFC=true;
-
-private static    final int nfcflags=NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_NFC_A|NfcAdapter.FLAG_READER_NFC_B|NfcAdapter.FLAG_READER_NFC_F|NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK| NfcAdapter.FLAG_READER_NFC_BARCODE; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
-public void setnfc() {
-try {
-    if (HeadlessConfig.isHeadlessNfcEnabled()) {
-        {if(doLog) {Log.i(LOG_ID,"Headless NFC enabled: skip setnfc in MainActivity");};};
-        return;
-    }
-    if (mNfcAdapter == null) {
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-    }
-
-    if(mNfcAdapter == null) {
-        if(!isWearable) {
-         if(askNFC) {
-            {if(doLog) {Log.i(LOG_ID, "No NFC adapter found!");};};
-            Applic.argToaster(this, getResources().getString(R.string.error_nfc_device_not_supported), Toast.LENGTH_SHORT);
-            askNFC=false;
-            return;
+        {
+            if (doLog) {
+                Log.d(LOG_ID, "onNewIntent");
             }
+            ;
         }
-    } else {
-        if (!mNfcAdapter.isEnabled()) {
-        if(!isWearable) {
-        if(askNFC) {
-            Applic.argToaster(this, getResources().getString(R.string.error_nfc_disabled), Toast.LENGTH_LONG);
-            if(Natives.backuphostNr( )==0) {
-                try {
-                   startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
-                   }
-                   catch(Throwable th) {
-                       Log.stack(LOG_ID,"Settings.ACTION_NFC_SETTINGS",th);
-                       }
-                   }
-            askNFC=false;
-               }
-              }
+        ;
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
 
-        return;
-        } else {
-    
+    public static boolean hasnfc = false;
+
+    private static boolean askNFC = true;
+
+    private static final int nfcflags = NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_NFC_B | NfcAdapter.FLAG_READER_NFC_F | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK | NfcAdapter.FLAG_READER_NFC_BARCODE; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
+
+    public void setnfc() {
+        try {
+            if (mNfcAdapter == null) {
+                mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+            }
+
+            if (mNfcAdapter == null) {
+                if (!isWearable) {
+                    if (askNFC) {
+                        {
+                            if (doLog) {
+                                Log.i(LOG_ID, "No NFC adapter found!");
+                            }
+                            ;
+                        }
+                        ;
+                        Applic.argToaster(this, getResources().getString(R.string.error_nfc_device_not_supported), Toast.LENGTH_SHORT);
+                        askNFC = false;
+                        return;
+                    }
+                }
+            } else {
+                if (!mNfcAdapter.isEnabled()) {
+                    if (!isWearable) {
+                        if (askNFC) {
+                            Applic.argToaster(this, getResources().getString(R.string.error_nfc_disabled), Toast.LENGTH_LONG);
+                            if (Natives.backuphostNr() == 0) {
+                                try {
+                                    startActivity(new Intent(Settings.ACTION_NFC_SETTINGS));
+                                } catch (Throwable th) {
+                                    Log.stack(LOG_ID, "Settings.ACTION_NFC_SETTINGS", th);
+                                }
+                            }
+                            askNFC = false;
+                        }
+                    }
+
+                    return;
+                } else {
+
 //            mNfcAdapter.enableReaderMode(this, this,  NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS|NfcAdapter.FLAG_READER_NFC_V , null);
 
 //    int nosound=NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS;
 //    final int flags=NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS|NfcAdapter.FLAG_READER_NFC_V | NfcAdapter.FLAG_READER_NFC_A|NfcAdapter.FLAG_READER_NFC_B|NfcAdapter.FLAG_READER_NFC_F|NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK| NfcAdapter.FLAG_READER_NFC_BARCODE; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
-    final int flags=(Natives.nfcsound()?0:NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS)|nfcflags; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
-    Log.i(LOG_ID,"mNfcAdapter.enableReaderMode(this, this,"+ flags+", null)"); 
+                    final int flags = (Natives.nfcsound() ? 0 : NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS) | nfcflags; //=415. Activation of sensor was only possible if app not at the foreground, so I add some flags
+                    Log.i(LOG_ID, "mNfcAdapter.enableReaderMode(this, this," + flags + ", null)");
 //    final int flags=NfcAdapter.FLAG_READER_NFC_V ;
-        mNfcAdapter.enableReaderMode(this, this, flags, null); 
-        hasnfc=true;
-        }
+                    mNfcAdapter.enableReaderMode(this, this, flags, null);
+                    hasnfc = true;
+                }
 
+            }
+        } catch (Throwable error) {
+            String mess = error != null ? error.getMessage() : null;
+            if (mess == null) {
+                mess = "error";
+            }
+            Log.e(LOG_ID, "setnfc " + mess);
+        }
     }
-    } catch(Throwable error) {
-    String mess=error!=null?error.getMessage():null;
-    if(mess==null) {
-        mess="error";
-        }
-    Log.e(LOG_ID,"setnfc "+mess);
-        }
-}
 
-boolean active=false;
-/*
-static final class ShowMessage {
-    public String mess;
-    public boolean cancel;
-    };*/
-static Deque<String>  shownummessage=new ArrayDeque<>(); 
-static  String showmessage=null;
+    boolean active = false;
+    /*
+    static final class ShowMessage {
+        public String mess;
+        public boolean cancel;
+        };*/
+    static Deque<String> shownummessage = new ArrayDeque<>();
+    static String showmessage = null;
 
 
-static public int tryHealth=5;
-private static int resumenr=isRelease?10:2;
-static boolean tocalendarapp=false;
+    static public int tryHealth = 5;
+    private static int resumenr = isRelease ? 10 : 2;
+    static boolean tocalendarapp = false;
+
     @Override
     protected void onResume() {
-      {if(doLog) {Log.i(LOG_ID,"onResume");};};
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "onResume");
+            }
+            ;
+        }
+        ;
         super.onResume();
-        if(curve!=null) {
-            if(!curve.waitnfc) {
-                {if(doLog) {Log.d(LOG_ID,"onResume setnfc");};};
+        if (curve != null) {
+            if (!curve.waitnfc) {
+                {
+                    if (doLog) {
+                        Log.d(LOG_ID, "onResume setnfc");
+                    }
+                    ;
+                }
+                ;
                 setnfc();
-                } 
-            else
-                {if(doLog) {Log.d(LOG_ID,"onResume no setnfc");};};
-            }
-        }
-    @Override
-    protected void onStart() {
-      super.onStart();
-      {if(doLog) {Log.i(LOG_ID,"onStart");};};
-    if(Applic.stopprogram>0)
-        return;
-    if(!DiskSpace.check(this)) {
-        Log.e(LOG_ID,"Stop program");
-        Applic.stopprogram=1;
-        outofStorageSpace();
-        return;
-        }
-    if(!Applic.Nativesloaded)
-        return;
-     selectionSystemUI();
-    hidekeyboard(this);
-    active=true;
-    if(curve!=null) {
-        Natives.setpaused(curve);
-        curve.onResume();
-        }
-    if(openfile!=null) {
-        openfile.showchoice(this,true);
-        }
-    if(Natives.gethidefloatinJuggluco())
-        Floating.removeFloating();
-    boolean showsdialog=false;
-    for(var el:shownummessage) {
-        showindialog(el,false);
-         showsdialog=true;
-        }
-    shownummessage.clear();
-    final var mess=showmessage;
-    if(mess!=null) {
-        showindialog(mess,true);
-         showsdialog=true;
-        }
-    if(!isWearable) {
-       if(SiBionics==1)  {
-            if(tocalendarapp) {
-                final String name=Natives.getUsedSensorName();
-                if(name!=null) {
-                    ScanNfcV.calendar(this, 0, name);
-                    tocalendarapp=false;
-                    }
+            } else {
+                if (doLog) {
+                    Log.d(LOG_ID, "onResume no setnfc");
                 }
+                ;
             }
-        if(!showsdialog) {
-            if(tryHealth>0) {
-                if(Natives.gethealthConnect()&& Build.VERSION.SDK_INT >= 28) {
-                        --tryHealth;
-                        HealthConnection.Companion.init(this);
-                    } 
-                else
-                   tryHealth = 0;
-                }
-            }
-        var am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
-        List list;
-        if(am.isEnabled()&&am.isTouchExplorationEnabled()&&(list=am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_SPOKEN))!=null&&!list.isEmpty()) {
-                if(!DontTalk) {
-                    talkbackon(this);
-                    }
-                if(!Menus.on)
-                    Menus.show(this);
-            }
-        else {
-            if(!DontTalk) {
-                talkbackoff();
-                }
-            }
+            ;
         }
-
- //Notify.testnot(); 
     }
 
-long nexttime= 0L;
-
-synchronized void   startnfc(Tag tag) {
-    long nu=System.currentTimeMillis();
-    if(nu<nexttime)
-        return;
-    nexttime=nu+1000*5;
-
-        runOnUiThread( ()-> {
-        if (curve != null) {
-            curve.searchaway();
-            if(curve.numberview!=null) {
-            if(curve.numberview.datepicker!=null) 
-                curve.numberview.datepicker.setVisibility(GONE);
-            if(curve.numberview.timepicker!=null) 
-                curve.numberview.timepicker.setVisibility(GONE);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "onStart");
             }
+            ;
+        }
+        ;
+        if (Applic.stopprogram > 0)
+            return;
+        if (!DiskSpace.check(this)) {
+            Log.e(LOG_ID, "Stop program");
+            Applic.stopprogram = 1;
+            outofStorageSpace();
+            return;
+        }
+        if (!Applic.Nativesloaded)
+            return;
+        selectionSystemUI();
+        hidekeyboard(this);
+        active = true;
+        if (curve != null) {
+            Natives.setpaused(curve);
+            curve.onResume();
+        }
+        if (openfile != null) {
+            openfile.showchoice(this, true);
+        }
+        if (Natives.gethidefloatinJuggluco())
+            Floating.removeFloating();
+        boolean showsdialog = false;
+        for (var el : shownummessage) {
+            showindialog(el, false);
+            showsdialog = true;
+        }
+        shownummessage.clear();
+        final var mess = showmessage;
+        if (mess != null) {
+            showindialog(mess, true);
+            showsdialog = true;
+        }
+        if (!isWearable) {
+            if (SiBionics == 1) {
+                if (tocalendarapp) {
+                    final String name = Natives.getUsedSensorName();
+                    if (name != null) {
+                        ScanNfcV.calendar(this, 0, name);
+                        tocalendarapp = false;
+                    }
+                }
+            }
+            if (!showsdialog) {
+                if (tryHealth > 0) {
+                    if (Natives.gethealthConnect() && Build.VERSION.SDK_INT >= 28) {
+                        --tryHealth;
+                        HealthConnection.Companion.init(this);
+                    } else
+                        tryHealth = 0;
+                }
+            }
+            var am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
+            List list;
+            if (am.isEnabled() && am.isTouchExplorationEnabled() && (list = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_SPOKEN)) != null && !list.isEmpty()) {
+                if (!DontTalk) {
+                    talkbackon(this);
+                }
+                if (!Menus.on)
+                    Menus.show(this);
+            } else {
+                if (!DontTalk) {
+                    talkbackoff();
+                }
+            }
+        }
 
-        } }
+        //Notify.testnot();
+    }
+
+    long nexttime = 0L;
+
+    synchronized void startnfc(Tag tag) {
+        long nu = System.currentTimeMillis();
+        if (nu < nexttime)
+            return;
+        nexttime = nu + 1000 * 5;
+
+        runOnUiThread(() -> {
+                    if (curve != null) {
+                        curve.searchaway();
+                        if (curve.numberview != null) {
+                            if (curve.numberview.datepicker != null)
+                                curve.numberview.datepicker.setVisibility(GONE);
+                            if (curve.numberview.timepicker != null)
+                                curve.numberview.timepicker.setVisibility(GONE);
+                        }
+
+                    }
+                }
 
         );
-    var techs = tag.getTechList();
-    String all="onTagDiscovered: ";
+        var techs = tag.getTechList();
+        String all = "onTagDiscovered: ";
 
-    if(techs!=null) {
-        for(var  t:techs) {
-            all+=t;
-            all+=" ";
+        if (techs != null) {
+            for (var t : techs) {
+                all += t;
+                all += " ";
             }
-        {if(doLog) {Log.i(LOG_ID,all);};};
+            {
+                if (doLog) {
+                    Log.i(LOG_ID, all);
+                }
+                ;
+            }
+            ;
 
-        if(!isWearable) {
-            if(techs.length>0) {
-                switch(techs[0] ) {
-                    case "android.nfc.tech.IsoDep":
+            if (!isWearable) {
+                if (techs.length > 0) {
+                    switch (techs[0]) {
+                        case "android.nfc.tech.IsoDep":
                             showbytes("tag", tag.getId());
-                            tk.glucodata.NovoPen.Scan.onTag(this,tag);
+                            tk.glucodata.NovoPen.Scan.onTag(this, tag);
                             return;
                     }
                 }
             }
+        } else {
+            if (doLog) {
+                Log.i(LOG_ID, all);
+            }
+            ;
         }
-    else
-        {if(doLog) {Log.i(LOG_ID,all);};};
-    if(Thread.currentThread().equals( Looper.getMainLooper().getThread() )) {
-        new Thread(()->
-                ScanNfcV.scan(curve,tag)
+        ;
+        if (Thread.currentThread().equals(Looper.getMainLooper().getThread())) {
+            new Thread(() ->
+                    ScanNfcV.scan(curve, tag)
             ).start();
-        }
-    else
-        ScanNfcV.scan(curve,tag);
+        } else
+            ScanNfcV.scan(curve, tag);
     }
 
-private void outofStorageSpace() {
-    String message= "Not enough Storage Space!!";
-    Applic.argToaster(this,message,Toast.LENGTH_SHORT);
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setNegativeButton(R.string.ok, (dialog, id) -> { // User cancelled the dialog
-        finish();    
-    keeprunning.stop();
-    System.exit(7);
-    }).setTitle("Juggluco has to exit").setMessage(message).show().setCanceledOnTouchOutside(false);
-   
-   }
-private void makefilesfailed() {
-File files=getFilesDir();
-String filespath=files.getAbsolutePath();
-    String message= "Can't create directory:\n"+filespath+(files.isFile()?"\nA regular file with that name exists":"\nNot enough storage space?");
-    Applic.argToaster(this,message,Toast.LENGTH_SHORT);
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    Runnable end=()-> {
-        finish();    
-    keeprunning.stop();
-    System.exit(8);
-    };
-    var dialog=builder.setNegativeButton(R.string.ok, (dial, id) -> {
-    end.run();
-        // User cancelled the dialog
-    }).setTitle("Juggluco has to exit").setMessage(message).create();
-   dialog.setCanceledOnTouchOutside(false);
-   dialog.setOnShowListener(d->{
-       Log.e(LOG_ID,"setOnShowListener");
-    if(files.isDirectory()||files.mkdirs()) {
-       Log.e(LOG_ID,filespath+" accessable");
-       System.exit(8);
-        }
-           });
-    dialog.show();
-   
-   }
+    private void outofStorageSpace() {
+        String message = "Not enough Storage Space!!";
+        Applic.argToaster(this, message, Toast.LENGTH_SHORT);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setNegativeButton(R.string.ok, (dialog, id) -> { // User cancelled the dialog
+            finish();
+            keeprunning.stop();
+            System.exit(7);
+        }).setTitle("Juggluco has to exit").setMessage(message).show().setCanceledOnTouchOutside(false);
 
-void activateresult(boolean res) {
-    String message= "Activation "+(res?"successfull":"failed");
-    Applic.argToaster(this,message,Toast.LENGTH_SHORT);
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setNegativeButton(R.string.ok, (dialog, id) -> { // User cancelled the dialog
-    requestRender();
-    }).setTitle("  ").setMessage(message).show().setCanceledOnTouchOutside(false);
-}
+    }
+
+    private void makefilesfailed() {
+        File files = getFilesDir();
+        String filespath = files.getAbsolutePath();
+        String message = "Can't create directory:\n" + filespath + (files.isFile() ? "\nA regular file with that name exists" : "\nNot enough storage space?");
+        Applic.argToaster(this, message, Toast.LENGTH_SHORT);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Runnable end = () -> {
+            finish();
+            keeprunning.stop();
+            System.exit(8);
+        };
+        var dialog = builder.setNegativeButton(R.string.ok, (dial, id) -> {
+            end.run();
+            // User cancelled the dialog
+        }).setTitle("Juggluco has to exit").setMessage(message).create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnShowListener(d -> {
+            Log.e(LOG_ID, "setOnShowListener");
+            if (files.isDirectory() || files.mkdirs()) {
+                Log.e(LOG_ID, filespath + " accessable");
+                System.exit(8);
+            }
+        });
+        dialog.show();
+
+    }
+
+    void activateresult(boolean res) {
+        String message = "Activation " + (res ? "successfull" : "failed");
+        Applic.argToaster(this, message, Toast.LENGTH_SHORT);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setNegativeButton(R.string.ok, (dialog, id) -> { // User cancelled the dialog
+            requestRender();
+        }).setTitle("  ").setMessage(message).show().setCanceledOnTouchOutside(false);
+    }
 
     @Override
-    public  void onTagDiscovered(Tag tag) {
-    if (HeadlessConfig.isHeadlessNfcEnabled()) {
-        {if(doLog) {Log.i(LOG_ID,"Headless NFC enabled: skip onTagDiscovered in MainActivity");};};
-        return;
+    public void onTagDiscovered(Tag tag) {
+        startnfc(tag);
     }
-    startnfc(tag);
-    }
+
     @Override
     protected void onPause() {
-        {if(doLog) {Log.i(LOG_ID,"onPause");};};
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "onPause");
+            }
+            ;
+        }
+        ;
         if (mNfcAdapter != null) {
-           try {
-                    mNfcAdapter.disableReaderMode(this);
-            }
-           catch(Throwable error) {
-                String mess=error!=null?error.getMessage():null;
-                if(mess==null) {
-                    mess="error";
-                    }
-                Log.e(LOG_ID,"mNfcAdapter.disableReaderMode "+mess);
+            try {
+                mNfcAdapter.disableReaderMode(this);
+            } catch (Throwable error) {
+                String mess = error != null ? error.getMessage() : null;
+                if (mess == null) {
+                    mess = "error";
                 }
+                Log.e(LOG_ID, "mNfcAdapter.disableReaderMode " + mess);
             }
+        }
         super.onPause();
-        if(!Applic.Nativesloaded)
+        if (!Applic.Nativesloaded)
             return;
         Natives.wakeuploader();
-        if(!isWearable) {
+        if (!isWearable) {
             wakelibreview(20);
-            if(Natives.getlibrelinkused()) {
-                final var     starttime= Natives.laststarttime();
-                if(starttime!=0L) {
+            if (Natives.getlibrelinkused()) {
+                final var starttime = Natives.laststarttime();
+                if (starttime != 0L) {
                     XInfuus.sendSensorActivateBroadcast(app, Natives.lastsensorname(), starttime);
+                }
+            }
+        } else {
+            if (Natives.stopWifi()) {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "stopWifi");
                     }
+                    ;
                 }
-            }
-        else {
-            if(Natives.stopWifi()) {
-                {if(doLog) {Log.i(LOG_ID,"stopWifi");};};
+                ;
                 UseWifi.stopusewifi();
-                }
             }
-
         }
-@Override
-protected void onStop() {
-    {if(doLog) {Log.i(LOG_ID,"onStop");};};
-    super.onStop();
-    active=false;
-    if(!Applic.Nativesloaded)
-        return;
-    if(Natives.getfloatglucose( )&&Natives.gethidefloatinJuggluco())
-        Floating.makefloat();
-    Natives.setpaused(null);
-    if(curve != null)
-        curve.onPause();
+
     }
+
+    @Override
+    protected void onStop() {
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "onStop");
+            }
+            ;
+        }
+        ;
+        super.onStop();
+        active = false;
+        if (!Applic.Nativesloaded)
+            return;
+        if (Natives.getfloatglucose() && Natives.gethidefloatinJuggluco())
+            Floating.makefloat();
+        Natives.setpaused(null);
+        if (curve != null)
+            curve.onPause();
+    }
+
     @Override
     protected void onDestroy() {
-       {if(doLog) {Log.i(LOG_ID,"onDestroy()");};};
-       final var alert=shownglucosealert;
-       if(alert!=null) {
-            alert.dismiss();
-            shownglucosealert=null;
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "onDestroy()");
             }
-       thisone=null;
-       super.onDestroy();
+            ;
+        }
+        ;
+        final var alert = shownglucosealert;
+        if (alert != null) {
+            alert.dismiss();
+            shownglucosealert = null;
+        }
+        thisone = null;
+        super.onDestroy();
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        {if(doLog) {Log.d(LOG_ID,"onWindowFocusChanged(hasFocus="+hasFocus+")");};};
-//        if (hasFocus&&hideSystem) 
-        if (hasFocus) {
-        hideSystemUI();
-        requestRender();
+        {
+            if (doLog) {
+                Log.d(LOG_ID, "onWindowFocusChanged(hasFocus=" + hasFocus + ")");
             }
+            ;
+        }
+        ;
+//        if (hasFocus&&hideSystem)
+        if (hasFocus) {
+            hideSystemUI();
+            requestRender();
+        }
     }
 
-@UiThread
-@SuppressWarnings("deprecation")
-void setSystemUI(boolean val) {
-    try {
-    View decorView = getWindow().getDecorView();
-final    int hideuiflags = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_FULLSCREEN;
-    decorView.setSystemUiVisibility(val? 0 : hideuiflags);
-    
-    } catch(Throwable e) {
-        Log.stack(LOG_ID,"setSystemUI",e);
+    @UiThread
+    @SuppressWarnings("deprecation")
+    void setSystemUI(boolean val) {
+        try {
+            View decorView = getWindow().getDecorView();
+            final int hideuiflags = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(val ? 0 : hideuiflags);
+
+        } catch (Throwable e) {
+            Log.stack(LOG_ID, "setSystemUI", e);
         }
 
-}
+    }
 /*
 void switchSystemUI() {
     View decorView = getWindow().getDecorView();
     setSystemUI(decorView.getSystemUiVisibility()!=0);
 }*/
 
-public boolean showui=false;
-void selectionSystemUI() {
-    setSystemUI(showui||Natives.getsystemUI());
+    public boolean showui = false;
+
+    void selectionSystemUI() {
+        setSystemUI(showui || Natives.getsystemUI());
     }
-        // Enables regular immersive mode.
-        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
-        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-public   void  hideSystemUI() {
-    {if(doLog) {Log.d(LOG_ID,"hideSystemUI");};};
-    if(!(Natives.getsystemUI()||showui))
-        setSystemUI(false) ;
+
+    // Enables regular immersive mode.
+    // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+    // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    public void hideSystemUI() {
+        {
+            if (doLog) {
+                Log.d(LOG_ID, "hideSystemUI");
+            }
+            ;
+        }
+        ;
+        if (!(Natives.getsystemUI() || showui))
+            setSystemUI(false);
     }
-//    int: Bitwise-or of flags SYSTEM_UI_FLAG_LOW_PROFILE, SYSTEM_UI_FLAG_HIDE_NAVIGATION, SYSTEM_UI_FLAG_FULLSCREEN, SYSTEM_UI_FLAG_LAYOUT_STABLE, SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION, SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, SYSTEM_UI_FLAG_IMMERSIVE, and SYSTEM_UI_FLAG_IMMERSIVE_STICKY.
+
+    //    int: Bitwise-or of flags SYSTEM_UI_FLAG_LOW_PROFILE, SYSTEM_UI_FLAG_HIDE_NAVIGATION, SYSTEM_UI_FLAG_FULLSCREEN, SYSTEM_UI_FLAG_LAYOUT_STABLE, SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION, SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, SYSTEM_UI_FLAG_IMMERSIVE, and SYSTEM_UI_FLAG_IMMERSIVE_STICKY.
     // Shows the system bars by removing all the flags
 // except for the ones that make the content appear under the system bars.
-public     void showSystemUI() {
-    setSystemUI(true);
+    public void showSystemUI() {
+        setSystemUI(true);
     }
 
-/*private void openBluetoothSettings() {
-        Intent intent = new Intent();
-        intent.setAction("android.settings.BLUETOOTH_SETTINGS");
-        startActivity(intent);
-    }
-    */
-public static int screenwidth=0;
-public static int screenheight=0;
-public static void setsizes(Context context) {
-    DisplayMetrics metrics= context.getResources().getDisplayMetrics();
-    screenheight= metrics.heightPixels;
-    screenwidth= metrics.widthPixels;
-    }
-public static int getscreenheight(Context context) {
-    if(screenwidth==0) {
-        setsizes(context);
+    /*private void openBluetoothSettings() {
+            Intent intent = new Intent();
+            intent.setAction("android.settings.BLUETOOTH_SETTINGS");
+            startActivity(intent);
         }
-    return screenheight;
+        */
+    public static int screenwidth = 0;
+    public static int screenheight = 0;
+
+    public static void setsizes(Context context) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        screenheight = metrics.heightPixels;
+        screenwidth = metrics.widthPixels;
     }
-public static int getscreenwidth(Context context) {
-    if(screenwidth==0) {
-        setsizes(context);
+
+    public static int getscreenheight(Context context) {
+        if (screenwidth == 0) {
+            setsizes(context);
+        }
+        return screenheight;
+    }
+
+    public static int getscreenwidth(Context context) {
+        if (screenwidth == 0) {
+            setsizes(context);
 
         }
-    return screenwidth;
+        return screenwidth;
     }
-//static public ViewGroup settings=null;
-@Override
-public void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    {if(doLog) {Log.i(LOG_ID,"onConfigurationChanged height=" +newConfig.screenHeightDp+" width=" +newConfig.screenWidthDp + " sw="+newConfig.smallestScreenWidthDp);};};
 
-
-    screenwidth=0;
-    if(Applic.Nativesloaded)
-        if(app.needsnatives() ) {
-            if(curve!=null) {
-                while(doonback() )
-                    ;
-                curve.numberview.deleteviews();    
-                curve.searchspinner=null;
-                if(curve.search!=null) {
-                    removeContentView(curve.search);
-                    curve.search=null;
-                    }
-                if(curve.searchcontrol!=null) {
-                    removeContentView(curve.searchcontrol);
-                    curve.searchcontrol=null;
-                    }
+    //static public ViewGroup settings=null;
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "onConfigurationChanged height=" + newConfig.screenHeightDp + " width=" + newConfig.screenWidthDp + " sw=" + newConfig.smallestScreenWidthDp);
             }
+            ;
+        }
+        ;
+
+
+        screenwidth = 0;
+        if (Applic.Nativesloaded)
+            if (app.needsnatives()) {
+                if (curve != null) {
+                    while (doonback())
+                        ;
+                    curve.numberview.deleteviews();
+                    curve.searchspinner = null;
+                    if (curve.search != null) {
+                        removeContentView(curve.search);
+                        curve.search = null;
+                    }
+                    if (curve.searchcontrol != null) {
+                        removeContentView(curve.searchcontrol);
+                        curve.searchcontrol = null;
+                    }
+                }
             }
 
 
 //    if(settings!=null) settings.invalidate();
-}
-public void requestRender() {
-    if(curve!=null)
-        curve.requestRender();
     }
 
-private void netinitstep() {
-    if(!started) {
-        if (Build.VERSION.SDK_INT < 26||Build.VERSION.SDK_INT>30||hasNeedScan()) {
-            useBluetooth(Natives.getusebluetooth()&&finepermission());
-            }
-        else
-            useBluetooth(Natives.getusebluetooth());
-        started=true;
-        if(!isWearable) {
-            if(Natives.gethealthConnect()) {
-                 if(Build.VERSION.SDK_INT >= 28) {
-                    HealthConnection.Companion.init(this);
+    public void requestRender() {
+        if (curve != null)
+            curve.requestRender();
+    }
+
+    private void netinitstep() {
+        if (!started) {
+            if (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 30 || hasNeedScan()) {
+                useBluetooth(Natives.getusebluetooth() && finepermission());
+            } else
+                useBluetooth(Natives.getusebluetooth());
+            started = true;
+            if (!isWearable) {
+                if (Natives.gethealthConnect()) {
+                    if (Build.VERSION.SDK_INT >= 28) {
+                        HealthConnection.Companion.init(this);
                     }
                 }
             }
         }
     }
-private boolean gaverational=false;
+
+    private boolean gaverational = false;
 
 
-boolean finepermission() {
-    MainActivity act=this;
-    {if(doLog) {Log.i(LOG_ID,"finepermission");};};
-    if(Build.VERSION.SDK_INT >= 23) {
-        var noperm=Applic.hasPermissions( act, scanpermissions);
-        if(noperm.length==0) {
-           return systemlocation() ;
-           }
-RunOnUiThread(() -> {
-        for(var scanpermission:noperm) {
-            if(shouldShowRequestPermissionRationale(scanpermission)) {
-                gaverational=true;
-                help.help(Build.VERSION.SDK_INT>30?R.string.nearbypermission:R.string.locationpermission,act,l-> {
-                if(help.whelplayout!=null&&help.whelplayout.get()!=null) {
-                    removeContentView(help.whelplayout.get()); //setContentView makes view inaccessable
-                    help.whelplayout=null;
-                    }
-                requestPermissions(noperm, LOCATION_PERMISSION_REQUEST_CODE);
-                });
-                break;
-                }
-            else   {
-                requestPermissions( noperm, LOCATION_PERMISSION_REQUEST_CODE);
-                break;
-                }
+    boolean finepermission() {
+        MainActivity act = this;
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "finepermission");
             }
+            ;
+        }
+        ;
+        if (Build.VERSION.SDK_INT >= 23) {
+            var noperm = Applic.hasPermissions(act, scanpermissions);
+            if (noperm.length == 0) {
+                return systemlocation();
+            }
+            RunOnUiThread(() -> {
+                for (var scanpermission : noperm) {
+                    if (shouldShowRequestPermissionRationale(scanpermission)) {
+                        gaverational = true;
+                        help.help(Build.VERSION.SDK_INT > 30 ? R.string.nearbypermission : R.string.locationpermission, act, l -> {
+                            if (help.whelplayout != null && help.whelplayout.get() != null) {
+                                removeContentView(help.whelplayout.get()); //setContentView makes view inaccessable
+                                help.whelplayout = null;
+                            }
+                            requestPermissions(noperm, LOCATION_PERMISSION_REQUEST_CODE);
+                        });
+                        break;
+                    } else {
+                        requestPermissions(noperm, LOCATION_PERMISSION_REQUEST_CODE);
+                        break;
+                    }
+                }
             });
 
-        return false;
-        }
-    else
-        return true;
+            return false;
+        } else
+            return true;
     }
-/*
-public static final String[] flashpermissions={ Manifest.permission.CAMERA};
-          
-public int flashpermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-        var noperm=Applic.hasPermissions( this, flashpermissions);
-        if(noperm.length==0) {
-                useflash(true);
-            return 1;
-            }
-        for(var flashperm:noperm) {
-            if(shouldShowRequestPermissionRationale(flashperm)) {
-                help.help(R.string.flashpermission,this,l-> {
-                if(help.whelplayout!=null&&help.whelplayout.get()!=null) {
-                    removeContentView(help.whelplayout.get()); //setContentView makes view inaccessable
-                    help.whelplayout=null;
+
+
+    static public final int SENSOR_PERMISSION_REQUEST_CODE = 0x23457;
+    static final int FLASH_PERMISSION_REQUEST_CODE = 0x11224;
+
+    static final int LOCATION_PERMISSION_REQUEST_CODE = 0x942365;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 0x8878;
+
+    //private final int STORAGE_PERMISSION_REQUEST_CODE=0x445533;
+    private void hasLocationContinue() {
+        if (Natives.getusebluetooth()) {
+            if (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 30 || hasNeedScan())
+                useBluetooth(true);
+            else
+                SensorBluetooth.goscan();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        var granted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        switch (requestCode) {
+            case NOTIFICATION_PERMISSION_REQUEST_CODE: {
+                if (granted) {
+                    {
+                        if (doLog) {
+                            Log.i(LOG_ID, "Required Notification permission");
+                        }
+                        ;
                     }
-                    requestPermissions(noperm, FLASH_PERMISSION_REQUEST_CODE);
-                    });
-                return 0 ;
+                    ;
+                    keeprunning.start(this);
+                } else {
+                    {
+                        if (doLog) {
+                            Log.i(LOG_ID, "Required NO Notification permission");
+                        }
+                        ;
+                    }
+                    ;
                 }
-            else   {
-                requestPermissions( noperm, FLASH_PERMISSION_REQUEST_CODE);
-                return 0 ;
-                }
+
+                explicit(this);
             }
-       return 1;
-        }
-    else  {
-              useflash(true);
-            return 1;
-            }
-    }
-    */
-
-static public final int SENSOR_PERMISSION_REQUEST_CODE=0x23457;
-static final int FLASH_PERMISSION_REQUEST_CODE=0x11224;
-
-static final int LOCATION_PERMISSION_REQUEST_CODE=0x942365;
-private static final int NOTIFICATION_PERMISSION_REQUEST_CODE=0x8878;
-
-//private final int STORAGE_PERMISSION_REQUEST_CODE=0x445533;
-private void hasLocationContinue() {
-      if(Natives.getusebluetooth())  {
-         if(Build.VERSION.SDK_INT <26||Build.VERSION.SDK_INT>30 ||hasNeedScan()) 
-            useBluetooth(true);
-         else
-             SensorBluetooth.goscan();
-         }
-   }
-@Override
-public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    var granted=grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-    switch (requestCode) {
-         case NOTIFICATION_PERMISSION_REQUEST_CODE: {
-            if (granted) {
-                {if(doLog) {Log.i(LOG_ID,"Required Notification permission");};};
-                keeprunning.start(this);
-                }
-            else {
-                {if(doLog) {Log.i(LOG_ID,"Required NO Notification permission");};};
-                }
-
-            explicit(this);    
-             };break;
+            ;
+            break;
 /*
             case FLASH_PERMISSION_REQUEST_CODE: {
             {if(doLog) {Log.i(LOG_ID,"FLASH_PERMISSION_REQUEST_CODE");};};
@@ -1022,104 +1190,118 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions, in
                 useflash(false);
                 }
             } return; */
-        case LOCATION_PERMISSION_REQUEST_CODE:
-            {if(doLog) {Log.i(LOG_ID,"onRequestPermissionsResult(LOCATION_PERMISSION_REQUEST_CODE "+granted);};};
-            if(granted) {
-                if(systemlocation())
-                   hasLocationContinue();
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (doLog) {
+                    Log.i(LOG_ID, "onRequestPermissionsResult(LOCATION_PERMISSION_REQUEST_CODE " + granted);
+                }
+                ;
+            }
+            ;
+            if (granted) {
+                if (systemlocation())
+                    hasLocationContinue();
             } else {
-                {if(doLog) {Log.i(LOG_ID,"denied");};};
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "denied");
+                    }
+                    ;
+                }
+                ;
                 //setbluetoothmain(false);
-                Applic.argToaster(this,"No permission. Sensor via Bluetooth turned off", Toast.LENGTH_LONG);
+                Applic.argToaster(this, "No permission. Sensor via Bluetooth turned off", Toast.LENGTH_LONG);
 
-                if(!gaverational) {
-                    bluediag.returntoblue=false;
-                    if(Build.VERSION.SDK_INT>30) {
+                if (!gaverational) {
+                    bluediag.returntoblue = false;
+                    if (Build.VERSION.SDK_INT > 30) {
                         help.basehelp(R.string.nearbypermission,
-                            this, l -> {
-                                useBluetooth(false);
-                            });
-                          }
-                     else {
-                        if(Build.VERSION.SDK_INT <26 ||hasNeedScan() )  {
+                                this, l -> {
+                                    useBluetooth(false);
+                                });
+                    } else {
+                        if (Build.VERSION.SDK_INT < 26 || hasNeedScan()) {
                             help.basehelp(R.string.locationpermission,
                                     this, l -> {
                                         useBluetooth(false);
                                     });
-                            }
-                        else {
-                                help.help(R.string.locationpermission, this);
-                           }
-                    }
+                        } else {
+                            help.help(R.string.locationpermission, this);
+                        }
                     }
                 }
-            if(bluediag.returntoblue) {
-                bluediag.returntoblue=false;
+            }
+            if (bluediag.returntoblue) {
+                bluediag.returntoblue = false;
                 bluediag.start(this);
-                }
+            }
             return;
+        }
+        // Other 'case' lines to check for other
+        // permissions this app might request.
     }
-    // Other 'case' lines to check for other
-    // permissions this app might request.
-}
 
 
-static final String[] keys={"privkey.pem","fullchain.pem"};
-public static final int PRIVATE_REQUEST=0x80;
-public static final int CHAIN_REQUEST=0x81;
-private static  final int REQUEST_NOTIFICATION=0x50;
-static  final int REQUEST_BARCODE=0x10;
-static  final int REQUEST_BARCODE_SIB2=0x11;
-public static final int REQUEST_EXPORT=0x70;
-//public static final int REQUEST_EXPORT=0x54e806d0;
-public static final int REQUEST_RINGTONE=0x60;
-public static final int REQUEST_LIB=0x200;
-public static final int REQUEST_MASK=0xFFFFFF00;
-public static final int IGNORE_BATTERY_OPTIMIZATION_SETTINGS=0x100;
-static final int OVERLAY_PERMISSION_REQUEST_CODE=0x40;
-public static final int REQUEST_SAVE_LOG=0x300;
-public static final int REQUEST_SAVE_LOGCAT=0x301;
-//static final private int REQUEST_CHECK_SETTINGS=0x20;
+    static final String[] keys = {"privkey.pem", "fullchain.pem"};
+    public static final int PRIVATE_REQUEST = 0x80;
+    public static final int CHAIN_REQUEST = 0x81;
+    private static final int REQUEST_NOTIFICATION = 0x50;
+    static final int REQUEST_BARCODE = 0x10;
+    static final int REQUEST_BARCODE_SIB2 = 0x11;
+    public static final int REQUEST_EXPORT = 0x70;
+    //public static final int REQUEST_EXPORT=0x54e806d0;
+    public static final int REQUEST_RINGTONE = 0x60;
+    public static final int REQUEST_LIB = 0x200;
+    public static final int REQUEST_MASK = 0xFFFFFF00;
+    public static final int IGNORE_BATTERY_OPTIMIZATION_SETTINGS = 0x100;
+    static final int OVERLAY_PERMISSION_REQUEST_CODE = 0x40;
+    public static final int REQUEST_SAVE_LOG = 0x300;
+    public static final int REQUEST_SAVE_LOGCAT = 0x301;
+    //static final private int REQUEST_CHECK_SETTINGS=0x20;
 //public static final int REQUEST_IGNORE_BATTERY_OPTIMIZATIONS=0x300;
-Openfile openfile=null;
+    Openfile openfile = null;
 
-private void    savekey(FileInputStream input,String outkeystr) {
-    File outkey=new File(getFilesDir(),outkeystr);
-    byte[] buf=new byte[2*4096];
-    int total=0;
-    try(FileOutputStream out = new FileOutputStream(outkey)) {
-        while(true) {
-            int res=input.read(buf);
-            if(res<=0) {
-                 out.flush(); //TODO: remove
-                 out.getFD().sync(); //TODO: remove
+    private void savekey(FileInputStream input, String outkeystr) {
+        File outkey = new File(getFilesDir(), outkeystr);
+        byte[] buf = new byte[2 * 4096];
+        int total = 0;
+        try (FileOutputStream out = new FileOutputStream(outkey)) {
+            while (true) {
+                int res = input.read(buf);
+                if (res <= 0) {
+                    out.flush(); //TODO: remove
+                    out.getFD().sync(); //TODO: remove
 
-                return;
+                    return;
                 }
-            total+=res;
-            out.write(buf,0,res);
+                total += res;
+                out.write(buf, 0, res);
             }
-          }
-    catch(Throwable th) {
-        Log.stack(LOG_ID,"savekey "+outkeystr,th);
-        }
-    finally {
-        try {
-            input.close();
-            {if(doLog) {Log.i(LOG_ID, "wrote " + total + " to " + outkeystr);};};
-            if (total < 50) {
-                outkey.delete();
+        } catch (Throwable th) {
+            Log.stack(LOG_ID, "savekey " + outkeystr, th);
+        } finally {
+            try {
+                input.close();
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "wrote " + total + " to " + outkeystr);
+                    }
+                    ;
+                }
+                ;
+                if (total < 50) {
+                    outkey.delete();
+                }
+            } catch (Throwable th) {
+                Log.stack(LOG_ID, "savekey finally " + outkeystr, th);
             }
-        } catch(Throwable th) {
-                Log.stack(LOG_ID,"savekey finally "+outkeystr,th);
-        }
         }
     }
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    Log.format("Main.onActivityResult %x\n",requestCode);
-    switch(requestCode) {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.format("Main.onActivityResult %x\n", requestCode);
+        switch (requestCode) {
    /*
          case REQUEST_CHECK_SETTINGS:
              switch (resultCode) {
@@ -1135,358 +1317,514 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                      break;
                  default: break;
              }; break; */
-        case OVERLAY_PERMISSION_REQUEST_CODE: {
-            {if(doLog) {Log.i(LOG_ID, "OVERLAY_PERMISSION_REQUEST_CODE ");};};
-            if(Floating.cannotoverlay()  ) {
-                shoulduseadb(this);
-                return ;
-                }
-            setfloatglucose(this, true);
-            };break;
-        case REQUEST_NOTIFICATION: {
-            Log.i(LOG_ID,"Notification");    
-            Natives.setaskedNotify(true);
-            };break;
-        case IGNORE_BATTERY_OPTIMIZATION_SETTINGS: {
-        if(!isWearable) {
-            Battery.batteryscreen(this,null);
-            }
-            } ; return;
-        case REQUEST_LIB: {
-            if (resultCode == Activity.RESULT_OK&&openfile!=null) 
-                openfile.getlib(data,this);
-        }; return;
-       case PRIVATE_REQUEST:
-        case CHAIN_REQUEST:
-         if(!isWearable) {
-            if (resultCode == Activity.RESULT_OK) {
-               Uri uri; 
-               if(data==null||(uri= data.getData()) == null) { 
-                  //TODO error
-                  return;
-                  }
-               try(var filedescr= getContentResolver().openFileDescriptor(uri, "r")){
-                  var input=new FileInputStream(filedescr.getFileDescriptor());
-                  savekey(input,keys[requestCode&~PRIVATE_REQUEST]);
-                  }
-                catch(Throwable th) {
-                  Log.stack(LOG_ID,"openFileDescriptor",th);
-                  }
-               };
-            }
-         return;
-      case REQUEST_BARCODE_SIB2: 
-      case REQUEST_BARCODE: 
-         if(SiBionics==1 &&!isWearable&&useZXing) {
-           ZXing.zXingResult(resultCode, data,this,requestCode);
-           return;
-           };break;
-    case REQUEST_SAVE_LOGCAT: 
-    case REQUEST_SAVE_LOG: {
-            if(resultCode == Activity.RESULT_OK) {
-               Uri uri; 
-               if(data==null||(uri= data.getData()) == null) { 
-                  //TODO error
-                  return;
-                  }
-               int fd=-1;
-               try(ParcelFileDescriptor  filedescr= getContentResolver().openFileDescriptor(uri, "w")){
-                    if (filedescr != null)
-                         fd = filedescr.detachFd();
-                    } catch(Throwable e) {
-                        Log.stack(LOG_ID, e);
-                        return;
+            case OVERLAY_PERMISSION_REQUEST_CODE: {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "OVERLAY_PERMISSION_REQUEST_CODE ");
                     }
-               if(requestCode==REQUEST_SAVE_LOG)
-                   Natives.saveLog(fd);
-                else
-                   Natives.saveLogcat(fd);
-               }
-        };break;
-
-    };
-    if(!isWearable) {
-        if ((requestCode & (REQUEST_MASK | REQUEST_EXPORT)) == REQUEST_EXPORT) {
-            try {
+                    ;
+                }
+                ;
+                if (Floating.cannotoverlay()) {
+                    shoulduseadb(this);
+                    return;
+                }
+                setfloatglucose(this, true);
+            }
+            ;
+            break;
+            case REQUEST_NOTIFICATION: {
+                Log.i(LOG_ID, "Notification");
+                Natives.setaskedNotify(true);
+            }
+            ;
+            break;
+            case IGNORE_BATTERY_OPTIMIZATION_SETTINGS: {
+                if (!isWearable) {
+                    Battery.batteryscreen(this, null);
+                }
+            }
+            ;
+            return;
+            case REQUEST_LIB: {
+                if (resultCode == Activity.RESULT_OK && openfile != null)
+                    openfile.getlib(data, this);
+            }
+            ;
+            return;
+            case PRIVATE_REQUEST:
+            case CHAIN_REQUEST:
+                if (!isWearable) {
+                    if (resultCode == Activity.RESULT_OK) {
+                        Uri uri;
+                        if (data == null || (uri = data.getData()) == null) {
+                            //TODO error
+                            return;
+                        }
+                        try (var filedescr = getContentResolver().openFileDescriptor(uri, "r")) {
+                            var input = new FileInputStream(filedescr.getFileDescriptor());
+                            savekey(input, keys[requestCode & ~PRIVATE_REQUEST]);
+                        } catch (Throwable th) {
+                            Log.stack(LOG_ID, "openFileDescriptor", th);
+                        }
+                    }
+                    ;
+                }
+                return;
+            case REQUEST_BARCODE_SIB2:
+            case REQUEST_BARCODE:
+                if (SiBionics == 1 && !isWearable && useZXing) {
+                    ZXing.zXingResult(resultCode, data, this, requestCode);
+                    return;
+                }
+                ;
+                break;
+            case REQUEST_SAVE_LOGCAT:
+            case REQUEST_SAVE_LOG: {
                 if (resultCode == Activity.RESULT_OK) {
-                    int type = requestCode & 0xF;
                     Uri uri;
                     if (data == null || (uri = data.getData()) == null) {
-                        curve.dialogs.exportlabel.setText(R.string.nodata);
+                        //TODO error
                         return;
                     }
                     int fd = -1;
-                    try(ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "w")) {
-                        if (parcelFileDescriptor != null)
-                            fd = parcelFileDescriptor.detachFd();
-                        else {
-                            curve.dialogs.exportlabel.setText("Can't save: parcelFileDescriptor == null");
-                            return;
-                        }
-
-                    } catch (IOException e) {
-
+                    try (ParcelFileDescriptor filedescr = getContentResolver().openFileDescriptor(uri, "w")) {
+                        if (filedescr != null)
+                            fd = filedescr.detachFd();
+                    } catch (Throwable e) {
                         Log.stack(LOG_ID, e);
-                        curve.dialogs.exportlabel.setText(R.string.failedbyexception);
                         return;
                     }
-                    if (Natives.exportdata(type, fd,Dialogs.showdays)) {
-                        curve.dialogs.exportlabel.setText(R.string.saved);
-                    } else {
-                        curve.dialogs.exportlabel.setText(R.string.savefailed);
-                    }
-                } else {
-
-                    curve.dialogs.exportlabel.setText(R.string.notsaved);
+                    if (requestCode == REQUEST_SAVE_LOG)
+                        Natives.saveLog(fd);
+                    else
+                        Natives.saveLogcat(fd);
                 }
-
-            } catch (Throwable th) {
-                Log.stack(LOG_ID, "onActivityResult", th);
             }
-            hidekeyboard(this);
-            return;
+            ;
+            break;
+
         }
-    }
-        if ((requestCode & (REQUEST_MASK|REQUEST_RINGTONE)) == REQUEST_RINGTONE) {
+        ;
+        if (!isWearable) {
+            if ((requestCode & (REQUEST_MASK | REQUEST_EXPORT)) == REQUEST_EXPORT) {
+                try {
+                    if (resultCode == Activity.RESULT_OK) {
+                        int type = requestCode & 0xF;
+                        Uri uri;
+                        if (data == null || (uri = data.getData()) == null) {
+                            curve.dialogs.exportlabel.setText(R.string.nodata);
+                            return;
+                        }
+                        int fd = -1;
+                        try (ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "w")) {
+                            if (parcelFileDescriptor != null)
+                                fd = parcelFileDescriptor.detachFd();
+                            else {
+                                curve.dialogs.exportlabel.setText("Can't save: parcelFileDescriptor == null");
+                                return;
+                            }
+
+                        } catch (IOException e) {
+
+                            Log.stack(LOG_ID, e);
+                            curve.dialogs.exportlabel.setText(R.string.failedbyexception);
+                            return;
+                        }
+                        if (Natives.exportdata(type, fd, Dialogs.showdays)) {
+                            curve.dialogs.exportlabel.setText(R.string.saved);
+                        } else {
+                            curve.dialogs.exportlabel.setText(R.string.savefailed);
+                        }
+                    } else {
+
+                        curve.dialogs.exportlabel.setText(R.string.notsaved);
+                    }
+
+                } catch (Throwable th) {
+                    Log.stack(LOG_ID, "onActivityResult", th);
+                }
+                hidekeyboard(this);
+                return;
+            }
+        }
+        if ((requestCode & (REQUEST_MASK | REQUEST_RINGTONE)) == REQUEST_RINGTONE) {
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                    if(uri==null) {
-                            {if(doLog) {Log.i(LOG_ID,"getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)==null");};};
+                    if (uri == null) {
+                        {
+                            if (doLog) {
+                                Log.i(LOG_ID, "getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)==null");
+                            }
+                            ;
                         }
-                    else {
+                        ;
+                    } else {
                         String uristr = uri.toString();
                         if (uristr != null) {
                             int kind = requestCode & 0xF;
                             tk.glucodata.RingTones.setring(kind, uristr);
                         }
-                        }
-                } catch(Throwable e) {
-                        Log.stack(LOG_ID,e);
+                    }
+                } catch (Throwable e) {
+                    Log.stack(LOG_ID, e);
                 }
-               }
             }
+        }
     }
 
-@Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-    {if(doLog) {Log.v(LOG_ID,"OnKeyDown");};};
-  if(isWearable) {
-    if(!backinapp()) moveTaskToBack(true);
-    return true;
-    }    
-    else {
-        if(keyCode== KeyEvent.KEYCODE_CAMERA) {
-            {if(doLog) {Log.i(LOG_ID,"keyCode== KeyEvent.KEYCODE_CAMERA)");};};
-
-            final int camkey=Natives.camerakey();
-            switch(camkey) {
-                case 0: Natives.setcamerakey(2);break;
-                case 1: {
-                    curve.render.badscan=8;
-                    curve.requestRender();
-                       {if(doLog) {Log.v(LOG_ID, "Camara");};};
-                     }; return true;
-                default:break;
+        {
+            if (doLog) {
+                Log.v(LOG_ID, "OnKeyDown");
             }
-             }
+            ;
+        }
+        ;
+        if (isWearable) {
+            if (!backinapp()) moveTaskToBack(true);
+            return true;
+        } else {
+            if (keyCode == KeyEvent.KEYCODE_CAMERA) {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "keyCode== KeyEvent.KEYCODE_CAMERA)");
+                    }
+                    ;
+                }
+                ;
+
+                final int camkey = Natives.camerakey();
+                switch (camkey) {
+                    case 0:
+                        Natives.setcamerakey(2);
+                        break;
+                    case 1: {
+                        curve.render.badscan = 8;
+                        curve.requestRender();
+                        {
+                            if (doLog) {
+                                Log.v(LOG_ID, "Camara");
+                            }
+                            ;
+                        }
+                        ;
+                    }
+                    ;
+                    return true;
+                    default:
+                        break;
+                }
+            }
         }
         return super.onKeyDown(keyCode, event);
 
     }
-    
-@Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        {if(doLog) {Log.v(LOG_ID,"OnLongKeyPress");};};
-    if(keyCode== KeyEvent.KEYCODE_CAMERA) {
-        final int camkey=Natives.camerakey();
-        switch(camkey) {
-            case 0: Natives.setcamerakey(2);break;
-            case 1: {
-                curve.render.badscan=8;
-                curve.requestRender();
-                {if(doLog) {Log.v(LOG_ID, "Camara");};};
-            }; return true;
-            default:break;
-        }
-    }
-    return super.onKeyLongPress(keyCode,event);
-        }
-
-public NumberView getnumberview() {
-    return curve.numberview;
-    }
-
-final static private Deque<Runnable> backrun = new ArrayDeque<>();
-static public int onbacknr() {
-        return backrun.size();
-        }
-static public void setonback(Runnable run) {
-    {if(doLog) {Log.i(LOG_ID,"setonback");};};
-    backrun.addFirst(run);
-    }
-static public boolean doonback() {
-    {if(doLog) {Log.i(LOG_ID,"doonback");};};
-    if(!backrun.isEmpty()) {
-        Runnable wasback=backrun.removeFirst();
-        wasback.run();
-        return true;
-        }
-    return false;
-    }
-static public void poponback() {
-    if(!backrun.isEmpty()) 
-        backrun.removeFirst();
-    }
-static public void clearonback() {
-    backrun.clear();
-    }
-boolean backinapp()  {
-    {if(doLog) {Log.d(LOG_ID,"backinapp");};};
-    if(curve!=null&&(curve.render.stepresult & STEPBACK) == STEPBACK) {
-         {if(doLog) {Log.d(LOG_ID,"backinapp natives");};};
-         Natives.pressedback();
-         curve.render.stepresult = 0;
-         curve.render.badscan=0;
-         hideSystemUI();
-         if(Menus.on)
-            Menus.show(this);
-         else
-            curve.requestRender(); 
-         return true;
-        } 
-     else {
-       {if(doLog) {Log.d(LOG_ID,"backinapp doonback");};};
-        return doonback();
-        }
-       }
 
     @Override
-    public    void onBackPressed()   {
-        {if(doLog) {Log.d(LOG_ID, "onBackPressed");};};
-        if(!backinapp())  {
-            {if(doLog) {Log.d(LOG_ID, "moveTaskToBack");};};
-    //        moveTaskToBack(true);
-            super.onBackPressed();
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        {
+            if (doLog) {
+                Log.v(LOG_ID, "OnLongKeyPress");
             }
-    }
-void tonotaccesssettings() {
-    {if(doLog) {Log.i(LOG_ID,"tonotaccesssettings()");};};
-    try {
-        Intent intent = new Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-        startActivityForResult(intent, REQUEST_NOTIFICATION);
+            ;
         }
-    catch(Throwable th) {
-        Log.stack(LOG_ID,"ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)",th);
-
-        }
-}
-    public void asknotificationAccess() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        try {
-             var context = this;
-          NotificationManager n = (NotificationManager) context.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-          if(n != null && !n.isNotificationPolicyAccessGranted()) {
-            if(isWearable)
-                tonotaccesssettings();
-            else {
-                {if(doLog) {Log.i(LOG_ID,"disturbe");};};
-                help.basehelp(R.string.disturbhelp, this, l ->  tonotaccesssettings());
+        ;
+        if (keyCode == KeyEvent.KEYCODE_CAMERA) {
+            final int camkey = Natives.camerakey();
+            switch (camkey) {
+                case 0:
+                    Natives.setcamerakey(2);
+                    break;
+                case 1: {
+                    curve.render.badscan = 8;
+                    curve.requestRender();
+                    {
+                        if (doLog) {
+                            Log.v(LOG_ID, "Camara");
+                        }
+                        ;
+                    }
+                    ;
                 }
-            return;
+                ;
+                return true;
+                default:
+                    break;
             }
-        else {
-            {if(doLog) {Log.i(LOG_ID,"don't ask disturbe");};};
-            Natives.setaskedNotify(true);
+        }
+        return super.onKeyLongPress(keyCode, event);
+    }
+
+    public NumberView getnumberview() {
+        return curve.numberview;
+    }
+
+    final static private Deque<Runnable> backrun = new ArrayDeque<>();
+
+    static public int onbacknr() {
+        return backrun.size();
+    }
+
+    static public void setonback(Runnable run) {
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "setonback");
             }
-        } catch (Throwable th) {
-        Log.stack("ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS", th);
+            ;
         }
-        }
+        ;
+        backrun.addFirst(run);
     }
-AlertDialog shownglucosealert=null;
-void  cancelglucosedialog() {
-    showmessage=null;
-    if(shownglucosealert!=null) {
-        shownglucosealert.dismiss();
-        shownglucosealert=null;
+
+    static public boolean doonback() {
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "doonback");
+            }
+            ;
         }
+        ;
+        if (!backrun.isEmpty()) {
+            Runnable wasback = backrun.removeFirst();
+            wasback.run();
+            return true;
+        }
+        return false;
     }
-void replaceDialogMessage(String message) {
-    if(shownglucosealert!=null) {
-        showmessage=null;
-        shownglucosealert.setMessage(message);
+
+    static public void poponback() {
+        if (!backrun.isEmpty())
+            backrun.removeFirst();
+    }
+
+    static public void clearonback() {
+        backrun.clear();
+    }
+
+    boolean backinapp() {
+        {
+            if (doLog) {
+                Log.d(LOG_ID, "backinapp");
+            }
+            ;
+        }
+        ;
+        if (curve != null && (curve.render.stepresult & STEPBACK) == STEPBACK) {
+            {
+                if (doLog) {
+                    Log.d(LOG_ID, "backinapp natives");
+                }
+                ;
+            }
+            ;
+            Natives.pressedback();
+            curve.render.stepresult = 0;
+            curve.render.badscan = 0;
+            hideSystemUI();
+            if (Menus.on)
+                Menus.show(this);
+            else
+                curve.requestRender();
+            return true;
+        } else {
+            {
+                if (doLog) {
+                    Log.d(LOG_ID, "backinapp doonback");
+                }
+                ;
+            }
+            ;
+            return doonback();
         }
     }
 
-void showindialog(String message,boolean cancel) {
-    {if(doLog) {Log.i(LOG_ID,"showindialog "+message);};};
-    var cont=this;
-    if(cancel) {
-        cancelglucosedialog();
+    @Override
+    public void onBackPressed() {
+        {
+            if (doLog) {
+                Log.d(LOG_ID, "onBackPressed");
+            }
+            ;
         }
-    final AlertDialog.Builder builder = new AlertDialog.Builder(cont);
-    final var dialog=builder.setNegativeButton(R.string.cancel, (dia, id) -> {
-        if(cancel) {
-            shownglucosealert=null;
+        ;
+        if (!backinapp()) {
+            {
+                if (doLog) {
+                    Log.d(LOG_ID, "moveTaskToBack");
+                }
+                ;
             }
-        Notify.stopalarmnotsend(false);
-        if(!isWearable) {
-            Applic.app.numdata.stopalarm();
+            ;
+            //        moveTaskToBack(true);
+            super.onBackPressed();
+        }
+    }
+
+    void tonotaccesssettings() {
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "tonotaccesssettings()");
             }
-        }).setTitle("  ").setMessage(message).create();;
-       dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnShowListener(a ->  {
+            ;
+        }
+        ;
+        try {
+            Intent intent = new Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivityForResult(intent, REQUEST_NOTIFICATION);
+        } catch (Throwable th) {
+            Log.stack(LOG_ID, "ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)", th);
+
+        }
+    }
+
+    public void asknotificationAccess() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                var context = this;
+                NotificationManager n = (NotificationManager) context.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                if (n != null && !n.isNotificationPolicyAccessGranted()) {
+                    if (isWearable)
+                        tonotaccesssettings();
+                    else {
+                        {
+                            if (doLog) {
+                                Log.i(LOG_ID, "disturbe");
+                            }
+                            ;
+                        }
+                        ;
+                        help.basehelp(R.string.disturbhelp, this, l -> tonotaccesssettings());
+                    }
+                    return;
+                } else {
+                    {
+                        if (doLog) {
+                            Log.i(LOG_ID, "don't ask disturbe");
+                        }
+                        ;
+                    }
+                    ;
+                    Natives.setaskedNotify(true);
+                }
+            } catch (Throwable th) {
+                Log.stack("ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS", th);
+            }
+        }
+    }
+
+    AlertDialog shownglucosealert = null;
+
+    void cancelglucosedialog() {
+        showmessage = null;
+        if (shownglucosealert != null) {
+            shownglucosealert.dismiss();
+            shownglucosealert = null;
+        }
+    }
+
+    void replaceDialogMessage(String message) {
+        if (shownglucosealert != null) {
+            showmessage = null;
+            shownglucosealert.setMessage(message);
+        }
+    }
+
+    void showindialog(String message, boolean cancel) {
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "showindialog " + message);
+            }
+            ;
+        }
+        ;
+        var cont = this;
+        if (cancel) {
+            cancelglucosedialog();
+        }
+        final AlertDialog.Builder builder = new AlertDialog.Builder(cont);
+        final var dialog = builder.setNegativeButton(R.string.cancel, (dia, id) -> {
+            if (cancel) {
+                shownglucosealert = null;
+            }
+            Notify.stopalarmnotsend(false);
+            if (!isWearable) {
+                Applic.app.numdata.stopalarm();
+            }
+        }).setTitle("  ").setMessage(message).create();
+        ;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnShowListener(a -> {
 //            final var colres= android.R.color.holo_red_light;
-            final var colres= android.R.color.holo_orange_light;
+                    final var colres = android.R.color.holo_orange_light;
 //            final var colres= android.R.color.holo_blue_bright;
 //            final var colres= android.R.color.holo_blue_light; //Very infrequently button not shown. Maybe this helps.
-        final var col=
-           (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)?getResources().getColor(colres, getTheme()):
-                getResources().getColor(colres);
-         var negbut=dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-        negbut.setTextColor(col);
+                    final var col =
+                            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ? getResources().getColor(colres, getTheme()) :
+                                    getResources().getColor(colres);
+                    var negbut = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    negbut.setTextColor(col);
 //        negbut.setAllCaps(false);
 //        var dens=GlucoseCurve.getDensity();
 //        negbut.setPadding((int)(dens*10),0,0,0);
-        }    
-            );
+                }
+        );
 
-    dialog.show();
+        dialog.show();
 
-    if(cancel) shownglucosealert=dialog;
+        if (cancel) shownglucosealert = dialog;
     }
 
-call fineres=null;
-public void setfineres(call proc) {
-    fineres=proc;
+    call fineres = null;
+
+    public void setfineres(call proc) {
+        fineres = proc;
     }
 
-private static int getLocationMode(Context context) {
-       return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
-   }
-public static boolean isLocationEnabled(Context context) {
-       return getLocationMode(context) != Settings.Secure.LOCATION_MODE_OFF;
-   }
-
-boolean systemlocation() {
-    if(Build.VERSION.SDK_INT > 30||Build.VERSION.SDK_INT < 23||!(hasNeedScan()||Build.VERSION.SDK_INT<26))  {
-        return true;
+    private static int getLocationMode(Context context) {
+        return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
     }
-    {if(doLog) {Log.i(LOG_ID,"systemlocation()");};};
-   try {
-       if(!isLocationEnabled(this)) {
-            {if(doLog) {Log.i(LOG_ID,"Location not Enabled");};};
-            RunOnUiThread(()-> needsLocation());
+
+    public static boolean isLocationEnabled(Context context) {
+        return getLocationMode(context) != Settings.Secure.LOCATION_MODE_OFF;
+    }
+
+    boolean systemlocation() {
+        if (Build.VERSION.SDK_INT > 30 || Build.VERSION.SDK_INT < 23 || !(hasNeedScan() || Build.VERSION.SDK_INT < 26)) {
+            return true;
+        }
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "systemlocation()");
+            }
+            ;
+        }
+        ;
+        try {
+            if (!isLocationEnabled(this)) {
+                {
+                    if (doLog) {
+                        Log.i(LOG_ID, "Location not Enabled");
+                    }
+                    ;
+                }
+                ;
+                RunOnUiThread(() -> needsLocation());
+                return false;
+            } else {
+                if (doLog) {
+                    Log.i(LOG_ID, "Location Enabled");
+                }
+                ;
+            }
+            ;
+        } catch (Throwable th) {
+            Log.stack(LOG_ID, "Settings.Secure.LOCATION_MODE", th);
             return false;
-         }
-      else
-         {if(doLog) {Log.i(LOG_ID,"Location Enabled");};};
-      }catch (Throwable th) {
-         Log.stack(LOG_ID,"Settings.Secure.LOCATION_MODE",th);
-         return false;
-         }
-    return true;
+        }
+        return true;
     }
 
     /*
@@ -1515,34 +1853,39 @@ catch (Throwable th) {
     return true;
 }
 */
-private static void needsLocation() {
-     MainActivity main=thisone;
-    if(main!=null) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(main);
-        builder.setTitle("Location").
-         setMessage("System Location needs to be turned on to find Bluetooth devices").
-           setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            enableLocationSettings();
-            }
-   }).setOnCancelListener(l->enableLocationSettings()).show().setCanceledOnTouchOutside(false);
-         }
-     else {
-      Applic.Toaster("Turn on Location in System settings"); 
-       }
-   }
+    private static void needsLocation() {
+        MainActivity main = thisone;
+        if (main != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(main);
+            builder.setTitle("Location").
+                    setMessage("System Location needs to be turned on to find Bluetooth devices").
+                    setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            enableLocationSettings();
+                        }
+                    }).setOnCancelListener(l -> enableLocationSettings()).show().setCanceledOnTouchOutside(false);
+        } else {
+            Applic.Toaster("Turn on Location in System settings");
+        }
+    }
 
-private static void enableLocationSettings() {
-      MainActivity main=thisone;
-      if(thisone!=null) {
-            {if(doLog) {Log.i(LOG_ID,"ACTION_LOCATION_SOURCE_SETTINGS");};};
-             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-             main.startActivity(settingsIntent);
-             }
+    private static void enableLocationSettings() {
+        MainActivity main = thisone;
+        if (thisone != null) {
+            {
+                if (doLog) {
+                    Log.i(LOG_ID, "ACTION_LOCATION_SOURCE_SETTINGS");
+                }
+                ;
+            }
+            ;
+            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            main.startActivity(settingsIntent);
+        }
     }
 /* Doesn't work on a lot of phones and watches
-private boolean systemlocation() { 
+private boolean systemlocation() {
      if(Build.VERSION.SDK_INT > 30||Build.VERSION.SDK_INT < 23||!(hasSibionics()||Build.VERSION.SDK_INT<26))  {
          return true;
          }
@@ -1625,25 +1968,31 @@ task.addOnFailureListener(this, new OnFailureListener() {
     } });
 */
 
-public void useBluetooth(boolean val) {
-    Applic.app.initbluetooth(val,this,true);
-    if(fineres!=null)
-        fineres.call();
+    public void useBluetooth(boolean val) {
+        Applic.app.initbluetooth(val, this, true);
+        if (fineres != null)
+            fineres.call();
     }
 
-public  void setbluetoothmain(boolean on) {
-    {if(doLog) {Log.i(LOG_ID,"setbluetoothmain "+on);};};
-    if(on) {
-         Natives.setusebluetooth(on);
-         if(Build.VERSION.SDK_INT < 26||Build.VERSION.SDK_INT>30||hasNeedScan()) {
-            if(!finepermission()) {
-                return;
+    public void setbluetoothmain(boolean on) {
+        {
+            if (doLog) {
+                Log.i(LOG_ID, "setbluetoothmain " + on);
+            }
+            ;
+        }
+        ;
+        if (on) {
+            Natives.setusebluetooth(on);
+            if (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 30 || hasNeedScan()) {
+                if (!finepermission()) {
+                    return;
                 }
             }
         }
-    Applic.setbluetooth(this, on) ;
-    if(fineres!=null)
-        fineres.call();
+        Applic.setbluetooth(this, on);
+        if (fineres != null)
+            fineres.call();
     }
 /*
 class ScrollListener extends GestureDetector.SimpleOnGestureListener {
