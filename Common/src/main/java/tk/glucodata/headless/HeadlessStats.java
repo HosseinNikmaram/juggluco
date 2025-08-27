@@ -1,8 +1,10 @@
 package tk.glucodata.headless;
 
+import android.util.Log;
 import tk.glucodata.Natives;
 
 public final class HeadlessStats {
+    private static final String TAG = "HeadlessStats";
     private final StatsListener listener;
 
     // Dynamic thresholds with defaults in mg/dL
@@ -19,7 +21,18 @@ public final class HeadlessStats {
         if (!Natives.makepercentages()) return;
         var hist = HeadlessHistoryAccessor.getAll();
         if (hist == null || hist.length < 2) return;
-        listener.onStats(serial, computeSummary(hist));
+        HeadlessStatsSummary stats = computeSummary(hist);
+        Log.d(TAG, "Stats for " + serial +
+                ": n=" + stats.numberOfMeasurements +
+                ", avg=" + String.format("%.1f", stats.averageGlucose) +
+                ", sd=" + String.format("%.2f", stats.standardDeviation) +
+                ", gv%=" + String.format("%.1f", stats.glucoseVariabilityPercent) +
+                ", durDays=" + String.format("%.1f", stats.durationDays) +
+                ", active%=" + String.format("%.1f", stats.timeActivePercent) +
+                ", A1C%=" + (stats.estimatedA1CPercent==null?"-":String.format("%.2f", stats.estimatedA1CPercent)) +
+                ", GMI%=" + (stats.gmiPercent==null?"-":String.format("%.2f", stats.gmiPercent))
+        );
+        listener.onStats(serial, stats);
     }
 
     public void emitIfReady(String serial, Long startMillis, Long endMillis) {
@@ -29,7 +42,18 @@ public final class HeadlessStats {
         if (hist == null || hist.length < 2) return;
         var ranged = HeadlessHistoryAccessor.filter(hist, startMillis, endMillis);
         if (ranged == null || ranged.length < 2) return;
-        listener.onStats(serial, computeSummary(ranged));
+        HeadlessStatsSummary stats = computeSummary(ranged);
+        Log.d(TAG, "Stats for " + serial +
+                ": n=" + stats.numberOfMeasurements +
+                ", avg=" + String.format("%.1f", stats.averageGlucose) +
+                ", sd=" + String.format("%.2f", stats.standardDeviation) +
+                ", gv%=" + String.format("%.1f", stats.glucoseVariabilityPercent) +
+                ", durDays=" + String.format("%.1f", stats.durationDays) +
+                ", active%=" + String.format("%.1f", stats.timeActivePercent) +
+                ", A1C%=" + (stats.estimatedA1CPercent==null?"-":String.format("%.2f", stats.estimatedA1CPercent)) +
+                ", GMI%=" + (stats.gmiPercent==null?"-":String.format("%.2f", stats.gmiPercent))
+        );
+        listener.onStats(serial, stats);
     }
 
     private HeadlessStatsSummary computeSummary(long[] flat) {
