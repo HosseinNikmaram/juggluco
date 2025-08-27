@@ -29,10 +29,7 @@ public final class HeadlessStats {
                 + " GV%=" + String.format("%.1f", s.glucoseVariabilityPercent)
                 + " days=" + String.format("%.2f", s.durationDays)
                 + " active%=" + String.format("%.1f", s.timeActivePercent)
-                + " TIR <70=" + String.format("%.1f", s.percentBelow70)
-                + "% 70-180=" + String.format("%.1f", s.percent70to180)
-                + "% 181-250=" + String.format("%.1f", s.percent181to250)
-                + "% >250=" + String.format("%.1f", s.percentAbove250) + "%");
+                + tirString(hist));
         listener.onStats(serial, s);
     }
 
@@ -50,16 +47,13 @@ public final class HeadlessStats {
                 + " GV%=" + String.format("%.1f", s.glucoseVariabilityPercent)
                 + " days=" + String.format("%.2f", s.durationDays)
                 + " active%=" + String.format("%.1f", s.timeActivePercent)
-                + " TIR <70=" + String.format("%.1f", s.percentBelow70)
-                + "% 70-180=" + String.format("%.1f", s.percent70to180)
-                + "% 181-250=" + String.format("%.1f", s.percent181to250)
-                + "% >250=" + String.format("%.1f", s.percentAbove250) + "%");
+                + tirString(ranged));
         listener.onStats(serial, s);
     }
 
     private HeadlessStatsSummary computeSummary(long[] flat) {
         int n = flat.length / 2;
-        if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, 0,
+        if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null,
                 lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
         long firstMillis = flat[0] * 1000L;
         long lastMillis = flat[(n - 1) * 2] * 1000L;
@@ -97,13 +91,32 @@ public final class HeadlessStats {
         // Simple A1C/GMI estimates from mean mg/dL
         Double estA1C = (mean > 0) ? ((mean + 46.7) / 28.7) : null; // NGSP %
         Double gmi = (mean > 0) ? (3.31 + 0.02392 * mean) : null;
-        double pBelow70 = n > 0 ? (countBelow70 * 100.0 / n) : 0.0;
-        double p70to180 = n > 0 ? (count70to180 * 100.0 / n) : 0.0;
-        double p181to250 = n > 0 ? (count181to250 * 100.0 / n) : 0.0;
-        double pAbove250 = n > 0 ? (countAbove250 * 100.0 / n) : 0.0;
         return new HeadlessStatsSummary(n, mean, sd, gv, durationDays, timeActivePercent, estA1C, gmi,
-                pBelow70, p70to180, p181to250, pAbove250,
                 lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
+    }
+
+    // Build TIR string for logs using current thresholds
+    private String tirString(long[] flat) {
+        int n = flat.length / 2;
+        if (n == 0) return "";
+        int below = 0, inRange = 0, high = 0, veryHigh = 0;
+        for (int i = 0; i < n; i++) {
+            long packed = flat[2 * i + 1];
+            double mmolL = (double) packed / 4294967296.0;
+            double g = mmolL * 18.0;
+            if (g < lowThresholdMgdl) below++;
+            else if (g <= inRangeUpperThresholdMgdl) inRange++;
+            else if (g <= highUpperThresholdMgdl) high++;
+            else veryHigh++;
+        }
+        double pBelow = below * 100.0 / n;
+        double pIn = inRange * 100.0 / n;
+        double pHigh = high * 100.0 / n;
+        double pVeryHigh = veryHigh * 100.0 / n;
+        return " TIR <" + String.format("%.0f", lowThresholdMgdl) + "=" + String.format("%.1f", pBelow)
+                + "% " + String.format("%.0f", lowThresholdMgdl) + "-" + String.format("%.0f", inRangeUpperThresholdMgdl) + "=" + String.format("%.1f", pIn)
+                + "% " + String.format("%.0f", inRangeUpperThresholdMgdl + 1) + "-" + String.format("%.0f", highUpperThresholdMgdl) + "=" + String.format("%.1f", pHigh)
+                + "% >" + String.format("%.0f", highUpperThresholdMgdl) + "=" + String.format("%.1f", pVeryHigh) + "%";
     }
 
     // Setters to configure thresholds dynamically

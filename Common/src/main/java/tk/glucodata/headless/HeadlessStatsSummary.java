@@ -14,13 +14,6 @@ public final class HeadlessStatsSummary {
     public final Double estimatedA1CPercent;       // simple estimate from mean
     public final Double gmiPercent;                // GMI from mean
 
-    // Time-in-Range (TIR) buckets (percent of points)
-    // Low <70 mg/dL, In-Range 70–180 mg/dL, High 181–250 mg/dL, Very High >250 mg/dL
-    public final double percentBelow70;
-    public final double percent70to180;
-    public final double percent181to250;
-    public final double percentAbove250;
-
     // Thresholds used (mg/dL)
     public final double lowThresholdMgdl;           // default 70
     public final double inRangeUpperThresholdMgdl;  // default 180
@@ -34,10 +27,6 @@ public final class HeadlessStatsSummary {
                                 double timeActivePercent,
                                 Double estimatedA1CPercent,
                                 Double gmiPercent,
-                                double percentBelow70,
-                                double percent70to180,
-                                double percent181to250,
-                                double percentAbove250,
                                 double lowThresholdMgdl,
                                 double inRangeUpperThresholdMgdl,
                                 double highUpperThresholdMgdl) {
@@ -49,10 +38,6 @@ public final class HeadlessStatsSummary {
         this.timeActivePercent = timeActivePercent;
         this.estimatedA1CPercent = estimatedA1CPercent;
         this.gmiPercent = gmiPercent;
-        this.percentBelow70 = percentBelow70;
-        this.percent70to180 = percent70to180;
-        this.percent181to250 = percent181to250;
-        this.percentAbove250 = percentAbove250;
         this.lowThresholdMgdl = lowThresholdMgdl;
         this.inRangeUpperThresholdMgdl = inRangeUpperThresholdMgdl;
         this.highUpperThresholdMgdl = highUpperThresholdMgdl;
