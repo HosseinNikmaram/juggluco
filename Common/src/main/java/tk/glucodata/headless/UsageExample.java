@@ -61,6 +61,7 @@ public class UsageExample {
             });
             jugglucoManager.getGlucoseStats(serial);
             jugglucoManager.getGlucoseHistory(serial);
+            jugglucoManager.getSensorInfo(serial);
         });
 
         jugglucoManager.setHistoryListener((serial, history) -> {
