@@ -2,6 +2,7 @@ package tk.glucodata.headless;
 
 import android.app.Activity;
 import android.content.Context;
+import android.nfc.Tag;
 import android.widget.Toast;
 
 /**
@@ -34,17 +35,22 @@ public class UsageExample {
     public void initializeJuggluco(Activity activity) {
         if (initialized) return;
         this.context = activity;
+        
+        HeadlessConfig.enableHeadlessNfc();
+
         jugglucoManager = new HeadlessJugglucoManager();
+        
         if (!jugglucoManager.init(activity)) {
             Toast.makeText(activity, "Failed to initialize Juggluco", Toast.LENGTH_LONG).show();
             return;
         }
         
+        if (HeadlessConfig.isBleEnabled()) {
             if (!jugglucoManager.ensurePermissionsAndBluetooth(context)) {
                 Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
                 return;
             }
-
+        }
         
         jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
             String message = String.format("Glucose: %.1f mg/dL, Rate: %.1f", value, rate);
