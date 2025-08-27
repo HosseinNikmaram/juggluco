@@ -428,6 +428,8 @@ protected void handleGlucoseResult(long res,long timmsec) {
             try {
                 var lis = tk.glucodata.headless.HeadlessJugglucoManager.glucoseListener;
                 if(lis!=null) lis.onGlucose(SerialNumber, glumgdl, gl, rate, alarm, timmsec, sensorstartmsec, sensorgen);
+                // Also emit history updates for listeners when new data arrives
+                tk.glucodata.headless.HeadlessJugglucoManager.emitLatestHistoryIfAny(SerialNumber);
             } catch(Throwable ignore) {}
           /*  charcha[0] = timmsec;
             if(!isWearable) {
