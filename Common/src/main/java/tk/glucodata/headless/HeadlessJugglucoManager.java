@@ -91,6 +91,17 @@ public class HeadlessJugglucoManager {
             statsManager = new HeadlessStats(listener);
         }
     }
+
+    /**
+     * Configure TIR thresholds (mg/dL). All parameters optional; pass null to keep current.
+     * Defaults are 70, 180, 250.
+     */
+    public void configureTirThresholds(Double low, Double inRangeUpper, Double highUpper) {
+        if (statsManager == null) return;
+        if (low != null) statsManager.setLowThresholdMgdl(low);
+        if (inRangeUpper != null) statsManager.setInRangeUpperThresholdMgdl(inRangeUpper);
+        if (highUpper != null) statsManager.setHighUpperThresholdMgdl(highUpper);
+    }
     
     /**
      * Start NFC scanning for Libre sensor pairing

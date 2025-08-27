@@ -7,6 +7,11 @@ public final class HeadlessStats {
     private static final String TAG = "HeadlessStats";
     private final StatsListener listener;
 
+    // Dynamic thresholds with defaults in mg/dL
+    private volatile double lowThresholdMgdl = 70.0;
+    private volatile double inRangeUpperThresholdMgdl = 180.0;
+    private volatile double highUpperThresholdMgdl = 250.0;
+
     public HeadlessStats(StatsListener listener) {
         this.listener = listener;
     }
@@ -52,9 +57,10 @@ public final class HeadlessStats {
         listener.onStats(serial, s);
     }
 
-    private static HeadlessStatsSummary computeSummary(long[] flat) {
+    private HeadlessStatsSummary computeSummary(long[] flat) {
         int n = flat.length / 2;
-        if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, 0);
+        if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null, 0, 0, 0, 0,
+                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
         long firstMillis = flat[0] * 1000L;
         long lastMillis = flat[(n - 1) * 2] * 1000L;
         double sum = 0.0;
@@ -70,11 +76,11 @@ public final class HeadlessStats {
             double g = mmolL * 18.0;
             sum += g;
             sumSq += g * g;
-            if (g < 70.0) {
+            if (g < lowThresholdMgdl) {
                 countBelow70++;
-            } else if (g <= 180.0) {
+            } else if (g <= inRangeUpperThresholdMgdl) {
                 count70to180++;
-            } else if (g <= 250.0) {
+            } else if (g <= highUpperThresholdMgdl) {
                 count181to250++;
             } else {
                 countAbove250++;
@@ -96,8 +102,14 @@ public final class HeadlessStats {
         double p181to250 = n > 0 ? (count181to250 * 100.0 / n) : 0.0;
         double pAbove250 = n > 0 ? (countAbove250 * 100.0 / n) : 0.0;
         return new HeadlessStatsSummary(n, mean, sd, gv, durationDays, timeActivePercent, estA1C, gmi,
-                pBelow70, p70to180, p181to250, pAbove250);
+                pBelow70, p70to180, p181to250, pAbove250,
+                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
     }
+
+    // Setters to configure thresholds dynamically
+    public void setLowThresholdMgdl(double value) { this.lowThresholdMgdl = value; }
+    public void setInRangeUpperThresholdMgdl(double value) { this.inRangeUpperThresholdMgdl = value; }
+    public void setHighUpperThresholdMgdl(double value) { this.highUpperThresholdMgdl = value; }
 
     // Internal helper to reuse existing native history without duplicating code
     private static final class HeadlessHistoryAccessor {

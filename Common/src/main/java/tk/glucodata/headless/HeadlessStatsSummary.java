@@ -21,6 +21,11 @@ public final class HeadlessStatsSummary {
     public final double percent181to250;
     public final double percentAbove250;
 
+    // Thresholds used (mg/dL)
+    public final double lowThresholdMgdl;           // default 70
+    public final double inRangeUpperThresholdMgdl;  // default 180
+    public final double highUpperThresholdMgdl;     // default 250
+
     public HeadlessStatsSummary(int numberOfMeasurements,
                                 double averageGlucose,
                                 double standardDeviation,
@@ -32,7 +37,10 @@ public final class HeadlessStatsSummary {
                                 double percentBelow70,
                                 double percent70to180,
                                 double percent181to250,
-                                double percentAbove250) {
+                                double percentAbove250,
+                                double lowThresholdMgdl,
+                                double inRangeUpperThresholdMgdl,
+                                double highUpperThresholdMgdl) {
         this.numberOfMeasurements = numberOfMeasurements;
         this.averageGlucose = averageGlucose;
         this.standardDeviation = standardDeviation;
@@ -45,6 +53,9 @@ public final class HeadlessStatsSummary {
         this.percent70to180 = percent70to180;
         this.percent181to250 = percent181to250;
         this.percentAbove250 = percentAbove250;
+        this.lowThresholdMgdl = lowThresholdMgdl;
+        this.inRangeUpperThresholdMgdl = inRangeUpperThresholdMgdl;
+        this.highUpperThresholdMgdl = highUpperThresholdMgdl;
     }
 }
 
