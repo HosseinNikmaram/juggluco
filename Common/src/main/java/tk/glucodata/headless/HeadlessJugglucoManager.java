@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.bluetooth.BluetoothAdapter;
+import android.util.Log;
 
 import tk.glucodata.Natives;
 import tk.glucodata.SensorBluetooth;
@@ -13,6 +14,7 @@ import tk.glucodata.SensorBluetooth;
  * Provides NFC scanning, BLE management, and glucose data access
  */
 public class HeadlessJugglucoManager {
+    private static final String TAG = "HeadlessHead";
     public static GlucoseListener glucoseListener;
     private Activity activity;
     private HeadlessNfcReader nfcReader;
@@ -172,6 +174,44 @@ public class HeadlessJugglucoManager {
         if (statsManager != null) {
             statsManager.emitIfReady(serial, startMillis, endMillis);
         }
+    }
+
+    /**
+     * Retrieve sensor timeline info: last scanned, last stream, official and expected ends.
+     * lastScannedMillis currently not exposed via Natives; returns null.
+     */
+    public HeadlessSensorInfo getSensorInfo(String serial) {
+        // Official end from natives; value appears to be in seconds -> convert to ms
+        Long sensorEndsMillis = null;
+        try {
+            long endsSec = Natives.sensorends();
+            if (endsSec > 0) sensorEndsMillis = endsSec * 1000L;
+        } catch (Throwable ignored) { }
+
+        // Expected end: if not exposed separately, reuse official
+        Long expectedEndMillis = sensorEndsMillis;
+
+        // Last stream: derive from latest native glucose timestamp if available
+        Long lastStreamMillis = null;
+        try {
+            long[] flat = Natives.getlastGlucose();
+            if (flat != null && flat.length >= 2) {
+                int n = flat.length / 2;
+                long lastSec = flat[(n - 1) * 2];
+                if (lastSec > 0) lastStreamMillis = lastSec * 1000L;
+            }
+        } catch (Throwable ignored) { }
+
+        // Last scanned time: not directly available in Java; leave null for now
+        Long lastScannedMillis = null;
+
+        HeadlessSensorInfo info = new HeadlessSensorInfo(serial, lastScannedMillis, lastStreamMillis, sensorEndsMillis, expectedEndMillis);
+        Log.d(TAG, "Sensor info for " + serial +
+                ": lastScanned=" + lastScannedMillis +
+                ", lastStream=" + lastStreamMillis +
+                ", endsOfficial=" + sensorEndsMillis +
+                ", expectedEnd=" + expectedEndMillis);
+        return info;
     }
     
     /**
