@@ -22,14 +22,6 @@ public final class HeadlessStats {
         var hist = HeadlessHistoryAccessor.getAll();
         if (hist == null || hist.length < 2) return;
         HeadlessStatsSummary s = computeSummary(hist);
-        Log.d(TAG, "Stats serial=" + serial
-                + " n=" + s.numberOfMeasurements
-                + " mean=" + String.format("%.1f", s.averageGlucose)
-                + " sd=" + String.format("%.1f", s.standardDeviation)
-                + " GV%=" + String.format("%.1f", s.glucoseVariabilityPercent)
-                + " days=" + String.format("%.2f", s.durationDays)
-                + " active%=" + String.format("%.1f", s.timeActivePercent)
-                + tirString(hist));
         listener.onStats(serial, s);
     }
 
@@ -41,13 +33,6 @@ public final class HeadlessStats {
         var ranged = HeadlessHistoryAccessor.filter(hist, startMillis, endMillis);
         if (ranged == null || ranged.length < 2) return;
         HeadlessStatsSummary s = computeSummary(ranged);
-        Log.d(TAG, "Stats(serial=" + serial + ") range: n=" + s.numberOfMeasurements
-                + " mean=" + String.format("%.1f", s.averageGlucose)
-                + " sd=" + String.format("%.1f", s.standardDeviation)
-                + " GV%=" + String.format("%.1f", s.glucoseVariabilityPercent)
-                + " days=" + String.format("%.2f", s.durationDays)
-                + " active%=" + String.format("%.1f", s.timeActivePercent)
-                + tirString(ranged));
         listener.onStats(serial, s);
     }
 
@@ -59,10 +44,6 @@ public final class HeadlessStats {
         long lastMillis = flat[(n - 1) * 2] * 1000L;
         double sum = 0.0;
         double sumSq = 0.0;
-        int countBelow70 = 0;
-        int count70to180 = 0;
-        int count181to250 = 0;
-        int countAbove250 = 0;
         for (int i = 0; i < n; i++) {
             long packed = flat[2 * i + 1];
             // Decode Q32.32 mmol/L to mg/dL
@@ -70,15 +51,6 @@ public final class HeadlessStats {
             double g = mmolL * 18.0;
             sum += g;
             sumSq += g * g;
-            if (g < lowThresholdMgdl) {
-                countBelow70++;
-            } else if (g <= inRangeUpperThresholdMgdl) {
-                count70to180++;
-            } else if (g <= highUpperThresholdMgdl) {
-                count181to250++;
-            } else {
-                countAbove250++;
-            }
         }
         double mean = sum / n;
         double variance = Math.max(0.0, (sumSq / n) - (mean * mean));
