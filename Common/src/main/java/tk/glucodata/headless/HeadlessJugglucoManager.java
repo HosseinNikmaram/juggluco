@@ -138,6 +138,15 @@ public class HeadlessJugglucoManager {
             historyManager.emitFromNativeLast(serial);
         }
     }
+    /**
+     * Get glucose history for a sensor within an optional time range
+     * If startMillis/endMillis are null, they are ignored
+     */
+    public void getGlucoseHistory(String serial, Long startMillis, Long endMillis) {
+        if (historyManager != null) {
+            historyManager.emitFromNativeRange(serial, startMillis, endMillis);
+        }
+    }
     
     /**
      * Get glucose statistics for a sensor
@@ -190,7 +199,7 @@ public class HeadlessJugglucoManager {
     public static void emitLatestHistoryIfAny(String serial) {
         HeadlessHistory hm = staticHistoryManager;
         if (hm != null) {
-            hm.emitFromNativeLast(serial);
+            hm.emitFromNativeRange(serial, null, null);
         }
     }
 }

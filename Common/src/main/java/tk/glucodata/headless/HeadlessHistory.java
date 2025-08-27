@@ -15,13 +15,37 @@ public final class HeadlessHistory {
         if (listener == null) return;
         long[] flat = Natives.getlastGlucose();
         if (flat == null || flat.length < 2) return;
-        int pairs = flat.length / 2;
-        long[][] hist = new long[pairs][2];
-        for (int i = 0; i < pairs; i++) {
-            hist[i][0] = flat[2 * i];     // timeMillis
-            hist[i][1] = flat[2 * i + 1]; // mgdl
+        listener.onHistory(serial, toPairs(flat, null, null));
+    }
+
+    public void emitFromNativeRange(String serial, Long startMillis, Long endMillis) {
+        if (listener == null) return;
+        long[] flat = Natives.getlastGlucose();
+        if (flat == null || flat.length < 2) return;
+        listener.onHistory(serial, toPairs(flat, startMillis, endMillis));
+    }
+
+    private static long[][] toPairs(long[] flat, Long startMillis, Long endMillis) {
+        int totalPairs = flat.length / 2;
+        // First pass: count matches to allocate exact array
+        int count = 0;
+        for (int i = 0; i < totalPairs; i++) {
+            long t = flat[2 * i];
+            if (startMillis != null && t < startMillis) continue;
+            if (endMillis != null && t > endMillis) continue;
+            count++;
         }
-        listener.onHistory(serial, hist);
+        long[][] hist = new long[count][2];
+        int idx = 0;
+        for (int i = 0; i < totalPairs; i++) {
+            long t = flat[2 * i];
+            if (startMillis != null && t < startMillis) continue;
+            if (endMillis != null && t > endMillis) continue;
+            hist[idx][0] = t;
+            hist[idx][1] = flat[2 * i + 1];
+            idx++;
+        }
+        return hist;
     }
 }
 
