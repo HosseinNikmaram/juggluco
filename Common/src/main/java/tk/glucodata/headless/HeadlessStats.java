@@ -1,10 +1,8 @@
 package tk.glucodata.headless;
 
-import android.util.Log;
 import tk.glucodata.Natives;
 
 public final class HeadlessStats {
-    private static final String TAG = "HeadlessStats";
     private final StatsListener listener;
 
     // Dynamic thresholds with defaults in mg/dL
@@ -21,8 +19,7 @@ public final class HeadlessStats {
         if (!Natives.makepercentages()) return;
         var hist = HeadlessHistoryAccessor.getAll();
         if (hist == null || hist.length < 2) return;
-        HeadlessStatsSummary s = computeSummary(hist);
-        listener.onStats(serial, s);
+        listener.onStats(serial, computeSummary(hist));
     }
 
     public void emitIfReady(String serial, Long startMillis, Long endMillis) {
@@ -32,15 +29,13 @@ public final class HeadlessStats {
         if (hist == null || hist.length < 2) return;
         var ranged = HeadlessHistoryAccessor.filter(hist, startMillis, endMillis);
         if (ranged == null || ranged.length < 2) return;
-        HeadlessStatsSummary s = computeSummary(ranged);
-        listener.onStats(serial, s);
+        listener.onStats(serial, computeSummary(ranged));
     }
 
     private HeadlessStatsSummary computeSummary(long[] flat) {
         int n = flat.length / 2;
         if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null,
-                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl,
-                new HeadlessTirBreakdown(0, 0, 0, 0, 0));
+                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
         long firstMillis = flat[0] * 1000L;
         long lastMillis = flat[(n - 1) * 2] * 1000L;
         double sum = 0.0;
@@ -64,34 +59,11 @@ public final class HeadlessStats {
         // Simple A1C/GMI estimates from mean mg/dL
         Double estA1C = (mean > 0) ? ((mean + 46.7) / 28.7) : null; // NGSP %
         Double gmi = (mean > 0) ? (3.31 + 0.02392 * mean) : null;
-        HeadlessTirBreakdown tir = new HeadlessTirBreakdown(n, countBelow70, count70to180, count181to250, countAbove250);
         return new HeadlessStatsSummary(n, mean, sd, gv, durationDays, timeActivePercent, estA1C, gmi,
-                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl, tir);
+                lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl);
     }
 
-    // Build TIR string for logs using current thresholds
-    private String tirString(long[] flat) {
-        int n = flat.length / 2;
-        if (n == 0) return "";
-        int below = 0, inRange = 0, high = 0, veryHigh = 0;
-        for (int i = 0; i < n; i++) {
-            long packed = flat[2 * i + 1];
-            double mmolL = (double) packed / 4294967296.0;
-            double g = mmolL * 18.0;
-            if (g < lowThresholdMgdl) below++;
-            else if (g <= inRangeUpperThresholdMgdl) inRange++;
-            else if (g <= highUpperThresholdMgdl) high++;
-            else veryHigh++;
-        }
-        double pBelow = below * 100.0 / n;
-        double pIn = inRange * 100.0 / n;
-        double pHigh = high * 100.0 / n;
-        double pVeryHigh = veryHigh * 100.0 / n;
-        return " TIR <" + String.format("%.0f", lowThresholdMgdl) + "=" + String.format("%.1f", pBelow)
-                + "% " + String.format("%.0f", lowThresholdMgdl) + "-" + String.format("%.0f", inRangeUpperThresholdMgdl) + "=" + String.format("%.1f", pIn)
-                + "% " + String.format("%.0f", Math.floor(inRangeUpperThresholdMgdl + 1)) + "-" + String.format("%.0f", highUpperThresholdMgdl) + "=" + String.format("%.1f", pHigh)
-                + "% >" + String.format("%.0f", highUpperThresholdMgdl) + "=" + String.format("%.1f", pVeryHigh) + "%";
-    }
+    // No logging; thresholds are computed and carried in the summary only
 
     // Setters to configure thresholds dynamically
     public void setLowThresholdMgdl(double value) { this.lowThresholdMgdl = value; }

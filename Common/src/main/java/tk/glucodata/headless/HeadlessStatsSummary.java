@@ -19,8 +19,6 @@ public final class HeadlessStatsSummary {
     public final double inRangeUpperThresholdMgdl;  // default 180
     public final double highUpperThresholdMgdl;     // default 250
 
-    // Computed TIR breakdown based on thresholds
-    public final HeadlessTirBreakdown tir;
 
     public HeadlessStatsSummary(int numberOfMeasurements,
                                 double averageGlucose,
@@ -32,8 +30,7 @@ public final class HeadlessStatsSummary {
                                 Double gmiPercent,
                                 double lowThresholdMgdl,
                                 double inRangeUpperThresholdMgdl,
-                                double highUpperThresholdMgdl,
-                                HeadlessTirBreakdown tir) {
+                                double highUpperThresholdMgdl) {
         this.numberOfMeasurements = numberOfMeasurements;
         this.averageGlucose = averageGlucose;
         this.standardDeviation = standardDeviation;
@@ -45,7 +42,6 @@ public final class HeadlessStatsSummary {
         this.lowThresholdMgdl = lowThresholdMgdl;
         this.inRangeUpperThresholdMgdl = inRangeUpperThresholdMgdl;
         this.highUpperThresholdMgdl = highUpperThresholdMgdl;
-        this.tir = tir;
     }
 }
 
