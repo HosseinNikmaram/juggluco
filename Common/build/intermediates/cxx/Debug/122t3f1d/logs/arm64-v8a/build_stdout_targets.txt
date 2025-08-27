@@ -1,2 +1,3 @@
 ninja: Entering directory `/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/arm64-v8a'
-ninja: no work to do.
+[1/2] Linking CXX shared library /home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a/libg.so
+[2/2] Linking CXX executable /home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/arm64-v8a/libnative.so

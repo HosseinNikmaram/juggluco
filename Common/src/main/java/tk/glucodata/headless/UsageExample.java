@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.nfc.Tag;
 import android.widget.Toast;
+import android.util.Log;
 
 /**
  * Example usage of the headless Juggluco system
  * This shows how to integrate Libre sensor functionality into your own module
  */
 public class UsageExample {
-    
+    private static final String TAG = "JugglucoManager";
     private static volatile UsageExample instance;
     public static UsageExample getInstance() {
         if (instance == null) {
@@ -48,16 +49,30 @@ public class UsageExample {
                 return;
             }
 
-        
+
         jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
             String message = String.format("Glucose: %.1f mg/dL, Rate: %.1f", value, rate);
-            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, String.format(
+                    "Glucose update - Serial: %s, mgdl: %b, Value: %.1f, Rate: %.1f, Alarm: %s, Time: %d, SensorStart: %d, SensorGen: %d",
+                    serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen
+            ));
+            activity.runOnUiThread(() -> {
+                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+            });
         });
+
         jugglucoManager.setHistoryListener((serial, history) -> {
-            Toast.makeText(activity, "Received " + history.length + " history points", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Received " + history.length + " history points from " + serial);
+            activity.runOnUiThread(() -> {
+                Toast.makeText(activity, "Received " + history.length + " history points", Toast.LENGTH_SHORT).show();
+            });
         });
+
         jugglucoManager.setStatsListener((serial, stats) -> {
-            Toast.makeText(activity, "Statistics available for " + serial, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Statistics available for " + serial);
+            activity.runOnUiThread(() -> {
+                Toast.makeText(activity, "Statistics available for " + serial, Toast.LENGTH_SHORT).show();
+            });
         });
         
         initialized = true;
