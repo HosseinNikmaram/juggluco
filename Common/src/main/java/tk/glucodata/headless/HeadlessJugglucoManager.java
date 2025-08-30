@@ -9,6 +9,9 @@ import android.util.Log;
 import tk.glucodata.Natives;
 import tk.glucodata.SensorBluetooth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Main headless manager for Juggluco Libre sensor integration
  * Provides NFC scanning, BLE management, and glucose data access
@@ -18,7 +21,6 @@ public class HeadlessJugglucoManager {
     public static GlucoseListener glucoseListener;
     private Activity activity;
     private HeadlessNfcReader nfcReader;
-    private HeadlessHistory historyManager;
     private HeadlessStats statsManager;
     private static volatile boolean nativesInitialized = false;
     
@@ -71,16 +73,7 @@ public class HeadlessJugglucoManager {
         glucoseListener = listener;
     }
     
-    /**
-     * Set history listener for glucose history data
-     * @param listener History listener implementation
-     */
-    public void setHistoryListener(HistoryListener listener) {
-        if (listener != null) {
-            historyManager = new HeadlessHistory(listener);
-        }
-    }
-    
+
     /**
      * Set stats listener for glucose statistics
      * @param listener Stats listener implementation
@@ -138,24 +131,24 @@ public class HeadlessJugglucoManager {
     public void markNewDevice(byte[] uid) {
         HeadlessNfcScanner.markNewDevice(uid);
     }
-    
+
     /**
-     * Get current glucose history for a sensor
-     * @param serial Sensor serial number
+     * Get complete glucose history for a sensor as a list of GlucoseData objects
+     * @return List of GlucoseData objects, or empty list if no data
      */
-    public void getGlucoseHistory(String serial) {
-        if (historyManager != null) {
-            historyManager.emitFromNativeLast(serial);
-        }
+    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory(String serial) {
+        return HeadlessHistory.getCompleteGlucoseHistory(serial);
     }
+
+
     /**
-     * Get glucose history for a sensor within an optional time range
-     * If startMillis/endMillis are null, they are ignored
+     * Get glucose history for a sensor within a time range as a list of GlucoseData objects
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return List of GlucoseData objects within the time range
      */
-    public void getGlucoseHistory(String serial, Long startMillis, Long endMillis) {
-        if (historyManager != null) {
-            historyManager.emitFromNativeRange(serial, startMillis, endMillis);
-        }
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(String serial,Long startMillis, Long endMillis) {
+        return HeadlessHistory.getGlucoseHistoryInRange(serial,startMillis, endMillis);
     }
     
     /**

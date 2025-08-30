@@ -1,57 +1,104 @@
 package tk.glucodata.headless;
 
 import tk.glucodata.Natives;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class HeadlessHistory {
-    private final HistoryListener listener;
 
-    public HeadlessHistory(HistoryListener listener) {
-        this.listener = listener;
-    }
-
-    // Uses Natives.getlastGlucose() which returns a flat long[] as
-    // [timeSeconds0, packed0, timeSeconds1, packed1, ...].
-    // The packed value is Q32.32 fixed-point mmol/L in a 64-bit long.
-    // We transform it into pairs [timeMillis, mgdl] where mgdl is rounded.
-    public void emitFromNativeLast(String serial) {
-        if (listener == null) return;
-        long[] flat = Natives.getlastGlucose();
-        if (flat == null || flat.length < 2) return;
-        listener.onHistory(serial, toPairs(flat, null, null));
-    }
-
-    public void emitFromNativeRange(String serial, Long startMillis, Long endMillis) {
-        if (listener == null) return;
-        long[] flat = Natives.getlastGlucose();
-        if (flat == null || flat.length < 2) return;
-        listener.onHistory(serial, toPairs(flat, startMillis, endMillis));
-    }
-
-    private static long[][] toPairs(long[] flat, Long startMillis, Long endMillis) {
-        int totalPairs = flat.length / 2;
-        int count = 0;
-        // First pass: count matches to allocate exact array
-        for (int i = 0; i < totalPairs; i++) {
-            long tMillis = flat[2 * i] * 1000L; // native gives seconds
-            if (startMillis != null && tMillis < startMillis) continue;
-            if (endMillis != null && tMillis > endMillis) continue;
-            count++;
+    public HeadlessHistory() {}
+    /**
+     * Get complete glucose history for a sensor as a list of GlucoseData objects
+     * @return List of GlucoseData objects, or empty list if no data
+     */
+    public static List<GlucoseData> getCompleteGlucoseHistory(String serial) {
+        List<GlucoseData> history = new ArrayList<>();
+        
+        // Get sensor pointer
+        long sensorPtr = Natives.getdataptr(serial);
+        if (sensorPtr == 0) {
+            return history;
         }
-        long[][] hist = new long[count][2];
-        int idx = 0;
-        for (int i = 0; i < totalPairs; i++) {
-            long tMillis = flat[2 * i] * 1000L;
-            if (startMillis != null && tMillis < startMillis) continue;
-            if (endMillis != null && tMillis > endMillis) continue;
-            long packed = flat[2 * i + 1];
-            // Decode Q32.32 mmol/L -> mg/dL
-            double mmolL = (double) packed / 4294967296.0; // 2^32
-            long mgdl = Math.round(mmolL * 18.0);
-            hist[idx][0] = tMillis;
-            hist[idx][1] = mgdl;
-            idx++;
+        
+        // Iterate through all glucose readings
+        int pos = 0;
+        while (true) {
+            long timeValue = Natives.streamfromSensorptr(sensorPtr, pos);
+            
+            // Check if we've reached the end
+            if ((timeValue >> 48) == 0) {
+                break;
+            }
+            
+            // Extract data from the packed value
+            long timeSeconds = timeValue & 0xFFFFFFFFL;
+            int mgdl = (int) ((timeValue >> 32) & 0xFFFFL);
+            int nextPos = (int) ((timeValue >> 48) & 0xFFFFL);
+            
+            if (mgdl > 0 && timeSeconds > 0) {
+                long timeMillis = timeSeconds * 1000L;
+                float mmolL = mgdl / 18.0f;
+                
+                // Create GlucoseData object
+                GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, timeMillis);
+                history.add(glucoseData);
+            }
+            
+            // Move to next position
+            if (nextPos <= pos) {
+                break; // Prevent infinite loop
+            }
+            pos = nextPos;
         }
-        return hist;
+        
+        return history;
+    }
+
+    /**
+     * Get glucose history for a sensor within a time range as a list of GlucoseData objects
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return List of GlucoseData objects within the time range
+     */
+    public static List<GlucoseData> getGlucoseHistoryInRange(String serial,Long startMillis, Long endMillis) {
+        List<GlucoseData> allHistory = getCompleteGlucoseHistory(serial);
+        List<GlucoseData> filteredHistory = new ArrayList<>();
+        
+        for (GlucoseData data : allHistory) {
+            // Apply time filtering
+            if (startMillis != null && data.timeMillis < startMillis) {
+                continue;
+            }
+            if (endMillis != null && data.timeMillis > endMillis) {
+                continue;
+            }
+            filteredHistory.add(data);
+        }
+        
+        return filteredHistory;
+    }
+
+    /**
+     * Data class to hold extracted glucose information
+     */
+    public static class GlucoseData {
+        public int mgdl;                    // Glucose value in mg/dL
+        public float mmolL;                 // Glucose value in mmol/L
+        public long timeMillis;             // Timestamp in milliseconds
+
+        public GlucoseData(int mgdl, float mmolL, long timeMillis) {
+            this.mgdl = mgdl;
+            this.mmolL = mmolL;
+            this.timeMillis = timeMillis;
+        }
+
+
+        
+        @Override
+        public String toString() {
+            return String.format("GlucoseData{mgdl=%d, mmolL=%.1f,  time=%d}",
+                               mgdl, mmolL, timeMillis);
+        }
     }
 }
 
