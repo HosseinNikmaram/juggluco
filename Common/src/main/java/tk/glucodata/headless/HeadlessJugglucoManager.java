@@ -153,19 +153,18 @@ public class HeadlessJugglucoManager {
     
     /**
      * Get glucose statistics for a sensor
-     * @param serial Sensor serial number
      */
-    public void getGlucoseStats(String serial) {
+    public void getGlucoseStats() {
         if (statsManager != null) {
-            statsManager.emitIfReady(serial);
+            statsManager.emitIfReady();
         }
     }
     /**
      * Get glucose statistics for a sensor within an optional time range
      */
-    public void getGlucoseStats(String serial, Long startMillis, Long endMillis) {
+    public void getGlucoseStats(Long startMillis, Long endMillis) {
         if (statsManager != null) {
-            statsManager.emitIfReady(serial, startMillis, endMillis);
+            statsManager.emitIfReady( startMillis, endMillis);
         }
     }
 

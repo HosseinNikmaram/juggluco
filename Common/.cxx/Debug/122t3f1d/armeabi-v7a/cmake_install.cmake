@@ -1,4 +1,4 @@
-# Install script for directory: /home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp
+# Install script for directory: /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,7 +45,7 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a/install_local_manifest.txt"
+  file(WRITE "/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
 if(CMAKE_INSTALL_COMPONENT)
@@ -61,6 +61,6 @@ else()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

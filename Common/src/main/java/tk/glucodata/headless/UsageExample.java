@@ -64,7 +64,7 @@ public class UsageExample {
             activity.runOnUiThread(() -> {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
-            jugglucoManager.getGlucoseStats(serial,0L,System.currentTimeMillis());
+            jugglucoManager.getGlucoseStats(0L,System.currentTimeMillis());
             jugglucoManager.getSensorInfo(serial);
 
             // Example 3: Get complete glucose history (improved method)
@@ -76,8 +76,8 @@ public class UsageExample {
         });
 
 
-        jugglucoManager.setStatsListener((serial, stats) -> {
-            Log.d(TAG, "Stats for " + serial +
+        jugglucoManager.setStatsListener(( stats) -> {
+            Log.d(TAG, "Stats for "  +
                     ": n=" + stats.numberOfMeasurements +
                     ", avg=" + String.format("%.1f", stats.averageGlucose) +
                     ", sd=" + String.format("%.2f", stats.standardDeviation) +
@@ -123,9 +123,9 @@ public class UsageExample {
     }
 
     
-    public void getGlucoseStats(String serial) {
+    public void getGlucoseStats() {
         if (jugglucoManager != null) {
-            jugglucoManager.getGlucoseStats(serial);
+            jugglucoManager.getGlucoseStats();
         }
     }
     

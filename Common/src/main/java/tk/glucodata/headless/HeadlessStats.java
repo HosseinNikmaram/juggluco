@@ -18,24 +18,22 @@ public final class HeadlessStats {
         this.listener = listener;
     }
 
-    public void emitIfReady(String serial) {
+    public void emitIfReady() {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistoryAccessor.getAllGlucoseData(serial);
+        var hist = HeadlessHistoryAccessor.getAllGlucoseData();
         if (hist == null || hist.isEmpty()) return;
         HeadlessStatsSummary stats = computeSummary(hist);
-        listener.onStats(serial, stats);
+        listener.onStats( stats);
     }
 
-    public void emitIfReady(String serial, Long startMillis, Long endMillis) {
+    public void emitIfReady(Long startMillis, Long endMillis) {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistoryAccessor.getAllGlucoseData(serial);
-        if (hist == null || hist.isEmpty()) return;
-        var ranged = HeadlessHistoryAccessor.filterByTime(hist, startMillis, endMillis);
+        var ranged = HeadlessHistoryAccessor.filterByTime(startMillis, endMillis);
         if (ranged == null || ranged.isEmpty()) return;
         HeadlessStatsSummary stats = computeSummary(ranged);
-        listener.onStats(serial, stats);
+        listener.onStats(stats);
     }
 
     private HeadlessStatsSummary computeSummary(List<HeadlessHistory.GlucoseData> glucoseDataList) {
@@ -88,8 +86,6 @@ public final class HeadlessStats {
                 pBelow, pIn, pHigh, pVeryHigh);
     }
 
-    // No logging; thresholds are computed and carried in the summary only
-
     // Setters to configure thresholds dynamically
     public void setLowThresholdMgdl(double value) { this.lowThresholdMgdl = value; }
     public void setInRangeUpperThresholdMgdl(double value) { this.inRangeUpperThresholdMgdl = value; }
@@ -98,26 +94,14 @@ public final class HeadlessStats {
     // Internal helper to reuse existing native history without duplicating code
     private static final class HeadlessHistoryAccessor {
         // Get all glucose data as GlucoseData objects (cleaner approach)
-        static List<HeadlessHistory.GlucoseData> getAllGlucoseData(String serial) {
-            return HeadlessHistory.getCompleteGlucoseHistory(serial);
+        static List<HeadlessHistory.GlucoseData> getAllGlucoseData() {
+            return HeadlessHistory.getCompleteGlucoseHistory();
         }
         
         // Filter glucose data by time range
-        static List<HeadlessHistory.GlucoseData> filterByTime(List<HeadlessHistory.GlucoseData> data, Long startMillis, Long endMillis) {
-            if (data == null) return null;
-            if (startMillis == null && endMillis == null) return data;
-            
-            List<HeadlessHistory.GlucoseData> filtered = new ArrayList<>();
-            for (HeadlessHistory.GlucoseData item : data) {
-                if (startMillis != null && item.timeMillis < startMillis) continue;
-                if (endMillis != null && item.timeMillis > endMillis) continue;
-                filtered.add(item);
-            }
-            return filtered;
+        static List<HeadlessHistory.GlucoseData> filterByTime(Long startMillis, Long endMillis) {
+            return HeadlessHistory.getGlucoseHistoryInRange(startMillis, endMillis);
         }
-        
-        // Legacy method for backward compatibility (if needed)
-        static long[] getAll() { return Natives.getAllGlucoseHistory(); }
         
         // Legacy filter method for backward compatibility (if needed)
         static long[] filter(long[] flat, Long startMillis, Long endMillis) {
