@@ -21,7 +21,6 @@ public class HeadlessJugglucoManager {
     public static GlucoseListener glucoseListener;
     private Activity activity;
     private HeadlessNfcReader nfcReader;
-    private HeadlessHistory historyManager;
     private HeadlessStats statsManager;
     private static volatile boolean nativesInitialized = false;
     
@@ -74,16 +73,7 @@ public class HeadlessJugglucoManager {
         glucoseListener = listener;
     }
     
-    /**
-     * Set history listener for glucose history data
-     * @param serial Sensor serial number
-     */
-    public void setHistoryListener(String serial) {
-        if (serial != null) {
-            historyManager = new HeadlessHistory(serial);
-        }
-    }
-    
+
     /**
      * Set stats listener for glucose statistics
      * @param listener Stats listener implementation
@@ -143,68 +133,11 @@ public class HeadlessJugglucoManager {
     }
 
     /**
-     * Get current glucose history for a sensor
-     * @return Array of [timeMillis, mgdl] pairs
-     */
-    public long[][] getGlucoseHistory() {
-        if (historyManager != null) {
-            GlucoseData glucoseData = historyManager.extractCurrentGlucoseData();
-            if (glucoseData != null) {
-                // Create a single entry history array for the current glucose reading
-                long[][] currentGlucose = new long[1][2];
-                currentGlucose[0][0] = glucoseData.timeMillis;
-                currentGlucose[0][1] = glucoseData.mgdl;
-                return currentGlucose;
-            }
-        }
-        return new long[0][2];
-    }
-    
-    /**
-     * Get glucose history for a sensor within an optional time range
-     * If startMillis/endMillis are null, they are ignored
-     * @param startMillis Start time in milliseconds (null for no limit)
-     * @param endMillis End time in milliseconds (null for no limit)
-     * @return Array of [timeMillis, mgdl] pairs
-     */
-    public long[][] getGlucoseHistory(Long startMillis, Long endMillis) {
-        if (historyManager != null) {
-            List<HeadlessHistory.GlucoseData> allHistory = historyManager.getCompleteGlucoseHistory();
-            List<HeadlessHistory.GlucoseData> filteredHistory = new ArrayList<>();
-            
-            for (HeadlessHistory.GlucoseData data : allHistory) {
-                // Apply time filtering
-                if (startMillis != null && data.timeMillis < startMillis) {
-                    continue;
-                }
-                if (endMillis != null && data.timeMillis > endMillis) {
-                    continue;
-                }
-                filteredHistory.add(data);
-            }
-            
-            // Convert to legacy format
-            long[][] historyArray = new long[filteredHistory.size()][2];
-            for (int i = 0; i < filteredHistory.size(); i++) {
-                HeadlessHistory.GlucoseData data = filteredHistory.get(i);
-                historyArray[i][0] = data.timeMillis;
-                historyArray[i][1] = data.mgdl;
-            }
-            
-            return historyArray;
-        }
-        return new long[0][2];
-    }
-
-    /**
      * Get complete glucose history for a sensor as a list of GlucoseData objects
      * @return List of GlucoseData objects, or empty list if no data
      */
-    public List<HeadlessHistory.GlucoseData> getCompleteGlucoseHistory() {
-        if (historyManager != null) {
-            return historyManager.getCompleteGlucoseHistory();
-        }
-        return new ArrayList<>();
+    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory(String serial) {
+        return HeadlessHistory.getCompleteGlucoseHistory(serial);
     }
 
     /**
@@ -213,11 +146,8 @@ public class HeadlessJugglucoManager {
      * @param endMillis End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
-        if (historyManager != null) {
-            return historyManager.getGlucoseHistoryInRange(startMillis, endMillis);
-        }
-        return new ArrayList<>();
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(String serial,Long startMillis, Long endMillis) {
+        return HeadlessHistory.getGlucoseHistoryInRange(serial,startMillis, endMillis);
     }
     
     /**

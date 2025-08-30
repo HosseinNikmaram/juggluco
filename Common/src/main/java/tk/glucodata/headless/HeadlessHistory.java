@@ -5,41 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class HeadlessHistory {
-    private final String serial;
 
-    public HeadlessHistory(String serial) {
-        this.serial = serial;
-    }
-
-    /**
-     * Extract current glucose data using the same logic as watchdrip
-     * @return GlucoseData object containing current glucose information, or null if no data
-     */
-    public GlucoseData extractCurrentGlucoseData() {
-        var gl = Natives.getlastGlucose();
-        if (gl == null) return null;
-        
-        long res = gl[1];
-        int glumgdl = (int) (res & 0xFFFFFFFFL);
-        if (glumgdl != 0) {
-            int alarm = (int) ((res >> 48) & 0xFFL);
-            short ratein = (short) ((res >> 32) & 0xFFFFL);
-            float rate = ratein / 1000.0f;
-            long timeMillis = gl[0] * 1000L; // Convert seconds to milliseconds
-            
-            // Calculate mmol/L value
-            float mmolL = glumgdl / 18.0f;
-            
-            return new GlucoseData(glumgdl, mmolL, rate, alarm, timeMillis);
-        }
-        return null;
-    }
-
+    public HeadlessHistory() {}
     /**
      * Get complete glucose history for a sensor as a list of GlucoseData objects
      * @return List of GlucoseData objects, or empty list if no data
      */
-    public List<GlucoseData> getCompleteGlucoseHistory() {
+    public static List<GlucoseData> getCompleteGlucoseHistory(String serial) {
         List<GlucoseData> history = new ArrayList<>();
         
         // Get sensor pointer
@@ -47,9 +19,6 @@ public final class HeadlessHistory {
         if (sensorPtr == 0) {
             return history;
         }
-        
-        // Get sensor start time
-        long sensorStartMillis = Natives.getSensorStartmsec(sensorPtr);
         
         // Iterate through all glucose readings
         int pos = 0;
@@ -71,7 +40,7 @@ public final class HeadlessHistory {
                 float mmolL = mgdl / 18.0f;
                 
                 // Create GlucoseData object
-                GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, 0.0f, 0, timeMillis, sensorStartMillis, 0);
+                GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, timeMillis);
                 history.add(glucoseData);
             }
             
@@ -91,8 +60,8 @@ public final class HeadlessHistory {
      * @param endMillis End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public List<GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
-        List<GlucoseData> allHistory = getCompleteGlucoseHistory();
+    public static List<GlucoseData> getGlucoseHistoryInRange(String serial,Long startMillis, Long endMillis) {
+        List<GlucoseData> allHistory = getCompleteGlucoseHistory(serial);
         List<GlucoseData> filteredHistory = new ArrayList<>();
         
         for (GlucoseData data : allHistory) {
@@ -110,43 +79,25 @@ public final class HeadlessHistory {
     }
 
     /**
-     * Get the sensor serial number
-     * @return Sensor serial number
-     */
-    public String getSerial() {
-        return serial;
-    }
-
-    /**
      * Data class to hold extracted glucose information
      */
     public static class GlucoseData {
-        public final int mgdl;                    // Glucose value in mg/dL
-        public final float mmolL;                 // Glucose value in mmol/L
-        public final float rate;                  // Rate of change in mg/dL/min
-        public final int alarm;                   // Alarm status
-        public final long timeMillis;             // Timestamp in milliseconds
-        public final long sensorStartMillis;      // Sensor start time in milliseconds
-        public final int sensorGen;               // Sensor generation
-        
-        public GlucoseData(int mgdl, float mmolL, float rate, int alarm, long timeMillis) {
-            this(mgdl, mmolL, rate, alarm, timeMillis, 0, 0);
-        }
-        
-        public GlucoseData(int mgdl, float mmolL, float rate, int alarm, long timeMillis, long sensorStartMillis, int sensorGen) {
+        public int mgdl;                    // Glucose value in mg/dL
+        public float mmolL;                 // Glucose value in mmol/L
+        public long timeMillis;             // Timestamp in milliseconds
+
+        public GlucoseData(int mgdl, float mmolL, long timeMillis) {
             this.mgdl = mgdl;
             this.mmolL = mmolL;
-            this.rate = rate;
-            this.alarm = alarm;
             this.timeMillis = timeMillis;
-            this.sensorStartMillis = sensorStartMillis;
-            this.sensorGen = sensorGen;
         }
+
+
         
         @Override
         public String toString() {
-            return String.format("GlucoseData{mgdl=%d, mmolL=%.1f, rate=%.3f, alarm=%d, time=%d, sensorStart=%d, gen=%d}", 
-                               mgdl, mmolL, rate, alarm, timeMillis, sensorStartMillis, sensorGen);
+            return String.format("GlucoseData{mgdl=%d, mmolL=%.1f,  time=%d}",
+                               mgdl, mmolL, timeMillis);
         }
     }
 }

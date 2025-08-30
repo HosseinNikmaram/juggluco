@@ -2,10 +2,11 @@ package tk.glucodata.headless;
 
 import android.app.Activity;
 import android.content.Context;
-import android.nfc.Tag;
 import android.widget.Toast;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ public class UsageExample {
     private HeadlessJugglucoManager jugglucoManager;
     private Context context;
     private boolean initialized = false;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private UsageExample() {}
     
@@ -62,12 +64,18 @@ public class UsageExample {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
             jugglucoManager.getGlucoseStats(serial,0L,System.currentTimeMillis());
-            jugglucoManager.getGlucoseHistory(0L,System.currentTimeMillis());
+            jugglucoManager.getAllGlucoseHistory(serial).forEach(glucoseData -> {
+                String timeStr = sdf.format(new Date(glucoseData.timeMillis));
+                Log.d(TAG, String.format(
+                        "Time: %s, Glucose: %d mg/dL (%.1f mmol/L), Rate: %.3f, Alarm: %d",
+                        timeStr,
+                        glucoseData.mgdl,
+                        glucoseData.mmolL
+                ));
+            });
             jugglucoManager.getSensorInfo(serial);
         });
 
-        // Set up history manager with sensor serial
-        jugglucoManager.setHistoryListener("sensor123");
 
         jugglucoManager.setStatsListener((serial, stats) -> {
             Log.d(TAG, "Stats for " + serial +
@@ -114,24 +122,7 @@ public class UsageExample {
             jugglucoManager.stopBluetoothScanning();
         }
     }
-    
-    public void getGlucoseHistory(String serial) {
-        if (jugglucoManager != null) {
-            // Get current glucose history
-            long[][] history = jugglucoManager.getGlucoseHistory();
-            Log.d(TAG, "Current glucose history count: " + history.length);
-            
-            // Get complete glucose history as GlucoseData objects
-            List<HeadlessHistory.GlucoseData> completeHistory = jugglucoManager.getCompleteGlucoseHistory();
-            Log.d(TAG, "Complete glucose history count: " + completeHistory.size());
-            
-            // Example: Get history for last 24 hours
-            long startTime = System.currentTimeMillis() - (24 * 60 * 60 * 1000);
-            long endTime = System.currentTimeMillis();
-            List<HeadlessHistory.GlucoseData> dailyHistory = jugglucoManager.getGlucoseHistoryInRange(startTime, endTime);
-            Log.d(TAG, "Daily glucose history count: " + dailyHistory.size());
-        }
-    }
+
     
     public void getGlucoseStats(String serial) {
         if (jugglucoManager != null) {
