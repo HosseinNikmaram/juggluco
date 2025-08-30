@@ -86,6 +86,30 @@ public final class HeadlessHistory {
     }
 
     /**
+     * Get glucose history for a sensor within a time range as a list of GlucoseData objects
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return List of GlucoseData objects within the time range
+     */
+    public List<GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
+        List<GlucoseData> allHistory = getCompleteGlucoseHistory();
+        List<GlucoseData> filteredHistory = new ArrayList<>();
+        
+        for (GlucoseData data : allHistory) {
+            // Apply time filtering
+            if (startMillis != null && data.timeMillis < startMillis) {
+                continue;
+            }
+            if (endMillis != null && data.timeMillis > endMillis) {
+                continue;
+            }
+            filteredHistory.add(data);
+        }
+        
+        return filteredHistory;
+    }
+
+    /**
      * Get the sensor serial number
      * @return Sensor serial number
      */

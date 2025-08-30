@@ -215,21 +215,7 @@ public class HeadlessJugglucoManager {
      */
     public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
         if (historyManager != null) {
-            List<HeadlessHistory.GlucoseData> allHistory = historyManager.getCompleteGlucoseHistory();
-            List<HeadlessHistory.GlucoseData> filteredHistory = new ArrayList<>();
-            
-            for (HeadlessHistory.GlucoseData data : allHistory) {
-                // Apply time filtering
-                if (startMillis != null && data.timeMillis < startMillis) {
-                    continue;
-                }
-                if (endMillis != null && data.timeMillis > endMillis) {
-                    continue;
-                }
-                filteredHistory.add(data);
-            }
-            
-            return filteredHistory;
+            return historyManager.getGlucoseHistoryInRange(startMillis, endMillis);
         }
         return new ArrayList<>();
     }
