@@ -76,6 +76,28 @@ public class UsageExample {
                 ));
             }
 
+            // Example 3: Get complete glucose history (improved method)
+            List<HeadlessHistory.GlucoseData> completeHistory = HeadlessHistory.getCompleteGlucoseHistory(serial);
+            Log.d(TAG, String.format("Complete history contains %d readings", completeHistory.size()));
+            
+            // Example 4: Get history as flat array (most efficient for bulk operations)
+            long[] flatHistory = HeadlessHistory.getGlucoseHistoryFlat();
+            if (flatHistory != null) {
+                int numReadings = flatHistory.length / 2;
+                Log.d(TAG, String.format("Flat history contains %d readings", numReadings));
+                
+                // Show first few readings
+                for (int i = 0; i < Math.min(3, numReadings); i++) {
+                    long timeSeconds = flatHistory[i * 2];
+                    long packedGlucose = flatHistory[i * 2 + 1];
+                    double mmolL = (double) packedGlucose / 4294967296.0;
+                    int mgdl = (int) Math.round(mmolL * 18.0);
+                    String timeStr = sdf.format(new Date(timeSeconds * 1000L));
+                    Log.d(TAG, String.format("Reading %d: Time: %s, Glucose: %d mg/dL", 
+                            i + 1, timeStr, mgdl));
+                }
+            }
+
             jugglucoManager.getSensorInfo(serial);
         });
 
@@ -133,6 +155,46 @@ public class UsageExample {
         }
     }
     
+    /**
+     * Get complete glucose history for a sensor
+     * This is the recommended way to get all glucose data
+     * @param serial Sensor serial number
+     * @return List of GlucoseData objects, or empty list if no data
+     */
+    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory(String serial) {
+        if (jugglucoManager != null) {
+            return jugglucoManager.getAllGlucoseHistory(serial);
+        }
+        return new ArrayList<>();
+    }
+    
+    /**
+     * Get glucose history as a flat array (most efficient for bulk operations)
+     * This is the most reliable method for getting all glucose data
+     * @param serial Sensor serial number
+     * @return long array with [timestamp1, glucose1, timestamp2, glucose2, ...] format
+     */
+    public long[] getGlucoseHistoryFlat(String serial) {
+        if (jugglucoManager != null) {
+            return jugglucoManager.getGlucoseHistoryFlat(serial);
+        }
+        return null;
+    }
+    
+    /**
+     * Get glucose history within a time range
+     * @param serial Sensor serial number
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return List of GlucoseData objects within the time range
+     */
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(String serial, Long startMillis, Long endMillis) {
+        if (jugglucoManager != null) {
+            return jugglucoManager.getGlucoseHistoryInRange(serial, startMillis, endMillis);
+        }
+        return new ArrayList<>();
+    }
+    
     public boolean isStreamingActive() {
         return jugglucoManager != null && jugglucoManager.isBluetoothStreamingActive();
     }
@@ -143,6 +205,72 @@ public class UsageExample {
             jugglucoManager = null;
         }
         initialized = false;
+    }
+    
+    /**
+     * Demo method showing how to get all glucose history
+     * This demonstrates the best practices for retrieving glucose data
+     */
+    public void demonstrateGlucoseHistory(String serial) {
+        if (!initialized) {
+            Log.w(TAG, "Juggluco not initialized");
+            return;
+        }
+        
+        Log.d(TAG, "=== Demonstrating Glucose History Retrieval ===");
+        
+        // Method 1: Get complete history as GlucoseData objects (most user-friendly)
+        List<HeadlessHistory.GlucoseData> completeHistory = getAllGlucoseHistory(serial);
+        Log.d(TAG, String.format("Complete history: %d readings", completeHistory.size()));
+        
+        if (!completeHistory.isEmpty()) {
+            // Show first and last readings
+            HeadlessHistory.GlucoseData first = completeHistory.get(0);
+            HeadlessHistory.GlucoseData last = completeHistory.get(completeHistory.size() - 1);
+            
+            String firstTime = sdf.format(new Date(first.timeMillis));
+            String lastTime = sdf.format(new Date(last.timeMillis));
+            
+            Log.d(TAG, String.format("First reading: %s - %d mg/dL (%.1f mmol/L)", 
+                    firstTime, first.mgdl, first.mmolL));
+            Log.d(TAG, String.format("Last reading: %s - %d mg/dL (%.1f mmol/L)", 
+                    lastTime, last.mgdl, last.mmolL));
+        }
+        
+        // Method 2: Get history as flat array (most efficient for bulk processing)
+        long[] flatHistory = getGlucoseHistoryFlat(serial);
+        if (flatHistory != null) {
+            int numReadings = flatHistory.length / 2;
+            Log.d(TAG, String.format("Flat history: %d readings", numReadings));
+            
+            // Calculate some basic statistics
+            if (numReadings > 0) {
+                double sum = 0;
+                int validCount = 0;
+                for (int i = 0; i < numReadings; i++) {
+                    long packedGlucose = flatHistory[i * 2 + 1];
+                    if (packedGlucose != 0) {
+                        double mmolL = (double) packedGlucose / 4294967296.0;
+                        double mgdl = mmolL * 18.0;
+                        sum += mgdl;
+                        validCount++;
+                    }
+                }
+                
+                if (validCount > 0) {
+                    double average = sum / validCount;
+                    Log.d(TAG, String.format("Average glucose: %.1f mg/dL", average));
+                }
+            }
+        }
+        
+        // Method 3: Get history within a time range (last 24 hours)
+        long now = System.currentTimeMillis();
+        long yesterday = now - (24 * 60 * 60 * 1000L);
+        List<HeadlessHistory.GlucoseData> recentHistory = getGlucoseHistoryInRange(serial, yesterday, now);
+        Log.d(TAG, String.format("Last 24 hours: %d readings", recentHistory.size()));
+        
+        Log.d(TAG, "=== End Glucose History Demo ===");
     }
 
 }

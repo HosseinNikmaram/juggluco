@@ -140,6 +140,25 @@ public class HeadlessJugglucoManager {
         return HeadlessHistory.getCompleteGlucoseHistory(serial);
     }
 
+    /**
+     * Get glucose history as a flat array (more efficient for bulk operations)
+     * This is the most reliable method for getting all glucose data
+     * @return long array with [timestamp1, glucose1, timestamp2, glucose2, ...] format
+     */
+    public long[] getGlucoseHistoryFlat(String serial) {
+        return HeadlessHistory.getGlucoseHistoryFlat();
+    }
+
+    /**
+     * Get glucose history as a flat array within a time range
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return long array with filtered data, or null if error
+     */
+    public long[] getGlucoseHistoryFlatInRange(String serial, Long startMillis, Long endMillis) {
+        return HeadlessHistory.getGlucoseHistoryFlatInRange(startMillis, endMillis);
+    }
+
 
     /**
      * Get glucose history for a sensor within a time range as a list of GlucoseData objects

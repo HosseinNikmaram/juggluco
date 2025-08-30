@@ -11,59 +11,53 @@ public final class HeadlessHistory {
 
     /**
      * Get complete glucose history for a sensor as a list of GlucoseData objects
+     * This method uses the more reliable Natives.getlastGlucose() approach
      *
+     * @param serial Sensor serial number (not used in current implementation but kept for compatibility)
      * @return List of GlucoseData objects, or empty list if no data
      */
     public static List<GlucoseData> getCompleteGlucoseHistory(String serial) {
         List<GlucoseData> history = new ArrayList<>();
-
-        // Get sensor pointer
-        long sensorPtr = Natives.getdataptr(serial);
-        if (sensorPtr == 0) {
-            return history;
+        
+        try {
+            // Use the more reliable native method that returns flat array
+            long[] flatData = Natives.getlastGlucose();
+            if (flatData == null || flatData.length < 2) {
+                return history;
+            }
+            
+            // Process the flat array: [timestamp1, glucose1, timestamp2, glucose2, ...]
+            int n = flatData.length / 2;
+            for (int i = 0; i < n; i++) {
+                long timeSeconds = flatData[i * 2];
+                long packedGlucose = flatData[i * 2 + 1];
+                
+                if (timeSeconds > 0 && packedGlucose != 0) {
+                    // Convert timestamp from seconds to milliseconds
+                    long timeMillis = timeSeconds * 1000L;
+                    
+                    // Decode Q32.32 mmol/L to mg/dL (same logic as HeadlessStats)
+                    double mmolL = (double) packedGlucose / 4294967296.0;
+                    int mgdl = (int) Math.round(mmolL * 18.0);
+                    
+                    if (mgdl > 0) {
+                        GlucoseData glucoseData = new GlucoseData(mgdl, (float) mmolL, timeMillis);
+                        history.add(glucoseData);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Log error and return empty list
+            System.err.println("Error getting glucose history: " + e.getMessage());
         }
-
-        // Iterate through all glucose readings
-        int pos = 0;
-        while (true) {
-            long timeValue = Natives.streamfromSensorptr(sensorPtr, pos);
-
-            // Check if we've reached the end
-            // The C++ code returns (len << 48) when no more data
-            if ((timeValue >> 48) == 0 || (timeValue >> 48) >= 0xFFFF) {
-                break;
-            }
-
-            // Extract data from the packed value
-            // Bits 0-31: time (seconds)
-            // Bits 32-47: mg/dL value (16 bits) 
-            // Bits 48-63: next position (16 bits)
-            long timeSeconds = timeValue & 0xFFFFFFFFL;
-            int mgdl = (int) ((timeValue >> 32) & 0xFFFFL);
-            int nextPos = (int) ((timeValue >> 48) & 0xFFFFL);
-
-            if (mgdl > 0 && timeSeconds > 0) {
-                long timeMillis = timeSeconds * 1000L;
-                float mmolL = mgdl / 18.0f;
-
-                // Create GlucoseData object
-                GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, timeMillis);
-                history.add(glucoseData);
-            }
-
-            // Move to next position
-            if (nextPos <= pos || nextPos >= 0xFFFF) {
-                break; // Prevent infinite loop or invalid position
-            }
-            pos = nextPos;
-        }
-
+        
         return history;
     }
 
     /**
      * Get glucose history for a sensor within a time range as a list of GlucoseData objects
      *
+     * @param serial Sensor serial number
      * @param startMillis Start time in milliseconds (null for no limit)
      * @param endMillis   End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
@@ -109,6 +103,62 @@ public final class HeadlessHistory {
     }
 
     /**
+     * Get glucose history as a flat array (more efficient for bulk operations)
+     * This is the most reliable method for getting all glucose data
+     *
+     * @return long array with [timestamp1, glucose1, timestamp2, glucose2, ...] format
+     */
+    public static long[] getGlucoseHistoryFlat() {
+        try {
+            return Natives.getlastGlucose();
+        } catch (Exception e) {
+            System.err.println("Error getting flat glucose history: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Get glucose history as a flat array within a time range
+     *
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis   End time in milliseconds (null for no limit)
+     * @return long array with filtered data, or null if error
+     */
+    public static long[] getGlucoseHistoryFlatInRange(Long startMillis, Long endMillis) {
+        long[] flatData = getGlucoseHistoryFlat();
+        if (flatData == null || flatData.length < 2) {
+            return null;
+        }
+        
+        if (startMillis == null && endMillis == null) {
+            return flatData; // No filtering needed
+        }
+        
+        // Count how many entries are in range
+        int totalPairs = flatData.length / 2;
+        int count = 0;
+        for (int i = 0; i < totalPairs; i++) {
+            long t = flatData[i * 2] * 1000L; // Convert to milliseconds
+            if (startMillis != null && t < startMillis) continue;
+            if (endMillis != null && t > endMillis) continue;
+            count++;
+        }
+        
+        // Create filtered array
+        long[] out = new long[count * 2];
+        int idx = 0;
+        for (int i = 0; i < totalPairs; i++) {
+            long t = flatData[i * 2] * 1000L; // Convert to milliseconds
+            if (startMillis != null && t < startMillis) continue;
+            if (endMillis != null && t > endMillis) continue;
+            out[idx++] = flatData[i * 2];     // timestamp
+            out[idx++] = flatData[i * 2 + 1]; // glucose value
+        }
+        
+        return out;
+    }
+
+    /**
      * Data class to hold extracted glucose information
      */
     public static class GlucoseData {
@@ -121,7 +171,6 @@ public final class HeadlessHistory {
             this.mmolL = mmolL;
             this.timeMillis = timeMillis;
         }
-
 
         @Override
         public String toString() {
