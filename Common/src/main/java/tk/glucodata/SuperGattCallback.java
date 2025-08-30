@@ -423,7 +423,29 @@ protected void handleGlucoseResult(long res,long timmsec) {
             float gl = Applic.unit == 1 ? glumgdl / mgdLmult : glumgdl;
             short ratein = (short) ((res >> 32) & 0xFFFFL);
             float rate = ratein / 1000.0f;
-            //dowithglucose(SerialNumber, glumgdl, gl, rate, alarm, timmsec,sensorstartmsec,showtime,sensorgen);
+            
+            // Add to watchdrip history if enabled
+            if(doWearInt) {
+                try {
+                    // Get sensor information
+                    long sensorStartMillis = sensorstartmsec;
+                    if(sensorStartMillis == 0) {
+                        sensorStartMillis = System.currentTimeMillis() - (24 * 60 * 60 * 1000L); // Default to 24 hours ago
+                    }
+                    
+                    // Add to watchdrip history
+                    var watchdripClass = Class.forName("tk.glucodata.watchdrip");
+                    var addToHistoryMethod = watchdripClass.getDeclaredMethod("addToHistory", 
+                        String.class, int.class, float.class, float.class, int.class, 
+                        long.class, long.class, int.class);
+                    addToHistoryMethod.setAccessible(true);
+                    addToHistoryMethod.invoke(null, SerialNumber, glumgdl, gl, rate, alarm, 
+                                           timmsec, sensorStartMillis, sensorgen);
+                } catch(Throwable ignore) {
+                    if(doLog) Log.d(LOG_ID, "Could not add to watchdrip history: " + ignore.getMessage());
+                }
+            }
+            
             // Headless listener dispatch
             try {
                 var lis = tk.glucodata.headless.HeadlessJugglucoManager.glucoseListener;
@@ -439,8 +461,7 @@ protected void handleGlucoseResult(long res,long timmsec) {
                             HealthConnection.Companion.writeAll(sensorptr,SerialNumber);
                             }
                         }
-                    }
-                }*/
+                    }*/
             SensorBluetooth.othersworking(this,timmsec);
         } else {
             {if(doLog) {Log.i(LOG_ID, SerialNumber + " onCharacteristicChanged: Glucose failed");};};
