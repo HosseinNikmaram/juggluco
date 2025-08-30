@@ -13,10 +13,9 @@ public final class HeadlessHistory {
      * Get complete glucose history for a sensor as a list of GlucoseData objects
      * This method uses the new Natives.getAllGlucoseHistory() method for complete data
      *
-     * @param serial Sensor serial number (not used in current implementation but kept for compatibility)
      * @return List of GlucoseData objects, or empty list if no data
      */
-    public static List<GlucoseData> getCompleteGlucoseHistory(String serial) {
+    public static List<GlucoseData> getCompleteGlucoseHistory() {
         List<GlucoseData> history = new ArrayList<>();
         
         try {
@@ -63,13 +62,12 @@ public final class HeadlessHistory {
     /**
      * Get glucose history for a sensor within a time range as a list of GlucoseData objects
      *
-     * @param serial Sensor serial number
      * @param startMillis Start time in milliseconds (null for no limit)
      * @param endMillis   End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public static List<GlucoseData> getGlucoseHistoryInRange(String serial, Long startMillis, Long endMillis) {
-        List<GlucoseData> allHistory = getCompleteGlucoseHistory(serial);
+    public static List<GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
+        List<GlucoseData> allHistory = getCompleteGlucoseHistory();
         List<GlucoseData> filteredHistory = new ArrayList<>();
 
         for (GlucoseData data : allHistory) {
@@ -86,83 +84,6 @@ public final class HeadlessHistory {
         return filteredHistory;
     }
 
-    /**
-     * Get the latest glucose reading for a sensor
-     *
-     * @param serial Sensor serial number
-     * @return Latest GlucoseData object, or null if no data available
-     */
-    public static GlucoseData getLatestGlucoseReading(String serial) {
-        List<GlucoseData> history = getCompleteGlucoseHistory(serial);
-        if (history.isEmpty()) {
-            return null;
-        }
-
-        // Find the most recent reading (highest timestamp)
-        GlucoseData latest = history.get(0);
-        for (GlucoseData data : history) {
-            if (data.timeMillis > latest.timeMillis) {
-                latest = data;
-            }
-        }
-        return latest;
-    }
-
-    /**
-     * Get glucose history as a flat array (more efficient for bulk operations)
-     * This is the most reliable method for getting all glucose data
-     *
-     * @return long array with [timestamp1, glucose1, timestamp2, glucose2, ...] format
-     */
-    public static long[] getGlucoseHistoryFlat() {
-        try {
-            return Natives.getAllGlucoseHistory();
-        } catch (Exception e) {
-            System.err.println("Error getting flat glucose history: " + e.getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Get glucose history as a flat array within a time range
-     *
-     * @param startMillis Start time in milliseconds (null for no limit)
-     * @param endMillis   End time in milliseconds (null for no limit)
-     * @return long array with filtered data, or null if error
-     */
-    public static long[] getGlucoseHistoryFlatInRange(Long startMillis, Long endMillis) {
-        long[] flatData = getGlucoseHistoryFlat();
-        if (flatData == null || flatData.length < 2) {
-            return null;
-        }
-        
-        if (startMillis == null && endMillis == null) {
-            return flatData; // No filtering needed
-        }
-        
-        // Count how many entries are in range
-        int totalPairs = flatData.length / 2;
-        int count = 0;
-        for (int i = 0; i < totalPairs; i++) {
-            long t = flatData[i * 2] * 1000L; // Convert to milliseconds
-            if (startMillis != null && t < startMillis) continue;
-            if (endMillis != null && t > endMillis) continue;
-            count++;
-        }
-        
-        // Create filtered array
-        long[] out = new long[count * 2];
-        int idx = 0;
-        for (int i = 0; i < totalPairs; i++) {
-            long t = flatData[i * 2] * 1000L; // Convert to milliseconds
-            if (startMillis != null && t < startMillis) continue;
-            if (endMillis != null && t > endMillis) continue;
-            out[idx++] = flatData[i * 2];     // timestamp
-            out[idx++] = flatData[i * 2 + 1]; // glucose value
-        }
-        
-        return out;
-    }
 
     /**
      * Data class to hold extracted glucose information

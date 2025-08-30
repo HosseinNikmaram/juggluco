@@ -136,27 +136,8 @@ public class HeadlessJugglucoManager {
      * Get complete glucose history for a sensor as a list of GlucoseData objects
      * @return List of GlucoseData objects, or empty list if no data
      */
-    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory(String serial) {
-        return HeadlessHistory.getCompleteGlucoseHistory(serial);
-    }
-
-    /**
-     * Get glucose history as a flat array (more efficient for bulk operations)
-     * This is the most reliable method for getting all glucose data
-     * @return long array with [timestamp1, glucose1, timestamp2, glucose2, ...] format
-     */
-    public long[] getGlucoseHistoryFlat(String serial) {
-        return HeadlessHistory.getGlucoseHistoryFlat();
-    }
-
-    /**
-     * Get glucose history as a flat array within a time range
-     * @param startMillis Start time in milliseconds (null for no limit)
-     * @param endMillis End time in milliseconds (null for no limit)
-     * @return long array with filtered data, or null if error
-     */
-    public long[] getGlucoseHistoryFlatInRange(String serial, Long startMillis, Long endMillis) {
-        return HeadlessHistory.getGlucoseHistoryFlatInRange(startMillis, endMillis);
+    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory() {
+        return HeadlessHistory.getCompleteGlucoseHistory();
     }
 
 
@@ -166,8 +147,8 @@ public class HeadlessJugglucoManager {
      * @param endMillis End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(String serial,Long startMillis, Long endMillis) {
-        return HeadlessHistory.getGlucoseHistoryInRange(serial,startMillis, endMillis);
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
+        return HeadlessHistory.getGlucoseHistoryInRange(startMillis, endMillis);
     }
     
     /**
