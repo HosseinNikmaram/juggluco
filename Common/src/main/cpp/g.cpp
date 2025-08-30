@@ -829,6 +829,61 @@ extern "C" JNIEXPORT jlongArray JNICALL   fromjava(getlastGlucose)(JNIEnv *env, 
         }
     return nullptr;
     }
+
+extern "C" JNIEXPORT jlongArray JNICALL   fromjava(getAllGlucoseHistory)(JNIEnv *env, jclass cl) {
+    auto nu=time(nullptr);
+    if(const auto [hist,_]=getlaststream(nu);hist) {
+        const int startPos = hist->getstarthistory();
+        const int endPos = hist->getAllendhistory();
+        
+        if (startPos >= endPos) {
+            return nullptr; // No data available
+        }
+        
+        const int numReadings = endPos - startPos;
+        const int arraySize = numReadings * 2; // timestamp + glucose value for each reading
+        
+        jlongArray result = env->NewLongArray(arraySize);
+        if (result == nullptr) {
+            return nullptr; // Out of memory
+        }
+        
+        jlong* data = env->GetLongArrayElements(result, nullptr);
+        if (data == nullptr) {
+            return nullptr; // Failed to get array elements
+        }
+        
+        int dataIndex = 0;
+        for (int pos = startPos; pos < endPos; pos++) {
+            const Glucose* glucose = hist->getglucose(pos);
+            if (glucose && glucose->valid()) {
+                // Store timestamp (seconds)
+                data[dataIndex++] = static_cast<jlong>(glucose->gettime());
+                
+                // Store glucose value (mg/dL) and rate information
+                const uint16_t mgdL = glucose->getmgdL();
+                const float rate = glucose->getchange();
+                const jlong packedValue = glucoselong(mgdL, rate, hist);
+                data[dataIndex++] = packedValue;
+            }
+        }
+        
+        // Release the array elements
+        env->ReleaseLongArrayElements(result, data, 0);
+        
+        // Resize the array to actual data size if needed
+        if (dataIndex < arraySize) {
+            jlongArray finalResult = env->NewLongArray(dataIndex);
+            if (finalResult != nullptr) {
+                env->SetLongArrayRegion(finalResult, 0, dataIndex, data);
+            }
+            return finalResult;
+        }
+        
+        return result;
+    }
+    return nullptr;
+    }
 jlong glucoseback(uint32_t glval,float drate,SensorGlucoseData *hist) {
         if(!glval) return 0LL;
         hist->setbluetoothOn(1);

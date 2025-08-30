@@ -13,7 +13,7 @@ The `getCompleteGlucoseHistory` method has been completely rewritten to fix seve
 
 ## New Implementation
 
-The improved implementation uses `Natives.getlastGlucose()`, which is the same method used by the working `HeadlessStats` class. This method returns a flat array of `[timestamp, glucose_value]` pairs that's much more reliable.
+The improved implementation now uses `Natives.getAllGlucoseHistory()`, a new native method that properly iterates through all glucose data positions and returns the complete history. This method returns a flat array of `[timestamp, glucose_value]` pairs for ALL readings, not just the last one.
 
 ## Available Methods
 
@@ -35,12 +35,16 @@ if (flatData != null) {
         long timeSeconds = flatData[i * 2];
         long packedGlucose = flatData[i * 2 + 1];
         
-        // Decode Q32.32 mmol/L to mg/dL
-        double mmolL = (double) packedGlucose / 4294967296.0;
-        int mgdl = (int) Math.round(mmolL * 18.0);
+        // Extract glucose value and rate from packed data
+        // The packed data contains: rate (16 bits) | alarm (16 bits) | mg/dL (32 bits)
+        int mgdl = (int) (packedGlucose & 0xFFFFFFFFL);
+        short rateRaw = (short) ((packedGlucose >> 32) & 0xFFFFL);
+        int alarm = (int) ((packedGlucose >> 48) & 0xFFL);
         
-        Log.d(TAG, String.format("Reading %d: Time: %d, Glucose: %d mg/dL", 
-                i + 1, timeSeconds, mgdl));
+        float rate = rateRaw / 1000.0f; // Convert rate to proper units
+        
+        Log.d(TAG, String.format("Reading %d: Time: %d, Glucose: %d mg/dL, Rate: %.1f, Alarm: %d", 
+                i + 1, timeSeconds, mgdl, rate, alarm));
     }
 }
 ```
@@ -91,12 +95,17 @@ public static class GlucoseData {
 ### Flat Array Format
 The flat array contains pairs of values:
 - `flatData[i * 2]` = timestamp in seconds
-- `flatData[i * 2 + 1]` = packed glucose value (Q32.32 mmol/L format)
+- `flatData[i * 2 + 1]` = packed glucose value containing rate, alarm, and mg/dL
 
 To decode the glucose value:
 ```java
-double mmolL = (double) packedGlucose / 4294967296.0;
-int mgdl = (int) Math.round(mmolL * 18.0);
+// Extract glucose value and rate from packed data
+// The packed data contains: rate (16 bits) | alarm (16 bits) | mg/dL (32 bits)
+int mgdl = (int) (packedGlucose & 0xFFFFFFFFL);
+short rateRaw = (short) ((packedGlucose >> 32) & 0xFFFFL);
+int alarm = (int) ((packedGlucose >> 48) & 0xFFL);
+
+float rate = rateRaw / 1000.0f; // Convert rate to proper units
 ```
 
 ## Best Practices
@@ -151,10 +160,16 @@ private void processFlatGlucoseData(long[] flatData) {
         long packedGlucose = flatData[i * 2 + 1];
         
         if (packedGlucose != 0) {
-            double mmolL = (double) packedGlucose / 4294967296.0;
-            int mgdl = (int) Math.round(mmolL * 18.0);
+            // Extract all information from packed data
+            int mgdl = (int) (packedGlucose & 0xFFFFFFFFL);
+            short rateRaw = (short) ((packedGlucose >> 32) & 0xFFFFL);
+            int alarm = (int) ((packedGlucose >> 48) & 0xFFL);
             
-            Log.d(TAG, String.format("Flat data: %d mg/dL at %d", mgdl, timeSeconds));
+            float rate = rateRaw / 1000.0f;
+            float mmolL = mgdl / 18.0f;
+            
+            Log.d(TAG, String.format("Flat data: %d mg/dL (%.1f mmol/L), Rate: %.1f, Alarm: %d at %d", 
+                    mgdl, mmolL, rate, alarm, timeSeconds));
         }
     }
 }
@@ -185,11 +200,53 @@ The method signature remains the same, so existing code should work without chan
 3. **Performance issues**: Use the flat array methods for large datasets
 4. **Memory issues**: For very large datasets, consider processing data in chunks
 
+## Best Practice: Getting All History vs Last Reading
+
+### ❌ WRONG - Only gets last reading:
+```java
+// This only gets the LAST glucose reading, not all history
+var gl = Natives.getlastGlucose();
+if (gl == null) return;
+
+long res = gl[1];
+int glumgdl = (int) (res & 0xFFFFFFFFL);
+// ... process only the last reading
+```
+
+### ✅ CORRECT - Gets all history:
+```java
+// Method 1: Get all history as objects
+List<GlucoseData> allHistory = HeadlessHistory.getCompleteGlucoseHistory(serial);
+Log.d(TAG, "Total readings: " + allHistory.size());
+
+// Method 2: Get all history as flat array (most efficient)
+long[] allData = HeadlessHistory.getGlucoseHistoryFlat();
+if (allData != null) {
+    int numReadings = allData.length / 2;
+    Log.d(TAG, "Total readings: " + numReadings);
+    
+    for (int i = 0; i < numReadings; i++) {
+        long timeSeconds = allData[i * 2];
+        long packedGlucose = allData[i * 2 + 1];
+        
+        // Extract all information
+        int mgdl = (int) (packedGlucose & 0xFFFFFFFFL);
+        short rateRaw = (short) ((packedGlucose >> 32) & 0xFFFFL);
+        int alarm = (int) ((packedGlucose >> 48) & 0xFFL);
+        
+        float rate = rateRaw / 1000.0f;
+        
+        Log.d(TAG, String.format("Reading %d: %d mg/dL, Rate: %.1f, Alarm: %d at %d", 
+                i + 1, mgdl, rate, alarm, timeSeconds));
+    }
+}
+```
+
 ## Technical Details
 
 The improved implementation:
-- Uses the proven `Natives.getlastGlucose()` method
-- Handles data decoding correctly (Q32.32 format)
+- Uses the new `Natives.getAllGlucoseHistory()` method that properly iterates through all data
+- Handles data decoding correctly (extracts mg/dL, rate, and alarm from packed data)
 - Provides proper error handling and logging
 - Maintains backward compatibility
 - Offers multiple access patterns for different use cases

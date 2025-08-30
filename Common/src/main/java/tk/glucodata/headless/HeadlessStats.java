@@ -87,7 +87,7 @@ public final class HeadlessStats {
 
     // Internal helper to reuse existing native history without duplicating code
     private static final class HeadlessHistoryAccessor {
-        static long[] getAll() { return Natives.getlastGlucose(); }
+        static long[] getAll() { return Natives.getAllGlucoseHistory(); }
         static long[] filter(long[] flat, Long startMillis, Long endMillis) {
             if (flat == null) return null;
             if (startMillis == null && endMillis == null) return flat;

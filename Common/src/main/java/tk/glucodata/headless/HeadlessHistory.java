@@ -9,9 +9,9 @@ public final class HeadlessHistory {
     public HeadlessHistory() {
     }
 
-    /**
+        /**
      * Get complete glucose history for a sensor as a list of GlucoseData objects
-     * This method uses the more reliable Natives.getlastGlucose() approach
+     * This method uses the new Natives.getAllGlucoseHistory() method for complete data
      *
      * @param serial Sensor serial number (not used in current implementation but kept for compatibility)
      * @return List of GlucoseData objects, or empty list if no data
@@ -20,8 +20,8 @@ public final class HeadlessHistory {
         List<GlucoseData> history = new ArrayList<>();
         
         try {
-            // Use the more reliable native method that returns flat array
-            long[] flatData = Natives.getlastGlucose();
+            // Use the new native method that returns ALL glucose history
+            long[] flatData = Natives.getAllGlucoseHistory();
             if (flatData == null || flatData.length < 2) {
                 return history;
             }
@@ -36,12 +36,17 @@ public final class HeadlessHistory {
                     // Convert timestamp from seconds to milliseconds
                     long timeMillis = timeSeconds * 1000L;
                     
-                    // Decode Q32.32 mmol/L to mg/dL (same logic as HeadlessStats)
-                    double mmolL = (double) packedGlucose / 4294967296.0;
-                    int mgdl = (int) Math.round(mmolL * 18.0);
+                    // Extract glucose value and rate from packed data
+                    // The packed data contains: rate (16 bits) | alarm (16 bits) | mg/dL (32 bits)
+                    int mgdl = (int) (packedGlucose & 0xFFFFFFFFL);
+                    short rateRaw = (short) ((packedGlucose >> 32) & 0xFFFFL);
+                    int alarm = (int) ((packedGlucose >> 48) & 0xFFL);
                     
                     if (mgdl > 0) {
-                        GlucoseData glucoseData = new GlucoseData(mgdl, (float) mmolL, timeMillis);
+                        float rate = rateRaw / 1000.0f; // Convert rate to proper units
+                        float mmolL = mgdl / 18.0f;     // Convert mg/dL to mmol/L
+                        
+                        GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, timeMillis);
                         history.add(glucoseData);
                     }
                 }
@@ -110,7 +115,7 @@ public final class HeadlessHistory {
      */
     public static long[] getGlucoseHistoryFlat() {
         try {
-            return Natives.getlastGlucose();
+            return Natives.getAllGlucoseHistory();
         } catch (Exception e) {
             System.err.println("Error getting flat glucose history: " + e.getMessage());
             return null;
