@@ -9,6 +9,9 @@ import android.util.Log;
 import tk.glucodata.Natives;
 import tk.glucodata.SensorBluetooth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Main headless manager for Juggluco Libre sensor integration
  * Provides NFC scanning, BLE management, and glucose data access
@@ -148,6 +151,7 @@ public class HeadlessJugglucoManager {
             historyManager.emitFromNativeLast(serial);
         }
     }
+    
     /**
      * Get glucose history for a sensor within an optional time range
      * If startMillis/endMillis are null, they are ignored
@@ -156,6 +160,32 @@ public class HeadlessJugglucoManager {
         if (historyManager != null) {
             historyManager.emitFromNativeRange(serial, startMillis, endMillis);
         }
+    }
+
+    /**
+     * Get complete glucose history for a sensor as a list of GlucoseData objects
+     * @param serial Sensor serial number
+     * @return List of GlucoseData objects, or empty list if no data
+     */
+    public List<HeadlessHistory.GlucoseData> getCompleteGlucoseHistory(String serial) {
+        if (historyManager != null) {
+            return historyManager.getCompleteGlucoseHistory(serial);
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * Get glucose history for a sensor within a time range as a list of GlucoseData objects
+     * @param serial Sensor serial number
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return List of GlucoseData objects within the time range
+     */
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(String serial, Long startMillis, Long endMillis) {
+        if (historyManager != null) {
+            return historyManager.getGlucoseHistoryInRange(serial, startMillis, endMillis);
+        }
+        return new ArrayList<>();
     }
     
     /**
