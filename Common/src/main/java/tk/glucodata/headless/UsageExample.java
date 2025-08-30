@@ -59,8 +59,8 @@ public class UsageExample {
             activity.runOnUiThread(() -> {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
-            jugglucoManager.getGlucoseStats(serial);
-            jugglucoManager.getGlucoseHistory(serial);
+            jugglucoManager.getGlucoseStats(serial,0L,System.currentTimeMillis());
+            jugglucoManager.getGlucoseHistory(serial,0L,System.currentTimeMillis());
             jugglucoManager.getSensorInfo(serial);
         });
 
