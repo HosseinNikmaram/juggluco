@@ -69,9 +69,8 @@ public class UsageExample {
 
             // Example 3: Get complete glucose history (improved method)
             List<HeadlessHistory.GlucoseData> completeHistory = HeadlessHistory.getCompleteGlucoseHistory();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-                Log.d(TAG, String.format("Complete history contains size: %b and last item: %s ", completeHistory.size(), completeHistory.get(completeHistory.size() - 1).toString()));
-            }
+            Log.d(TAG, String.format("Complete history contains size: "+completeHistory.size()+" and last item: %s ", completeHistory.get(completeHistory.size() - 1).toString()));
+
 
 
         });
