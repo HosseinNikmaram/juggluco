@@ -6,64 +6,72 @@ import java.util.List;
 
 public final class HeadlessHistory {
 
-    public HeadlessHistory() {}
+    public HeadlessHistory() {
+    }
+
     /**
      * Get complete glucose history for a sensor as a list of GlucoseData objects
+     *
      * @return List of GlucoseData objects, or empty list if no data
      */
     public static List<GlucoseData> getCompleteGlucoseHistory(String serial) {
         List<GlucoseData> history = new ArrayList<>();
-        
+
         // Get sensor pointer
         long sensorPtr = Natives.getdataptr(serial);
         if (sensorPtr == 0) {
             return history;
         }
-        
+
         // Iterate through all glucose readings
         int pos = 0;
         while (true) {
             long timeValue = Natives.streamfromSensorptr(sensorPtr, pos);
-            
+
             // Check if we've reached the end
-            if ((timeValue >> 48) == 0) {
+            // The C++ code returns (len << 48) when no more data
+            if ((timeValue >> 48) == 0 || (timeValue >> 48) >= 0xFFFF) {
                 break;
             }
-            
+
             // Extract data from the packed value
+            // Bits 0-31: time (seconds)
+            // Bits 32-47: mg/dL value (16 bits) 
+            // Bits 48-63: next position (16 bits)
             long timeSeconds = timeValue & 0xFFFFFFFFL;
             int mgdl = (int) ((timeValue >> 32) & 0xFFFFL);
             int nextPos = (int) ((timeValue >> 48) & 0xFFFFL);
-            
+
             if (mgdl > 0 && timeSeconds > 0) {
                 long timeMillis = timeSeconds * 1000L;
                 float mmolL = mgdl / 18.0f;
-                
+
                 // Create GlucoseData object
                 GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, timeMillis);
                 history.add(glucoseData);
             }
-            
+
             // Move to next position
-            if (nextPos <= pos) {
-                break; // Prevent infinite loop
+            if (nextPos <= pos || nextPos >= 0xFFFF) {
+                break; // Prevent infinite loop or invalid position
             }
             pos = nextPos;
         }
-        
+
         return history;
     }
 
     /**
      * Get glucose history for a sensor within a time range as a list of GlucoseData objects
+     *
      * @param startMillis Start time in milliseconds (null for no limit)
-     * @param endMillis End time in milliseconds (null for no limit)
+     * @param endMillis   End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public static List<GlucoseData> getGlucoseHistoryInRange(String serial,Long startMillis, Long endMillis) {
+    public static List<GlucoseData> getGlucoseHistoryInRange(String serial, Long startMillis, Long endMillis) {
         List<GlucoseData> allHistory = getCompleteGlucoseHistory(serial);
         List<GlucoseData> filteredHistory = new ArrayList<>();
-        
+
         for (GlucoseData data : allHistory) {
             // Apply time filtering
             if (startMillis != null && data.timeMillis < startMillis) {
@@ -74,8 +82,30 @@ public final class HeadlessHistory {
             }
             filteredHistory.add(data);
         }
-        
+
         return filteredHistory;
+    }
+
+    /**
+     * Get the latest glucose reading for a sensor
+     *
+     * @param serial Sensor serial number
+     * @return Latest GlucoseData object, or null if no data available
+     */
+    public static GlucoseData getLatestGlucoseReading(String serial) {
+        List<GlucoseData> history = getCompleteGlucoseHistory(serial);
+        if (history.isEmpty()) {
+            return null;
+        }
+
+        // Find the most recent reading (highest timestamp)
+        GlucoseData latest = history.get(0);
+        for (GlucoseData data : history) {
+            if (data.timeMillis > latest.timeMillis) {
+                latest = data;
+            }
+        }
+        return latest;
     }
 
     /**
@@ -93,11 +123,10 @@ public final class HeadlessHistory {
         }
 
 
-        
         @Override
         public String toString() {
             return String.format("GlucoseData{mgdl=%d, mmolL=%.1f,  time=%d}",
-                               mgdl, mmolL, timeMillis);
+                    mgdl, mmolL, timeMillis);
         }
     }
 }

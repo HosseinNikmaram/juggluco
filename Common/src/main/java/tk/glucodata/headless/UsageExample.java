@@ -6,6 +6,7 @@ import android.widget.Toast;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,15 +65,17 @@ public class UsageExample {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
             jugglucoManager.getGlucoseStats(serial,0L,System.currentTimeMillis());
-            jugglucoManager.getAllGlucoseHistory (serial).forEach(glucoseData -> {
-                String timeStr = sdf.format(new Date(glucoseData.timeMillis));
+            
+            // Example 2: Using HeadlessHistory to get latest reading
+            HeadlessHistory.GlucoseData latestReading = HeadlessHistory.getLatestGlucoseReading(serial);
+            if (latestReading != null) {
+                String latestTimeStr = sdf.format(new Date(latestReading.timeMillis));
                 Log.d(TAG, String.format(
-                        "Time: %s, Glucose: %d mg/dL (%.1f mmol/L), Rate: %.3f, Alarm: %d",
-                        timeStr,
-                        glucoseData.mgdl,
-                        glucoseData.mmolL
+                        "Latest reading - Time: %s, Glucose: %d mg/dL (%.1f mmol/L)",
+                        latestTimeStr, latestReading.mgdl, latestReading.mmolL
                 ));
-            });
+            }
+
             jugglucoManager.getSensorInfo(serial);
         });
 
@@ -141,4 +144,5 @@ public class UsageExample {
         }
         initialized = false;
     }
+
 }
