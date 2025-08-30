@@ -82,6 +82,27 @@ public class HeadlessJugglucoManager {
     }
     
     /**
+     * Set glucose listener for glucose history data using onGlucose method
+     * @param listener Glucose listener implementation
+     */
+    public void setGlucoseHistoryListener(GlucoseListener listener) {
+        if (listener != null) {
+            historyManager = new HeadlessHistory(listener);
+        }
+    }
+    
+    /**
+     * Set both history and glucose listeners
+     * @param historyListener History listener implementation
+     * @param glucoseListener Glucose listener implementation
+     */
+    public void setHistoryAndGlucoseListeners(HistoryListener historyListener, GlucoseListener glucoseListener) {
+        if (historyListener != null || glucoseListener != null) {
+            historyManager = new HeadlessHistory(historyListener, glucoseListener);
+        }
+    }
+    
+    /**
      * Set stats listener for glucose statistics
      * @param listener Stats listener implementation
      */
@@ -140,22 +161,60 @@ public class HeadlessJugglucoManager {
     }
     
     /**
-     * Get current glucose history for a sensor
+     * Get current glucose history for a sensor using legacy HistoryListener
      * @param serial Sensor serial number
      */
     public void getGlucoseHistory(String serial) {
         if (historyManager != null) {
-            historyManager.emitFromNativeLast(serial);
+            historyManager.emitFromNativeLastLegacy(serial);
         }
     }
+    
     /**
-     * Get glucose history for a sensor within an optional time range
+     * Get glucose history for a sensor within an optional time range using legacy HistoryListener
      * If startMillis/endMillis are null, they are ignored
      */
     public void getGlucoseHistory(String serial, Long startMillis, Long endMillis) {
         if (historyManager != null) {
+            historyManager.emitFromNativeRangeLegacy(serial, startMillis, endMillis);
+        }
+    }
+    
+    /**
+     * Get glucose history for a sensor using onGlucose method
+     * @param serial Sensor serial number
+     */
+    public void getGlucoseHistoryOnGlucose(String serial) {
+        if (historyManager != null) {
+            historyManager.emitFromNativeLast(serial);
+        }
+    }
+    
+    /**
+     * Get glucose history for a sensor within an optional time range using onGlucose method
+     */
+    public void getGlucoseHistoryOnGlucose(String serial, Long startMillis, Long endMillis) {
+        if (historyManager != null) {
             historyManager.emitFromNativeRange(serial, startMillis, endMillis);
         }
+    }
+    
+    /**
+     * Get glucose history from watchdrip storage using onGlucose method
+     * @param serial Sensor serial number
+     */
+    public void getGlucoseHistoryFromWatchdrip(String serial) {
+        if (historyManager != null) {
+            historyManager.emitFromWatchdripHistory(serial);
+        }
+    }
+    
+    /**
+     * Get glucose history from watchdrip storage within a time range using onGlucose method
+     */
+    public void getGlucoseHistoryOnGlucoseFromWatchdrip(String serial, Long startMillis, Long endMillis) {
+        if (historyManager != null) {
+            historyManager.emitFromWatchdripHistory(serial, startMillis, endMillis);
     }
     
     /**
