@@ -19,7 +19,7 @@ public final class HeadlessStats {
     public void emitIfReady(String serial) {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistory.getAllRaw();
+        var hist = HeadlessHistory.getAllProcessed();
         if (hist == null || hist.length < 2) return;
         HeadlessStatsSummary stats = computeSummary(hist);
         listener.onStats(serial, stats);
@@ -28,29 +28,26 @@ public final class HeadlessStats {
     public void emitIfReady(String serial, Long startMillis, Long endMillis) {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistory.getAllRaw();
+        var hist = HeadlessHistory.getAllProcessed();
         if (hist == null || hist.length < 2) return;
-        var ranged = HeadlessHistory.getFilteredRaw(startMillis, endMillis);
+        var ranged = HeadlessHistory.getProcessedRange(startMillis, endMillis);
         if (ranged == null || ranged.length < 2) return;
         HeadlessStatsSummary stats = computeSummary(ranged);
         listener.onStats(serial, stats);
     }
 
-    private HeadlessStatsSummary computeSummary(long[] flat) {
-        int n = flat.length / 2;
+    private HeadlessStatsSummary computeSummary(long[][] hist) {
+        int n = hist.length;
         if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null,
                 lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl,
                 0, 0, 0, 0);
-        long firstMillis = flat[0] * 1000L;
-        long lastMillis = flat[(n - 1) * 2] * 1000L;
+        long firstMillis = hist[0][0];
+        long lastMillis = hist[n - 1][0];
         double sum = 0.0;
         double sumSq = 0.0;
         int below = 0, inRange = 0, high = 0, veryHigh = 0;
         for (int i = 0; i < n; i++) {
-            long packed = flat[2 * i + 1];
-            // Decode Q32.32 mmol/L to mg/dL
-            double mmolL = (double) packed / 4294967296.0;
-            double g = mmolL * 18.0;
+            double g = hist[i][1]; // mg/dL value
             sum += g;
             sumSq += g * g;
             if (g < lowThresholdMgdl) below++;

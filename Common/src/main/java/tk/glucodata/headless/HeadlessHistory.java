@@ -9,37 +9,17 @@ public final class HeadlessHistory {
         this.listener = listener;
     }
 
-    // Static methods to get raw data for use by other classes like HeadlessStats
-    public static long[] getAllRaw() {
-        return Natives.getlastGlucose();
-    }
-
-    public static long[] getFilteredRaw(Long startMillis, Long endMillis) {
+    // Methods to get processed glucose data directly for use by other classes
+    public static long[][] getAllProcessed() {
         long[] flat = Natives.getlastGlucose();
         if (flat == null || flat.length < 2) return null;
-        return filterRaw(flat, startMillis, endMillis);
+        return toPairs(flat, null, null);
     }
 
-    private static long[] filterRaw(long[] flat, Long startMillis, Long endMillis) {
-        if (startMillis == null && endMillis == null) return flat;
-        int totalPairs = flat.length / 2;
-        int count = 0;
-        for (int i = 0; i < totalPairs; i++) {
-            long tMillis = flat[2 * i] * 1000L; // native gives seconds
-            if (startMillis != null && tMillis < startMillis) continue;
-            if (endMillis != null && tMillis > endMillis) continue;
-            count++;
-        }
-        long[] out = new long[count * 2];
-        int idx = 0;
-        for (int i = 0; i < totalPairs; i++) {
-            long tMillis = flat[2 * i] * 1000L;
-            if (startMillis != null && tMillis < startMillis) continue;
-            if (endMillis != null && tMillis > endMillis) continue;
-            out[idx++] = flat[2 * i];
-            out[idx++] = flat[2 * i + 1];
-        }
-        return out;
+    public static long[][] getProcessedRange(Long startMillis, Long endMillis) {
+        long[] flat = Natives.getlastGlucose();
+        if (flat == null || flat.length < 2) return null;
+        return toPairs(flat, startMillis, endMillis);
     }
 
     // Uses Natives.getlastGlucose() which returns a flat long[] as
