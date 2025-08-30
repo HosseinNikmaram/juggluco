@@ -148,7 +148,14 @@ public class HeadlessJugglucoManager {
      */
     public long[][] getGlucoseHistory() {
         if (historyManager != null) {
-            return historyManager.getCurrentGlucoseHistory();
+            GlucoseData glucoseData = historyManager.extractCurrentGlucoseData();
+            if (glucoseData != null) {
+                // Create a single entry history array for the current glucose reading
+                long[][] currentGlucose = new long[1][2];
+                currentGlucose[0][0] = glucoseData.timeMillis;
+                currentGlucose[0][1] = glucoseData.mgdl;
+                return currentGlucose;
+            }
         }
         return new long[0][2];
     }
@@ -162,7 +169,29 @@ public class HeadlessJugglucoManager {
      */
     public long[][] getGlucoseHistory(Long startMillis, Long endMillis) {
         if (historyManager != null) {
-            return historyManager.getGlucoseHistoryInRangeLegacy(startMillis, endMillis);
+            List<HeadlessHistory.GlucoseData> allHistory = historyManager.getCompleteGlucoseHistory();
+            List<HeadlessHistory.GlucoseData> filteredHistory = new ArrayList<>();
+            
+            for (HeadlessHistory.GlucoseData data : allHistory) {
+                // Apply time filtering
+                if (startMillis != null && data.timeMillis < startMillis) {
+                    continue;
+                }
+                if (endMillis != null && data.timeMillis > endMillis) {
+                    continue;
+                }
+                filteredHistory.add(data);
+            }
+            
+            // Convert to legacy format
+            long[][] historyArray = new long[filteredHistory.size()][2];
+            for (int i = 0; i < filteredHistory.size(); i++) {
+                HeadlessHistory.GlucoseData data = filteredHistory.get(i);
+                historyArray[i][0] = data.timeMillis;
+                historyArray[i][1] = data.mgdl;
+            }
+            
+            return historyArray;
         }
         return new long[0][2];
     }
@@ -186,7 +215,21 @@ public class HeadlessJugglucoManager {
      */
     public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
         if (historyManager != null) {
-            return historyManager.getGlucoseHistoryInRange(startMillis, endMillis);
+            List<HeadlessHistory.GlucoseData> allHistory = historyManager.getCompleteGlucoseHistory();
+            List<HeadlessHistory.GlucoseData> filteredHistory = new ArrayList<>();
+            
+            for (HeadlessHistory.GlucoseData data : allHistory) {
+                // Apply time filtering
+                if (startMillis != null && data.timeMillis < startMillis) {
+                    continue;
+                }
+                if (endMillis != null && data.timeMillis > endMillis) {
+                    continue;
+                }
+                filteredHistory.add(data);
+            }
+            
+            return filteredHistory;
         }
         return new ArrayList<>();
     }

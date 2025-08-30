@@ -86,67 +86,6 @@ public final class HeadlessHistory {
     }
 
     /**
-     * Get glucose history for a sensor within a time range as a list of GlucoseData objects
-     * @param startMillis Start time in milliseconds (null for no limit)
-     * @param endMillis End time in milliseconds (null for no limit)
-     * @return List of GlucoseData objects within the time range
-     */
-    public List<GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
-        List<GlucoseData> allHistory = getCompleteGlucoseHistory();
-        List<GlucoseData> filteredHistory = new ArrayList<>();
-        
-        for (GlucoseData data : allHistory) {
-            // Apply time filtering
-            if (startMillis != null && data.timeMillis < startMillis) {
-                continue;
-            }
-            if (endMillis != null && data.timeMillis > endMillis) {
-                continue;
-            }
-            filteredHistory.add(data);
-        }
-        
-        return filteredHistory;
-    }
-
-    /**
-     * Get current glucose history for a sensor (legacy method for backward compatibility)
-     * @return Array of [timeMillis, mgdl] pairs
-     */
-    public long[][] getCurrentGlucoseHistory() {
-        GlucoseData glucoseData = extractCurrentGlucoseData();
-        if (glucoseData != null) {
-            // Create a single entry history array for the current glucose reading
-            long[][] currentGlucose = new long[1][2];
-            currentGlucose[0][0] = glucoseData.timeMillis;
-            currentGlucose[0][1] = glucoseData.mgdl;
-            
-            return currentGlucose;
-        }
-        return new long[0][2];
-    }
-
-    /**
-     * Get glucose history for a sensor within an optional time range (legacy method for backward compatibility)
-     * @param startMillis Start time in milliseconds (null for no limit)
-     * @param endMillis End time in milliseconds (null for no limit)
-     * @return Array of [timeMillis, mgdl] pairs
-     */
-    public long[][] getGlucoseHistoryInRangeLegacy(Long startMillis, Long endMillis) {
-        List<GlucoseData> history = getGlucoseHistoryInRange(startMillis, endMillis);
-        
-        // Convert to legacy format for backward compatibility
-        long[][] historyArray = new long[history.size()][2];
-        for (int i = 0; i < history.size(); i++) {
-            GlucoseData data = history.get(i);
-            historyArray[i][0] = data.timeMillis;
-            historyArray[i][1] = data.mgdl;
-        }
-        
-        return historyArray;
-    }
-
-    /**
      * Get the sensor serial number
      * @return Sensor serial number
      */
