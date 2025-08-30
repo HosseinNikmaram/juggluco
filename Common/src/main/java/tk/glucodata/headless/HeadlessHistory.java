@@ -31,15 +31,105 @@ public final class HeadlessHistory implements GlucoseListener {
         }
     }
 
+    /**
+     * Extract glucose data from native data using the same logic as watchdrip
+     * @param serial Sensor serial number
+     * @return true if glucose data was successfully extracted and emitted
+     */
+    public boolean extractAndEmitGlucose(String serial) {
+        if (listener == null) return false;
+        
+        // Use the same logic as watchdrip to extract glucose data
+        var gl = Natives.getlastGlucose();
+        if (gl == null) return false;
+        
+        long res = gl[1];
+        int glumgdl = (int) (res & 0xFFFFFFFFL);
+        if (glumgdl != 0) {
+            int alarm = (int) ((res >> 48) & 0xFFL);
+            short ratein = (short) ((res >> 32) & 0xFFFFL);
+            float rate = ratein / 1000.0f;
+            long timeMillis = gl[0] * 1000L; // Convert seconds to milliseconds
+            
+            // Create a single entry history array for the current glucose reading
+            long[][] currentGlucose = new long[1][2];
+            currentGlucose[0][0] = timeMillis;
+            currentGlucose[0][1] = glumgdl;
+            
+            // Emit the current glucose reading as history
+            listener.onHistory(serial, currentGlucose);
+            
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Extract and return detailed glucose data using the same logic as watchdrip
+     * @return GlucoseData object containing all extracted information, or null if no data
+     */
+    public GlucoseData extractGlucoseData() {
+        var gl = Natives.getlastGlucose();
+        if (gl == null) return null;
+        
+        long res = gl[1];
+        int glumgdl = (int) (res & 0xFFFFFFFFL);
+        if (glumgdl != 0) {
+            int alarm = (int) ((res >> 48) & 0xFFL);
+            short ratein = (short) ((res >> 32) & 0xFFFFL);
+            float rate = ratein / 1000.0f;
+            long timeMillis = gl[0] * 1000L; // Convert seconds to milliseconds
+            
+            // Calculate mmol/L value (similar to how Applic.unit conversion works)
+            float mmolL = glumgdl / 18.0f; // Convert mg/dL to mmol/L
+            
+            return new GlucoseData(glumgdl, mmolL, rate, alarm, timeMillis);
+        }
+        return null;
+    }
+
+    /**
+     * Data class to hold extracted glucose information
+     */
+    public static class GlucoseData {
+        public final int mgdl;
+        public final float mmolL;
+        public final float rate;
+        public final int alarm;
+        public final long timeMillis;
+        
+        public GlucoseData(int mgdl, float mmolL, float rate, int alarm, long timeMillis) {
+            this.mgdl = mgdl;
+            this.mmolL = mmolL;
+            this.rate = rate;
+            this.alarm = alarm;
+            this.timeMillis = timeMillis;
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("GlucoseData{mgdl=%d, mmolL=%.1f, rate=%.3f, alarm=%d, time=%d}", 
+                               mgdl, mmolL, rate, alarm, timeMillis);
+        }
+    }
+
     // Uses Natives.getlastGlucose() which returns a flat long[] as
     // [timeSeconds0, packed0, timeSeconds1, packed1, ...].
     // The packed value is Q32.32 fixed-point mmol/L in a 64-bit long.
     // We transform it into pairs [timeMillis, mgdl] where mgdl is rounded.
     public void emitFromNativeLast(String serial) {
         if (listener == null) return;
-        long[] flat = Natives.getlastGlucose();
-        if (flat == null || flat.length < 2) return;
-        listener.onHistory(serial, toPairs(flat, null, null));
+        
+        // Use the new extraction method for consistency with watchdrip
+        GlucoseData glucoseData = extractGlucoseData();
+        if (glucoseData != null) {
+            // Create a single entry history array for the current glucose reading
+            long[][] currentGlucose = new long[1][2];
+            currentGlucose[0][0] = glucoseData.timeMillis;
+            currentGlucose[0][1] = glucoseData.mgdl;
+            
+            listener.onHistory(serial, currentGlucose);
+        }
     }
 
     public void emitFromNativeRange(String serial, Long startMillis, Long endMillis) {
