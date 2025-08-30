@@ -64,7 +64,7 @@ public class UsageExample {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
             jugglucoManager.getGlucoseStats(serial,0L,System.currentTimeMillis());
-            jugglucoManager.getAllGlucoseHistory(serial).forEach(glucoseData -> {
+            jugglucoManager.getAllGlucoseHistory (serial).forEach(glucoseData -> {
                 String timeStr = sdf.format(new Date(glucoseData.timeMillis));
                 Log.d(TAG, String.format(
                         "Time: %s, Glucose: %d mg/dL (%.1f mmol/L), Rate: %.3f, Alarm: %d",

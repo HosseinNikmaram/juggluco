@@ -140,16 +140,6 @@ public class HeadlessJugglucoManager {
         return HeadlessHistory.getCompleteGlucoseHistory(serial);
     }
 
-    /**
-     * Get all glucose history for a specific sensor serial number
-     * @param serial Sensor serial number
-     * @return List of GlucoseData objects, or empty list if no data
-     */
-    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory(String serial) {
-        // Create a temporary history manager for the specified serial
-        HeadlessHistory tempHistory = new HeadlessHistory(serial);
-        return tempHistory.getCompleteGlucoseHistory();
-    }
 
     /**
      * Get glucose history for a sensor within a time range as a list of GlucoseData objects
