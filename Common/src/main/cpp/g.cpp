@@ -833,6 +833,53 @@ extern "C" JNIEXPORT jlongArray JNICALL   fromjava(getlastGlucose)(JNIEnv *env, 
 extern "C" JNIEXPORT jlongArray JNICALL   fromjava(getAllGlucoseHistory)(JNIEnv *env, jclass cl) {
     auto nu=time(nullptr);
     if(const auto [hist,_]=getlaststream(nu);hist) {
+        // Try to get stream data first (has rate information)
+        const int streamCount = hist->pollcount();
+        if (streamCount > 0) {
+            const ScanData* start = hist->beginpolls();
+            const int arraySize = streamCount * 2; // timestamp + glucose value for each reading
+            
+            jlongArray result = env->NewLongArray(arraySize);
+            if (result == nullptr) {
+                return nullptr; // Out of memory
+            }
+            
+            jlong* data = env->GetLongArrayElements(result, nullptr);
+            if (data == nullptr) {
+                return nullptr; // Failed to get array elements
+            }
+            
+            int dataIndex = 0;
+            for (int i = 0; i < streamCount; i++) {
+                const ScanData* scan = start + i;
+                if (scan && scan->valid()) {
+                    // Store timestamp (seconds)
+                    data[dataIndex++] = static_cast<jlong>(scan->gettime());
+                    
+                    // Store glucose value with rate information
+                    const uint16_t mgdL = scan->getmgdL();
+                    const float rate = scan->getchange();
+                    const jlong packedValue = glucoselong(mgdL, rate, hist);
+                    data[dataIndex++] = packedValue;
+                }
+            }
+            
+            // Release the array elements
+            env->ReleaseLongArrayElements(result, data, 0);
+            
+            // Resize the array to actual data size if needed
+            if (dataIndex < arraySize) {
+                jlongArray finalResult = env->NewLongArray(dataIndex);
+                if (finalResult != nullptr) {
+                    env->SetLongArrayRegion(finalResult, 0, dataIndex, data);
+                }
+                return finalResult;
+            }
+            
+            return result;
+        }
+        
+        // Fallback to history data if no stream data available
         const int startPos = hist->getstarthistory();
         const int endPos = hist->getAllendhistory();
         
@@ -860,9 +907,10 @@ extern "C" JNIEXPORT jlongArray JNICALL   fromjava(getAllGlucoseHistory)(JNIEnv 
                 // Store timestamp (seconds)
                 data[dataIndex++] = static_cast<jlong>(glucose->gettime());
                 
-                // Store glucose value (mg/dL) and rate information
+                // Store glucose value (mg/dL) - note: no rate information available from history data
                 const uint16_t mgdL = glucose->getmgdL();
-                const float rate = glucose->getchange();
+                // Since Glucose struct doesn't have rate information, we'll use 0.0f as default
+                const float rate = 0.0f;
                 const jlong packedValue = glucoselong(mgdL, rate, hist);
                 data[dataIndex++] = packedValue;
             }

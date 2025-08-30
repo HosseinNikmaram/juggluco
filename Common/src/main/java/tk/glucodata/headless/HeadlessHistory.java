@@ -46,7 +46,8 @@ public final class HeadlessHistory {
                         float rate = rateRaw / 1000.0f; // Convert rate to proper units
                         float mmolL = mgdl / 18.0f;     // Convert mg/dL to mmol/L
                         
-                        GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, timeMillis);
+                        // Create GlucoseData with rate information
+                        GlucoseData glucoseData = new GlucoseData(mgdl, mmolL, timeMillis, rate, alarm);
                         history.add(glucoseData);
                     }
                 }
@@ -170,17 +171,29 @@ public final class HeadlessHistory {
         public int mgdl;                    // Glucose value in mg/dL
         public float mmolL;                 // Glucose value in mmol/L
         public long timeMillis;             // Timestamp in milliseconds
+        public float rate;                  // Rate of change (mg/dL/min)
+        public int alarm;                   // Alarm code
 
         public GlucoseData(int mgdl, float mmolL, long timeMillis) {
             this.mgdl = mgdl;
             this.mmolL = mmolL;
             this.timeMillis = timeMillis;
+            this.rate = 0.0f;
+            this.alarm = 0;
+        }
+
+        public GlucoseData(int mgdl, float mmolL, long timeMillis, float rate, int alarm) {
+            this.mgdl = mgdl;
+            this.mmolL = mmolL;
+            this.timeMillis = timeMillis;
+            this.rate = rate;
+            this.alarm = alarm;
         }
 
         @Override
         public String toString() {
-            return String.format("GlucoseData{mgdl=%d, mmolL=%.1f,  time=%d}",
-                    mgdl, mmolL, timeMillis);
+            return String.format("GlucoseData{mgdl=%d, mmolL=%.1f, time=%d, rate=%.1f, alarm=%d}",
+                    mgdl, mmolL, timeMillis, rate, alarm);
         }
     }
 }

@@ -89,6 +89,8 @@ public static class GlucoseData {
     public int mgdl;                    // Glucose value in mg/dL
     public float mmolL;                 // Glucose value in mmol/L
     public long timeMillis;             // Timestamp in milliseconds
+    public float rate;                  // Rate of change (mg/dL/min)
+    public int alarm;                   // Alarm code
 }
 ```
 

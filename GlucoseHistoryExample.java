@@ -66,9 +66,11 @@ public class GlucoseHistoryExample {
                 String lastTime = sdf.format(new Date(last.timeMillis));
                 
                 System.out.println("   First reading: " + firstTime + " - " + 
-                                 first.mgdl + " mg/dL (" + String.format("%.1f", first.mmolL) + " mmol/L)");
+                                 first.mgdl + " mg/dL (" + String.format("%.1f", first.mmolL) + " mmol/L)" +
+                                 ", Rate: " + String.format("%.1f", first.rate) + ", Alarm: " + first.alarm);
                 System.out.println("   Last reading:  " + lastTime + " - " + 
-                                 last.mgdl + " mg/dL (" + String.format("%.1f", last.mmolL) + " mmol/L)");
+                                 last.mgdl + " mg/dL (" + String.format("%.1f", last.mmolL) + " mmol/L)" +
+                                 ", Rate: " + String.format("%.1f", last.rate) + ", Alarm: " + last.alarm);
             }
             
         } catch (Exception e) {
