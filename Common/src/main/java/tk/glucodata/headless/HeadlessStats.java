@@ -19,7 +19,7 @@ public final class HeadlessStats {
     public void emitIfReady(String serial) {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistoryAccessor.getAll();
+        var hist = HeadlessHistory.getAllRaw();
         if (hist == null || hist.length < 2) return;
         HeadlessStatsSummary stats = computeSummary(hist);
         listener.onStats(serial, stats);
@@ -28,9 +28,9 @@ public final class HeadlessStats {
     public void emitIfReady(String serial, Long startMillis, Long endMillis) {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistoryAccessor.getAll();
+        var hist = HeadlessHistory.getAllRaw();
         if (hist == null || hist.length < 2) return;
-        var ranged = HeadlessHistoryAccessor.filter(hist, startMillis, endMillis);
+        var ranged = HeadlessHistory.getFilteredRaw(startMillis, endMillis);
         if (ranged == null || ranged.length < 2) return;
         HeadlessStatsSummary stats = computeSummary(ranged);
         listener.onStats(serial, stats);
@@ -84,33 +84,6 @@ public final class HeadlessStats {
     public void setLowThresholdMgdl(double value) { this.lowThresholdMgdl = value; }
     public void setInRangeUpperThresholdMgdl(double value) { this.inRangeUpperThresholdMgdl = value; }
     public void setHighUpperThresholdMgdl(double value) { this.highUpperThresholdMgdl = value; }
-
-    // Internal helper to reuse existing native history without duplicating code
-    private static final class HeadlessHistoryAccessor {
-        static long[] getAll() { return Natives.getlastGlucose(); }
-        static long[] filter(long[] flat, Long startMillis, Long endMillis) {
-            if (flat == null) return null;
-            if (startMillis == null && endMillis == null) return flat;
-            int totalPairs = flat.length / 2;
-            int count = 0;
-            for (int i = 0; i < totalPairs; i++) {
-                long t = flat[2 * i];
-                if (startMillis != null && t < startMillis) continue;
-                if (endMillis != null && t > endMillis) continue;
-                count += 1;
-            }
-            long[] out = new long[count * 2];
-            int idx = 0;
-            for (int i = 0; i < totalPairs; i++) {
-                long t = flat[2 * i];
-                if (startMillis != null && t < startMillis) continue;
-                if (endMillis != null && t > endMillis) continue;
-                out[idx++] = t;
-                out[idx++] = flat[2 * i + 1];
-            }
-            return out;
-        }
-    }
 }
 
 
