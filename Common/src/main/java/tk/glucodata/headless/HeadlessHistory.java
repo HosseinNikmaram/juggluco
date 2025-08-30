@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class HeadlessHistory {
-    private final HistoryListener listener;
+    private final String serial;
 
-    public HeadlessHistory(HistoryListener listener) {
-        this.listener = listener;
+    public HeadlessHistory(String serial) {
+        this.serial = serial;
     }
 
     /**
@@ -36,32 +36,10 @@ public final class HeadlessHistory {
     }
 
     /**
-     * Extract and emit current glucose data to history listener
-     * @param serial Sensor serial number
-     * @return true if glucose data was successfully extracted and emitted
-     */
-    public boolean extractAndEmitCurrentGlucose(String serial) {
-        if (listener == null) return false;
-        
-        GlucoseData glucoseData = extractCurrentGlucoseData();
-        if (glucoseData != null) {
-            // Create a single entry history array for the current glucose reading
-            long[][] currentGlucose = new long[1][2];
-            currentGlucose[0][0] = glucoseData.timeMillis;
-            currentGlucose[0][1] = glucoseData.mgdl;
-            
-            listener.onHistory(serial, currentGlucose);
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Get complete glucose history for a sensor as a list of GlucoseData objects
-     * @param serial Sensor serial number
      * @return List of GlucoseData objects, or empty list if no data
      */
-    public List<GlucoseData> getCompleteGlucoseHistory(String serial) {
+    public List<GlucoseData> getCompleteGlucoseHistory() {
         List<GlucoseData> history = new ArrayList<>();
         
         // Get sensor pointer
@@ -109,13 +87,12 @@ public final class HeadlessHistory {
 
     /**
      * Get glucose history for a sensor within a time range as a list of GlucoseData objects
-     * @param serial Sensor serial number
      * @param startMillis Start time in milliseconds (null for no limit)
      * @param endMillis End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public List<GlucoseData> getGlucoseHistoryInRange(String serial, Long startMillis, Long endMillis) {
-        List<GlucoseData> allHistory = getCompleteGlucoseHistory(serial);
+    public List<GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
+        List<GlucoseData> allHistory = getCompleteGlucoseHistory();
         List<GlucoseData> filteredHistory = new ArrayList<>();
         
         for (GlucoseData data : allHistory) {
@@ -134,11 +111,9 @@ public final class HeadlessHistory {
 
     /**
      * Get current glucose history for a sensor (legacy method for backward compatibility)
-     * @param serial Sensor serial number
+     * @return Array of [timeMillis, mgdl] pairs
      */
-    public void emitFromNativeLast(String serial) {
-        if (listener == null) return;
-        
+    public long[][] getCurrentGlucoseHistory() {
         GlucoseData glucoseData = extractCurrentGlucoseData();
         if (glucoseData != null) {
             // Create a single entry history array for the current glucose reading
@@ -146,20 +121,19 @@ public final class HeadlessHistory {
             currentGlucose[0][0] = glucoseData.timeMillis;
             currentGlucose[0][1] = glucoseData.mgdl;
             
-            listener.onHistory(serial, currentGlucose);
+            return currentGlucose;
         }
+        return new long[0][2];
     }
 
     /**
      * Get glucose history for a sensor within an optional time range (legacy method for backward compatibility)
-     * @param serial Sensor serial number
      * @param startMillis Start time in milliseconds (null for no limit)
      * @param endMillis End time in milliseconds (null for no limit)
+     * @return Array of [timeMillis, mgdl] pairs
      */
-    public void emitFromNativeRange(String serial, Long startMillis, Long endMillis) {
-        if (listener == null) return;
-        
-        List<GlucoseData> history = getGlucoseHistoryInRange(serial, startMillis, endMillis);
+    public long[][] getGlucoseHistoryInRangeLegacy(Long startMillis, Long endMillis) {
+        List<GlucoseData> history = getGlucoseHistoryInRange(startMillis, endMillis);
         
         // Convert to legacy format for backward compatibility
         long[][] historyArray = new long[history.size()][2];
@@ -169,7 +143,15 @@ public final class HeadlessHistory {
             historyArray[i][1] = data.mgdl;
         }
         
-        listener.onHistory(serial, historyArray);
+        return historyArray;
+    }
+
+    /**
+     * Get the sensor serial number
+     * @return Sensor serial number
+     */
+    public String getSerial() {
+        return serial;
     }
 
     /**

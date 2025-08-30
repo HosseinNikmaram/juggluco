@@ -6,6 +6,8 @@ import android.nfc.Tag;
 import android.widget.Toast;
 import android.util.Log;
 
+import java.util.List;
+
 /**
  * Example usage of the headless Juggluco system
  * This shows how to integrate Libre sensor functionality into your own module
@@ -60,23 +62,12 @@ public class UsageExample {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
             jugglucoManager.getGlucoseStats(serial,0L,System.currentTimeMillis());
-            jugglucoManager.getGlucoseHistory(serial,0L,System.currentTimeMillis());
+            jugglucoManager.getGlucoseHistory(0L,System.currentTimeMillis());
             jugglucoManager.getSensorInfo(serial);
         });
 
-        jugglucoManager.setHistoryListener((serial, history) -> {
-            Log.d(TAG, "History count=" + history.length + " from " + serial);
-            // history: long[points][2] -> [timeMillis, mgdl]
-            for (int i = 0; i < history.length; i++) {
-                long timeMillis = history[i][0];
-                long mgdl = history[i][1];
-                Log.d(TAG, "idx=" + i + " time=" + timeMillis + " mgdl=" + mgdl);
-            }
-
-            activity.runOnUiThread(() ->
-                    Toast.makeText(activity, "History points: " + history.length, Toast.LENGTH_SHORT).show()
-            );
-        });
+        // Set up history manager with sensor serial
+        jugglucoManager.setHistoryListener("sensor123");
 
         jugglucoManager.setStatsListener((serial, stats) -> {
             Log.d(TAG, "Stats for " + serial +
@@ -126,7 +117,19 @@ public class UsageExample {
     
     public void getGlucoseHistory(String serial) {
         if (jugglucoManager != null) {
-            jugglucoManager.getGlucoseHistory(serial);
+            // Get current glucose history
+            long[][] history = jugglucoManager.getGlucoseHistory();
+            Log.d(TAG, "Current glucose history count: " + history.length);
+            
+            // Get complete glucose history as GlucoseData objects
+            List<HeadlessHistory.GlucoseData> completeHistory = jugglucoManager.getCompleteGlucoseHistory();
+            Log.d(TAG, "Complete glucose history count: " + completeHistory.size());
+            
+            // Example: Get history for last 24 hours
+            long startTime = System.currentTimeMillis() - (24 * 60 * 60 * 1000);
+            long endTime = System.currentTimeMillis();
+            List<HeadlessHistory.GlucoseData> dailyHistory = jugglucoManager.getGlucoseHistoryInRange(startTime, endTime);
+            Log.d(TAG, "Daily glucose history count: " + dailyHistory.size());
         }
     }
     

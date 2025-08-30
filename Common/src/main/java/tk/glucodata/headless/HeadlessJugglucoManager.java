@@ -76,11 +76,11 @@ public class HeadlessJugglucoManager {
     
     /**
      * Set history listener for glucose history data
-     * @param listener History listener implementation
+     * @param serial Sensor serial number
      */
-    public void setHistoryListener(HistoryListener listener) {
-        if (listener != null) {
-            historyManager = new HeadlessHistory(listener);
+    public void setHistoryListener(String serial) {
+        if (serial != null) {
+            historyManager = new HeadlessHistory(serial);
         }
     }
     
@@ -141,49 +141,52 @@ public class HeadlessJugglucoManager {
     public void markNewDevice(byte[] uid) {
         HeadlessNfcScanner.markNewDevice(uid);
     }
-    
+
     /**
      * Get current glucose history for a sensor
-     * @param serial Sensor serial number
+     * @return Array of [timeMillis, mgdl] pairs
      */
-    public void getGlucoseHistory(String serial) {
+    public long[][] getGlucoseHistory() {
         if (historyManager != null) {
-            historyManager.emitFromNativeLast(serial);
+            return historyManager.getCurrentGlucoseHistory();
         }
+        return new long[0][2];
     }
     
     /**
      * Get glucose history for a sensor within an optional time range
      * If startMillis/endMillis are null, they are ignored
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return Array of [timeMillis, mgdl] pairs
      */
-    public void getGlucoseHistory(String serial, Long startMillis, Long endMillis) {
+    public long[][] getGlucoseHistory(Long startMillis, Long endMillis) {
         if (historyManager != null) {
-            historyManager.emitFromNativeRange(serial, startMillis, endMillis);
+            return historyManager.getGlucoseHistoryInRangeLegacy(startMillis, endMillis);
         }
+        return new long[0][2];
     }
 
     /**
      * Get complete glucose history for a sensor as a list of GlucoseData objects
-     * @param serial Sensor serial number
      * @return List of GlucoseData objects, or empty list if no data
      */
-    public List<HeadlessHistory.GlucoseData> getCompleteGlucoseHistory(String serial) {
+    public List<HeadlessHistory.GlucoseData> getCompleteGlucoseHistory() {
         if (historyManager != null) {
-            return historyManager.getCompleteGlucoseHistory(serial);
+            return historyManager.getCompleteGlucoseHistory();
         }
         return new ArrayList<>();
     }
 
     /**
      * Get glucose history for a sensor within a time range as a list of GlucoseData objects
-     * @param serial Sensor serial number
      * @param startMillis Start time in milliseconds (null for no limit)
      * @param endMillis End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(String serial, Long startMillis, Long endMillis) {
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
         if (historyManager != null) {
-            return historyManager.getGlucoseHistoryInRange(serial, startMillis, endMillis);
+            return historyManager.getGlucoseHistoryInRange(startMillis, endMillis);
         }
         return new ArrayList<>();
     }
