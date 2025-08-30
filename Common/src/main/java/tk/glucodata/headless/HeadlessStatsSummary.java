@@ -14,6 +14,18 @@ public final class HeadlessStatsSummary {
     public final Double estimatedA1CPercent;       // simple estimate from mean
     public final Double gmiPercent;                // GMI from mean
 
+    // Thresholds used (mg/dL)
+    public final double lowThresholdMgdl;           // default 70
+    public final double inRangeUpperThresholdMgdl;  // default 180
+    public final double highUpperThresholdMgdl;     // default 250
+
+    // Percentages in each threshold bucket
+    public final double percentBelow;               // < lowThresholdMgdl
+    public final double percentInRange;             // [lowThresholdMgdl, inRangeUpperThresholdMgdl]
+    public final double percentHigh;                // (inRangeUpperThresholdMgdl, highUpperThresholdMgdl]
+    public final double percentVeryHigh;            // > highUpperThresholdMgdl
+
+
     public HeadlessStatsSummary(int numberOfMeasurements,
                                 double averageGlucose,
                                 double standardDeviation,
@@ -21,7 +33,14 @@ public final class HeadlessStatsSummary {
                                 double durationDays,
                                 double timeActivePercent,
                                 Double estimatedA1CPercent,
-                                Double gmiPercent) {
+                                Double gmiPercent,
+                                double lowThresholdMgdl,
+                                double inRangeUpperThresholdMgdl,
+                                double highUpperThresholdMgdl,
+                                double percentBelow,
+                                double percentInRange,
+                                double percentHigh,
+                                double percentVeryHigh) {
         this.numberOfMeasurements = numberOfMeasurements;
         this.averageGlucose = averageGlucose;
         this.standardDeviation = standardDeviation;
@@ -30,6 +49,13 @@ public final class HeadlessStatsSummary {
         this.timeActivePercent = timeActivePercent;
         this.estimatedA1CPercent = estimatedA1CPercent;
         this.gmiPercent = gmiPercent;
+        this.lowThresholdMgdl = lowThresholdMgdl;
+        this.inRangeUpperThresholdMgdl = inRangeUpperThresholdMgdl;
+        this.highUpperThresholdMgdl = highUpperThresholdMgdl;
+        this.percentBelow = percentBelow;
+        this.percentInRange = percentInRange;
+        this.percentHigh = percentHigh;
+        this.percentVeryHigh = percentVeryHigh;
     }
 }
 

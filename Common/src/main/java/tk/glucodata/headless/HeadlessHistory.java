@@ -11,7 +11,8 @@ public final class HeadlessHistory {
 
     // Uses Natives.getlastGlucose() which returns a flat long[] as
     // [timeSeconds0, packed0, timeSeconds1, packed1, ...].
-    // We transform it into pairs [timeMillis, mgdl].
+    // The packed value is Q32.32 fixed-point mmol/L in a 64-bit long.
+    // We transform it into pairs [timeMillis, mgdl] where mgdl is rounded.
     public void emitFromNativeLast(String serial) {
         if (listener == null) return;
         long[] flat = Natives.getlastGlucose();
@@ -43,7 +44,9 @@ public final class HeadlessHistory {
             if (startMillis != null && tMillis < startMillis) continue;
             if (endMillis != null && tMillis > endMillis) continue;
             long packed = flat[2 * i + 1];
-            long mgdl = (int) (packed & 0xFFFFFFFFL);
+            // Decode Q32.32 mmol/L -> mg/dL
+            double mmolL = (double) packed / 4294967296.0; // 2^32
+            long mgdl = Math.round(mmolL * 18.0);
             hist[idx][0] = tMillis;
             hist[idx][1] = mgdl;
             idx++;
