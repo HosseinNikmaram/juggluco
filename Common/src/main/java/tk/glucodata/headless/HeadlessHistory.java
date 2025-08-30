@@ -2,11 +2,33 @@ package tk.glucodata.headless;
 
 import tk.glucodata.Natives;
 
-public final class HeadlessHistory {
+public final class HeadlessHistory implements GlucoseListener {
     private final HistoryListener listener;
 
     public HeadlessHistory(HistoryListener listener) {
         this.listener = listener;
+    }
+
+    // Implementation of GlucoseListener interface for real-time glucose updates
+    @Override
+    public void onGlucose(String serial,
+                         int mgdl,
+                         float value,
+                         float rate,
+                         int alarm,
+                         long timeMillis,
+                         long sensorStartMillis,
+                         int sensorGen) {
+        // Process real-time glucose data similar to watchdrip implementation
+        if (listener != null) {
+            // Create a single entry history array for the current glucose reading
+            long[][] currentGlucose = new long[1][2];
+            currentGlucose[0][0] = timeMillis;
+            currentGlucose[0][1] = mgdl;
+            
+            // Emit the current glucose reading as history
+            listener.onHistory(serial, currentGlucose);
+        }
     }
 
     // Uses Natives.getlastGlucose() which returns a flat long[] as

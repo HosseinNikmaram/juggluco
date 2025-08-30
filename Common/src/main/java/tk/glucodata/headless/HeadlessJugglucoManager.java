@@ -78,6 +78,8 @@ public class HeadlessJugglucoManager {
     public void setHistoryListener(HistoryListener listener) {
         if (listener != null) {
             historyManager = new HeadlessHistory(listener);
+            // Also set up HeadlessHistory as a glucose listener for real-time updates
+            setGlucoseListener(historyManager);
         }
     }
     
