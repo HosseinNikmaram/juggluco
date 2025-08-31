@@ -718,7 +718,7 @@ boolean needsnatives() {
      //smallfontsize = res.getDimension(R.dimen.abc_text_size_small_material);
     // largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
     // mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
-     Natives.setfontsize(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
+     Natives.initopengl(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
       Notify.mkpaint();
      return ret;
      }
