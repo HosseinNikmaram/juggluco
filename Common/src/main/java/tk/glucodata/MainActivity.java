@@ -186,50 +186,26 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
            // Delay calling needsnatives until after GlucoseCurve is created
            // Applic.needsnatives();
 
-        curve = new GlucoseCurve(this);
+        // For headless module usage, skip UI creation
+        // curve = new GlucoseCurve(this);
         {
             if (doLog) {
-                Log.i(LOG_ID, "After curve = new GlucoseCurve(this);");
+                Log.i(LOG_ID, "Headless mode: skipping GlucoseCurve creation");
             }
             ;
         }
         ;
         
-        // Now call needsnatives after GlucoseCurve is created and metrics is available
+        // Initialize only essential components for NFC and Bluetooth
         Applic.needsnatives();
-        if (!isWearable) {
-            if (Build.VERSION.SDK_INT >= 30) {
-                setOnApplyWindowInsetsListener(curve, (v, windowInsets) -> {
-                    setsizes(this);
-                    if (screenwidth >= screenheight) {
-                        Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                        {
-                            if (doLog) {
-                                Log.i(LOG_ID, "systemBars: left=" + insets.left + " right=" + insets.right + " bottom=" + insets.bottom + " top=" + insets.top);
-                            }
-                            ;
-                        }
-                        ;
-                        Natives.systembar(insets.left, insets.top, insets.right, insets.bottom);
-
-                        systembarLeft = insets.left;
-                        systembarTop = insets.top;
-                        systembarRight = insets.right;
-                        systembarBottom = insets.bottom;
-
-                        requestRender();
-                        if (getlibrary.showintro) {
-                            getlibrary.showintro = false;
-                            help.help(R.string.introhelp, this, l -> setShownintro(true));
-                        }
-                    }
-                    return windowInsets;
-                });
-                // showSystemBarsAppearance();
-            }
-            lightBars(!getInvertColors());
+        
+        // For headless module usage, skip UI setup
+        if (doLog) {
+            Log.i(LOG_ID, "Headless mode: skipping UI setup");
         }
-        setContentView(curve);
+        
+        // Skip UI content view for headless usage
+        // setContentView(curve);
         try {
             setRequestedOrientation(Natives.getScreenOrientation());
         } catch (Throwable error) {

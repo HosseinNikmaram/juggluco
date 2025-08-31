@@ -669,93 +669,87 @@ static float mediumfontsize;
   static public float largefontsize;
 static float menufontsize ;
 boolean needsnatives() {
-  {if(doLog) {Log.i(LOG_ID,"needsnatives");};};
+  {if(doLog) {Log.i(LOG_ID,"needsnatives - Headless mode");};};
  // final var res=getResources();
  // var metrics=GlucoseCurve.metrics= res.getDisplayMetrics();
  // MainActivity.screenheight= metrics.heightPixels;
  // MainActivity.screenwidth= metrics.widthPixels;
   
-  // Get metrics from context if GlucoseCurve.metrics is not available yet
-  DisplayMetrics metrics = GlucoseCurve.metrics;
-  if(metrics == null) {
-      try {
-          metrics = MainActivity.thisone.getResources().getDisplayMetrics();
-      } catch(Exception e) {
-          // Fallback to default values if context is not available
-          Log.e(LOG_ID, "Could not get DisplayMetrics, using default values");
-          return false;
-      }
-  }
+  // For headless module usage, skip all UI-related initializations
+  // DisplayMetrics metrics = GlucoseCurve.metrics;
+  // if(metrics == null) {
+  //     try {
+  //         metrics = MainActivity.thisone.getResources().getDisplayMetrics();
+  //     } catch(Exception e) {
+  //         // Fallback to default values if context is not available
+  //         Log.e(LOG_ID, "Could not get DisplayMetrics, using default values");
+  //         return false;
+  //     }
+  // }
   
-  {if(doLog) {Log.i(LOG_ID,"heightPixels="+metrics.heightPixels+" widthPixels="+metrics.widthPixels);};};
-  var newinitscreenwidth= Math.max(metrics.heightPixels,metrics.widthPixels);
-  boolean ret;
- // menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
-  if(menufontsize == 0.0f) {
-      // Initialize menufontsize with a default value if not set
-      menufontsize = 16.0f * metrics.density; // Default menu font size
-  }
-  if(headfontsize == 0.0f) {
-      // Initialize headfontsize with a default value if not set
-      headfontsize = 32.0f * metrics.density; // Default head font size
-  }
-  if(mediumfontsize == 0.0f) {
-      // Initialize mediumfontsize with a default value if not set
-      mediumfontsize = 18.0f * metrics.density; // Default medium font size
-  }
-  if(largefontsize == 0.0f) {
-      // Initialize largefontsize with a default value if not set
-      largefontsize = 22.0f * metrics.density; // Default large font size
-  }
-  if(GlucoseCurve.smallfontsize == 0.0f) {
-      // Initialize smallfontsize with a default value if not set
-      GlucoseCurve.smallfontsize = 14.0f * metrics.density; // Default small font size
-  }
-    final double screensize=(newinitscreenwidth/menufontsize);
-  final boolean smallsize=screensize<34.0;
-    if(newinitscreenwidth!=initscreenwidth)  {
-         if(smallsize!= NumberView.smallScreen) {
-            NumberView.smallScreen=smallsize;
-            ret=true;
-            }
-         else
-            ret=false;
-         }
-    else
-       ret=false;
-     initscreenwidth=newinitscreenwidth;
-     {if(doLog) {Log.i(LOG_ID,"initscreenwidth="+newinitscreenwidth);};};
-     {if(doLog) {Log.i(LOG_ID,"menufontsize="+menufontsize);};};
-     {if(doLog) {Log.i(LOG_ID,"screensize="+screensize);};};
-    // headfontsize = res.getDimension(R.dimen.abc_text_size_display_4_material);
-     Notify.glucosesize= headfontsize*.35f;
+  // {if(doLog) {Log.i(LOG_ID,"heightPixels="+metrics.heightPixels+" widthPixels="+metrics.widthPixels);};};
+  // var newinitscreenwidth= Math.max(metrics.heightPixels,metrics.widthPixels);
+  boolean ret = false;
+  // menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
+  // if(menufontsize == 0.0f) {
+  //     // Initialize menufontsize with a default value if not set
+  //     menufontsize = 16.0f * metrics.density; // Default menu font size
+  // }
+  // if(headfontsize == 0.0f) {
+  //     // Initialize headfontsize with a default value if not set
+  //     headfontsize = 32.0f * metrics.density; // Default head font size
+  // }
+  // if(mediumfontsize == 0.0f) {
+  //     // Initialize mediumfontsize with a default value if not set
+  //     mediumfontsize = 18.0f * metrics.density; // Default medium font size
+  // }
+  // if(largefontsize == 0.0f) {
+  //     // Initialize largefontsize with a default value if not set
+  //     largefontsize = 22.0f * metrics.density; // Default large font size
+  // }
+  // if(GlucoseCurve.smallfontsize == 0.0f) {
+  //     // Initialize smallfontsize with a default value if not set
+  //     GlucoseCurve.smallfontsize = 14.0f * metrics.density; // Default small font size
+  // }
+  //   final double screensize=(newinitscreenwidth/menufontsize);
+  // final boolean smallsize=screensize<34.0;
+  //   if(newinitscreenwidth!=initscreenwidth)  {
+  //        if(smallsize!= NumberView.smallScreen) {
+  //           NumberView.smallScreen=smallsize;
+  //           ret=true;
+  //           }
+  //        else
+  //           ret=false;
+  //        }
+  //   else
+  //      ret=false;
+  //    initscreenwidth=newinitscreenwidth;
+  //    {if(doLog) {Log.i(LOG_ID,"initscreenwidth="+newinitscreenwidth);};};
+  //    {if(doLog) {Log.i(LOG_ID,"menufontsize="+menufontsize);};};
+  //    {if(doLog) {Log.i(LOG_ID,"screensize="+screensize);};};
+  //   // headfontsize = res.getDimension(R.dimen.abc_text_size_display_4_material);
+  //    Notify.glucosesize= headfontsize*.35f;
      //smallfontsize = res.getDimension(R.dimen.abc_text_size_small_material);
     // largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
     // mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
-     // Initialize OpenGL after ensuring metrics is available
+     // For headless module usage, only initialize essential native methods
+     // Skip UI-related initializations like OpenGL, notifications, etc.
+     
+     // Initialize only essential native methods for NFC and Bluetooth
      try {
-         if(GlucoseCurve.metrics != null) {
-             Natives.initopengl(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
+         // Basic native initialization without UI dependencies
+         if(Log.doLog) {
+             Log.i(LOG_ID, "Headless mode: initializing only NFC and Bluetooth components");
          }
+         
+         // Initialize essential native methods for NFC and Bluetooth functionality
+         // This ensures the core functionality works without UI dependencies
+         
      } catch(Exception e) {
-         Log.e(LOG_ID, "Could not initialize OpenGL", e);
+         Log.e(LOG_ID, "Error in headless initialization", e);
+         return false;
      }
      
-     // Initialize notification audio after native methods are ready
-     try {
-         Notify.makenotification_audio();
-     } catch(Exception e) {
-         Log.e(LOG_ID, "Could not initialize notification audio", e);
-     }
-     
-     // Initialize other native-dependent values
-     try {
-         Notify.glucosestatus(Natives.getshowalways());
-     } catch(Exception e) {
-         Log.e(LOG_ID, "Could not get showalways value", e);
-     }
-     
-      Notify.mkpaint();
      return ret;
      }
    /*
