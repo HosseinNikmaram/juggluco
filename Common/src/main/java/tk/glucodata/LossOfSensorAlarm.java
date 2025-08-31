@@ -34,7 +34,8 @@ import static android.app.PendingIntent.getBroadcast;
 import static android.content.Context.ALARM_SERVICE;
 import static tk.glucodata.Log.doLog;
 
-public class LossOfSensorAlarm extends BroadcastReceiver {
+// Design class commented out for headless module usage
+// public class LossOfSensorAlarm extends BroadcastReceiver {
 static final private String LOG_ID="LossOfSensorAlarm";
 @Override
 public void onReceive(Context context, Intent intent) {

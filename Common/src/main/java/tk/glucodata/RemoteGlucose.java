@@ -54,7 +54,8 @@ import static tk.glucodata.R.id.arrowandvalue;
 import java.text.DateFormat;
 import java.util.Date;
 
-class RemoteGlucose {
+// Design class commented out for headless module usage
+// class RemoteGlucose {
 final private static String LOG_ID="RemoteGlucose";
 final private Bitmap glucoseBitmap;
 final private Canvas canvas;

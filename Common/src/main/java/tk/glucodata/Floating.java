@@ -71,7 +71,8 @@ import tk.glucodata.Applic;
 import tk.glucodata.Notify;
 import tk.glucodata.R;
 
-public class Floating extends View {
+// Design class commented out for headless module usage
+// public class Floating extends View {
 
     static private final String LOG_ID="Floating";
 static private final int oldage=glucosetimeoutSEC;

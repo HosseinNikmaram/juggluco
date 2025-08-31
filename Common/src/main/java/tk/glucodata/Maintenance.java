@@ -39,7 +39,8 @@ import static android.content.Context.ALARM_SERVICE;
 import static android.os.SystemClock.elapsedRealtime;
 import static tk.glucodata.Log.doLog;
 
-public class Maintenance extends BroadcastReceiver {
+// Design class commented out for headless module usage
+// public class Maintenance extends BroadcastReceiver {
 static final private String LOG_ID="Maintenance";
         @Override
         public void onReceive(Context context, Intent intent) {

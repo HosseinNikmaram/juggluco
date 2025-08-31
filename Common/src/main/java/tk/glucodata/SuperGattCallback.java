@@ -263,11 +263,11 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
         var sglucose=new notGlucose(timmsec, String.format(Applic.usedlocale,Notify.pureglucoseformat, gl),  rate,sensorgen);
         previousglucose=sglucose;
         previousglucosevalue=gl;
-        final var fview=Floating.floatview;
+        // final var fview=Floating.floatview; // Commented out for headless mode - no UI needed
 //        MainActivity.showmessage=null;
         boolean[] alarmspeak={false};
-        if(fview!=null) 
-            fview.postInvalidate();
+        // if(fview!=null) // Commented out for headless mode - no UI needed
+            // fview.postInvalidate(); // Commented out for headless mode - no UI needed
 
         try {
 

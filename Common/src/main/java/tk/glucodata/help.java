@@ -57,7 +57,8 @@ import static tk.glucodata.Specific.useclose;
 import static tk.glucodata.settings.Settings.removeContentView;
 
 
-public class help {
+// Design class commented out for headless module usage
+// public class help {
 static private final String LOG_ID="help";
 //tatic   Layout helplayout=null;
 static WeakReference<ViewGroup> whelplayout=null;

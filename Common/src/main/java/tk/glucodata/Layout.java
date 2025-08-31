@@ -35,7 +35,8 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static tk.glucodata.Log.doLog;
 
-public class Layout extends ViewGroup {
+// Design class commented out for headless module usage
+// public class Layout extends ViewGroup {
 static View.AccessibilityDelegate  accessDeli=new View.AccessibilityDelegate () {
         @Override
         public void onInitializeAccessibilityNodeInfo( View host, AccessibilityNodeInfo info) {

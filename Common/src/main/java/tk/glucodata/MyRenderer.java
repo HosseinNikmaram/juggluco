@@ -32,7 +32,8 @@ import android.opengl.GLSurfaceView;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class MyRenderer implements GLSurfaceView.Renderer {
+// Design class commented out for headless module usage
+// public class MyRenderer implements GLSurfaceView.Renderer {
 //       boolean started=false;
         int stepresult = 0;
         int badscan = 0;

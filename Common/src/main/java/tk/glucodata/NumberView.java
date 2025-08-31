@@ -85,7 +85,8 @@ import static tk.glucodata.util.getbutton;
 import static tk.glucodata.util.getlabel;
 
 
-public class NumberView {
+// Design class commented out for headless module usage
+// public class NumberView {
 public static  boolean smallScreen=false;
 final private static String LOG_ID="NumberView";
 Calendar cal = Calendar.getInstance();

@@ -74,7 +74,8 @@ import java.util.concurrent.TimeUnit;
 //import androidx.core.app.NotificationManagerCompat;
 //import tk.glucodata.Natives;
 
-public class Notify {
+// Design class commented out for headless module usage
+// public class Notify {
 // Static initializer removed to prevent calling native methods before they are initialized
 // static {
 //         makenotification_audio();

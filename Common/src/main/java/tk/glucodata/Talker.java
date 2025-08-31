@@ -81,7 +81,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 
-public class Talker {
+// Design class commented out for headless module usage
+// public class Talker {
 static public final String LOG_ID="Talker";
     private TextToSpeech engine;
 

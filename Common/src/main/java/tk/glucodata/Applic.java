@@ -34,8 +34,8 @@ import static android.view.View.INVISIBLE;
 //import java.text.DateFormat;
 import static java.lang.String.format;
 import static java.util.Locale.US;
-import static tk.glucodata.GlucoseCurve.STEPBACK;
-import static tk.glucodata.GlucoseCurve.smallfontsize;
+// import static tk.glucodata.GlucoseCurve.STEPBACK;
+// import static tk.glucodata.GlucoseCurve.smallfontsize;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.MessageSender.initwearos;
 import static tk.glucodata.Natives.hasData;
@@ -113,13 +113,13 @@ public  ArrayList<String> getlabels() {
         return  Natives.getLabels();
     }
 public tk.glucodata.nums.AllData numdata=null;
-public GlucoseCurve curve=null;
+// public GlucoseCurve curve=null; // Commented out for headless mode - no UI needed
     public static int unit=0;
-public void redraw() {
-    var tmpcurve=curve;
-    if(tmpcurve!=null)
-        tmpcurve.requestRender();
-    }
+// public void redraw() { // Commented out for headless mode - no UI needed
+//     var tmpcurve=curve;
+//     if(tmpcurve!=null)
+//         tmpcurve.requestRender();
+//     }
 
 static private Handler mHandler;
 private static  long uiThreadId;
@@ -197,9 +197,9 @@ public void sendlabels() {
             numdata.sendlabels();
         }
     }
-void setcurve(GlucoseCurve curve) {
-    this.curve=curve;
-    }
+// void setcurve(GlucoseCurve curve) { // Commented out for headless mode - no UI needed
+//     this.curve=curve;
+//     }
 //void savestate() { if(blue!=null) blue.savestate(); }
 public static String curlang=null;
 
@@ -844,7 +844,7 @@ private static    void initbroadcasts() {
     Specific.setclose(!Natives.getdontuseclose());
     }
 
-    Floating.init(); 
+            // Floating.init(); // Commented out for headless mode - no UI needed 
    final var initversion=Natives.getinitVersion();
     if(initversion<34) {
       if(initversion<29) {
@@ -854,9 +854,9 @@ private static    void initbroadcasts() {
                   Broadcasts.updateall();
                   }
                if(Notify.arrowNotify!=null)
-                  Natives.setfloatingFontsize((int) Notify.glucosesize);
-               Natives.setfloatingbackground(WHITE);
-                Natives.setfloatingforeground(BLACK);
+                          // Natives.setfloatingFontsize((int) Notify.glucosesize); // Commented out for headless mode - no UI needed
+        // Natives.setfloatingbackground(WHITE); // Commented out for headless mode - no UI needed
+        // Natives.setfloatingforeground(BLACK); // Commented out for headless mode - no UI needed
                }
             }
          sethour24(DateFormat.is24HourFormat(app));

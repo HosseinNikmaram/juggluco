@@ -34,7 +34,8 @@ import kotlin.math.sqrt
 
     
 
-public class CommonCanvas {
+// Design class commented out for headless module usage
+// public class CommonCanvas {
 
 	companion object {
 		private const val LOG_ID = "CommonCanvas"

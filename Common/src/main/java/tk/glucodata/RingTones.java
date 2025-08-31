@@ -63,7 +63,8 @@ import static tk.glucodata.util.getlabel;
 
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
-public class RingTones {
+// Design class commented out for headless module usage
+// public class RingTones {
  int kind;
  String uri=null;
  int duration,susp;

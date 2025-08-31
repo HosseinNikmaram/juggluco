@@ -73,7 +73,8 @@ import static tk.glucodata.settings.Settings.getGenSpin;
 import static tk.glucodata.settings.Settings.removeContentView;
 import static tk.glucodata.util.getbutton;
 
-public class setNumAlarm {
+// Design class commented out for headless module usage
+// public class setNumAlarm {
     Layout genlayout=null;
 NumAlarmAdapter numadapt;
 private final static String LOG_ID="setNumAlarm";

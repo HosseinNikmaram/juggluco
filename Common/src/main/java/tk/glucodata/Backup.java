@@ -102,7 +102,8 @@ import static tk.glucodata.util.sethtml;
 
 //import org.w3c.dom.Text;
 
-public class Backup {
+// Design class commented out for headless module usage
+// public class Backup {
     static final int hide=isWearable?GONE:INVISIBLE;
    static final private String LOG_ID="Backup";
    static class changer implements TextWatcher {

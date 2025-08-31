@@ -43,7 +43,7 @@ import static tk.glucodata.Floating.shoulduseadb;
 import static tk.glucodata.GlucoseCurve.STEPBACK;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Log.showbytes;
-import static tk.glucodata.Natives.getInvertColors;
+// import static tk.glucodata.Natives.getInvertColors;
 import static tk.glucodata.Natives.hasNeedScan;
 import static tk.glucodata.Natives.setShownintro;
 import static tk.glucodata.Natives.wakelibreview;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
     //public class MainActivity extends CarActivity implements NfcAdapter.ReaderCallback  {
 //    boolean    hideSystem=true;
     LaunchShit permHealth = isWearable ? null : new LaunchShit(this);
-    public GlucoseCurve curve = null;
+    // public GlucoseCurve curve = null; // Commented out for headless mode - no UI needed
     //    Button okbutton=null;
     private static final String LOG_ID = "MainActivity";
     private NfcAdapter mNfcAdapter = null;
@@ -666,7 +666,7 @@ void showSystemBarsAppearance() {
             openfile.showchoice(this, true);
         }
         if (Natives.gethidefloatinJuggluco())
-            Floating.removeFloating();
+            // Floating.removeFloating(); // Commented out for headless mode - no UI needed
         boolean showsdialog = false;
         for (var el : shownummessage) {
             showindialog(el, false);
@@ -726,12 +726,13 @@ void showSystemBarsAppearance() {
         runOnUiThread(() -> {
                     if (curve != null) {
                         curve.searchaway();
-                        if (curve.numberview != null) {
-                            if (curve.numberview.datepicker != null)
-                                curve.numberview.datepicker.setVisibility(GONE);
-                            if (curve.numberview.timepicker != null)
-                                curve.numberview.timepicker.setVisibility(GONE);
-                        }
+                                // Design code commented out for headless module usage
+        // if (curve.numberview != null) {
+        //     if (curve.numberview.datepicker != null)
+        //         curve.numberview.datepicker.setVisibility(GONE);
+        //     if (curve.numberview.timepicker != null)
+        //         curve.numberview.timepicker.setVisibility(GONE);
+        // }
 
                     }
                 }
@@ -892,7 +893,7 @@ void showSystemBarsAppearance() {
         if (!Applic.Nativesloaded)
             return;
         if (Natives.getfloatglucose() && Natives.gethidefloatinJuggluco())
-            Floating.makefloat();
+            // Floating.makefloat(); // Commented out for headless mode - no UI needed
         Natives.setpaused(null);
         if (curve != null)
             curve.onPause();
@@ -1034,7 +1035,8 @@ void switchSystemUI() {
                 if (curve != null) {
                     while (doonback())
                         ;
-                    curve.numberview.deleteviews();
+                    // Design code commented out for headless module usage
+                // curve.numberview.deleteviews();
                     curve.searchspinner = null;
                     if (curve.search != null) {
                         removeContentView(curve.search);
@@ -1529,9 +1531,10 @@ void switchSystemUI() {
         return super.onKeyLongPress(keyCode, event);
     }
 
-    public NumberView getnumberview() {
-        return curve.numberview;
-    }
+    // Design method commented out for headless module usage
+    // public NumberView getnumberview() {
+    //     return curve.numberview;
+    // }
 
     final static private Deque<Runnable> backrun = new ArrayDeque<>();
 

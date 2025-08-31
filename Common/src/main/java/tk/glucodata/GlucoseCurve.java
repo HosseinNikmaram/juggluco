@@ -79,7 +79,8 @@ import static tk.glucodata.RingTones.EnableControls;
 import static tk.glucodata.settings.Settings.editoptions;
 import static tk.glucodata.util.getlabel;
 
-public class GlucoseCurve extends GLSurfaceView {
+// Design class commented out for headless module usage
+// public class GlucoseCurve extends GLSurfaceView {
 Button summarybutton=null;
 boolean statspresent=false;
 @Keep
@@ -120,14 +121,14 @@ static   public float smallfontsize;
  final   private ScaleGestureDetector mScaleDetector;
  final   private GestureDetector mGestureDetector;
     static final int STEPBACK = 1;
-    MyRenderer render = new MyRenderer();
+    // MyRenderer render = new MyRenderer(); // Commented out for headless mode - no UI needed
     static int height,width;
 
 
 
-NumberView  numberview= new NumberView();
+    // NumberView  numberview= new NumberView(); // Commented out for headless mode - no UI needed
 
-Layout numcontrol=null;
+    // Layout numcontrol=null; // Commented out for headless mode - no UI needed
 void startsearch() {
 if(!isWearable) {
     MainActivity activity = (MainActivity) getContext();
@@ -525,7 +526,7 @@ void startlibrelink(String lang) {
                 case 3: getnumcontrol((MainActivity) getContext());return true;
                 case 4: Stats.mkstats((MainActivity) getContext());break;
                 case 5: tk.glucodata.Talker.config((MainActivity) getContext());break;
-                case 6:  Floating.setfloatglucose((MainActivity) getContext(),!Natives.getfloatglucose()) ;break;
+                // case 6:  Floating.setfloatglucose((MainActivity) getContext(),!Natives.getfloatglucose()) ;break; // Commented out for headless mode - no UI needed
                 };
                 };break;
             case 2: {
