@@ -63,6 +63,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.text.format.DateFormat;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.Toast;
 
@@ -673,29 +674,42 @@ boolean needsnatives() {
  // var metrics=GlucoseCurve.metrics= res.getDisplayMetrics();
  // MainActivity.screenheight= metrics.heightPixels;
  // MainActivity.screenwidth= metrics.widthPixels;
-  {if(doLog) {Log.i(LOG_ID,"heightPixels="+GlucoseCurve.metrics.heightPixels+" widthPixels="+GlucoseCurve.metrics.widthPixels);};};
-  var newinitscreenwidth= Math.max(GlucoseCurve.metrics.heightPixels,GlucoseCurve.metrics.widthPixels);
+  
+  // Get metrics from context if GlucoseCurve.metrics is not available yet
+  DisplayMetrics metrics = GlucoseCurve.metrics;
+  if(metrics == null) {
+      try {
+          metrics = MainActivity.thisone.getResources().getDisplayMetrics();
+      } catch(Exception e) {
+          // Fallback to default values if context is not available
+          Log.e(LOG_ID, "Could not get DisplayMetrics, using default values");
+          return false;
+      }
+  }
+  
+  {if(doLog) {Log.i(LOG_ID,"heightPixels="+metrics.heightPixels+" widthPixels="+metrics.widthPixels);};};
+  var newinitscreenwidth= Math.max(metrics.heightPixels,metrics.widthPixels);
   boolean ret;
  // menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
   if(menufontsize == 0.0f) {
       // Initialize menufontsize with a default value if not set
-      menufontsize = 16.0f * GlucoseCurve.metrics.density; // Default menu font size
+      menufontsize = 16.0f * metrics.density; // Default menu font size
   }
   if(headfontsize == 0.0f) {
       // Initialize headfontsize with a default value if not set
-      headfontsize = 32.0f * GlucoseCurve.metrics.density; // Default head font size
+      headfontsize = 32.0f * metrics.density; // Default head font size
   }
   if(mediumfontsize == 0.0f) {
       // Initialize mediumfontsize with a default value if not set
-      mediumfontsize = 18.0f * GlucoseCurve.metrics.density; // Default medium font size
+      mediumfontsize = 18.0f * metrics.density; // Default medium font size
   }
   if(largefontsize == 0.0f) {
       // Initialize largefontsize with a default value if not set
-      largefontsize = 22.0f * GlucoseCurve.metrics.density; // Default large font size
+      largefontsize = 22.0f * metrics.density; // Default large font size
   }
   if(GlucoseCurve.smallfontsize == 0.0f) {
       // Initialize smallfontsize with a default value if not set
-      GlucoseCurve.smallfontsize = 14.0f * GlucoseCurve.metrics.density; // Default small font size
+      GlucoseCurve.smallfontsize = 14.0f * metrics.density; // Default small font size
   }
     final double screensize=(newinitscreenwidth/menufontsize);
   final boolean smallsize=screensize<34.0;
