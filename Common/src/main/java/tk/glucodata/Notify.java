@@ -75,9 +75,10 @@ import java.util.concurrent.TimeUnit;
 //import tk.glucodata.Natives;
 
 public class Notify {
-static {
-        makenotification_audio();
-        };
+// Static initializer removed to prevent calling native methods before they are initialized
+// static {
+//         makenotification_audio();
+//         };
 static public final int glucosetimeoutSEC=30*11;
 static public final long glucosetimeout=1000L*glucosetimeoutSEC;
 

@@ -733,6 +733,14 @@ boolean needsnatives() {
     // largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
     // mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
      Natives.initopengl(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
+     
+     // Initialize notification audio after native methods are ready
+     try {
+         Notify.makenotification_audio();
+     } catch(Exception e) {
+         Log.e(LOG_ID, "Could not initialize notification audio", e);
+     }
+     
       Notify.mkpaint();
      return ret;
      }
