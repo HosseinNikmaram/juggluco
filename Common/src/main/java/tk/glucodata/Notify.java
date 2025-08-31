@@ -335,7 +335,7 @@ static RemoteGlucose arrowNotify;
     static private final int glucosenotificationid=81431;
     static private final int glucosealarmid=81432;
     static boolean alertwatch=false;
-    static private boolean showalways=Natives.getshowalways();
+    static private boolean showalways=false; // Initialize with default value, will be set later
 static public String glucosestr(float gl) {
     return format(usedlocale,glucoseformat, gl);
     }

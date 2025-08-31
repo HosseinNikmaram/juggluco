@@ -748,6 +748,13 @@ boolean needsnatives() {
          Log.e(LOG_ID, "Could not initialize notification audio", e);
      }
      
+     // Initialize other native-dependent values
+     try {
+         Notify.glucosestatus(Natives.getshowalways());
+     } catch(Exception e) {
+         Log.e(LOG_ID, "Could not get showalways value", e);
+     }
+     
       Notify.mkpaint();
      return ret;
      }
