@@ -1,4 +1,4 @@
-                        -H/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp
+                        -H/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp
 -DCMAKE_SYSTEM_NAME=Android
 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 -DCMAKE_SYSTEM_VERSION=26
@@ -11,10 +11,10 @@
 -DCMAKE_MAKE_PROGRAM=/home/hossein/Android/Sdk/cmake/3.31.6/bin/ninja
 -DCMAKE_C_FLAGS= -DAPPID="quotes(tk.glucodata)"   -DAPPVERSION="quotes(9.7.7)"     -DDEXCOM=1     -DSIBIONICS=1     -DLIBRE3=1  -DDEBUG=1 -DSCANLOG=1 -DAPPSUFFIX="quotes(.debug)" -DNDK_DEBUG=1 -UNDEBUG
 -DCMAKE_CXX_FLAGS= -DAPPID="quotes(tk.glucodata)"   -DAPPVERSION="quotes(9.7.7)"     -DDEXCOM=1     -DSIBIONICS=1     -DLIBRE3=1  -std=gnu++26 -DDEBUG=1 -DSCANLOG=1 -DAPPSUFFIX="quotes(.debug)" -DNDK_DEBUG=1 -UNDEBUG
--DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86_64
--DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/hossein/AndroidStudioProjects/juggluco-test/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86_64
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86_64
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/cxx/Debug/122t3f1d/obj/x86_64
 -DCMAKE_BUILD_TYPE=Debug
--B/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/x86_64
+-B/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/x86_64
 -GNinja
 -DJUGGLUCO_APP=TRUE -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=TRUE
 -DDEXCOM=TRUE

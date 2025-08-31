@@ -16,6 +16,6 @@
 -- Looking for C++ include arm-linux-androideabi/asm/errno.h - found
 -- Performing Test HAVE_PTHREADARG
 -- Performing Test HAVE_PTHREADARG - Success
--- Configuring done (7.0s)
--- Generating done (0.4s)
--- Build files have been written to: /home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a
+-- Configuring done (3.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a

@@ -2,7 +2,7 @@
 package tk.glucodata.headless;
 
 public interface StatsListener {
-    void onStats(String serial, HeadlessStatsSummary stats);
+    void onStats( HeadlessStatsSummary stats);
 }
 
 

@@ -2,9 +2,13 @@ package tk.glucodata.headless;
 
 import android.app.Activity;
 import android.content.Context;
-import android.nfc.Tag;
+import android.os.Build;
 import android.widget.Toast;
 import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Example usage of the headless Juggluco system
@@ -25,6 +29,7 @@ public class UsageExample {
     private HeadlessJugglucoManager jugglucoManager;
     private Context context;
     private boolean initialized = false;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private UsageExample() {}
     
@@ -59,27 +64,20 @@ public class UsageExample {
             activity.runOnUiThread(() -> {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
-            jugglucoManager.getGlucoseStats(serial);
-            jugglucoManager.getGlucoseHistory(serial);
+            jugglucoManager.getGlucoseStats(0L,System.currentTimeMillis());
             jugglucoManager.getSensorInfo(serial);
+
+            // Example 3: Get complete glucose history (improved method)
+            List<HeadlessHistory.GlucoseData> completeHistory = HeadlessHistory.getCompleteGlucoseHistory();
+            Log.d(TAG, String.format("Complete history contains size: "+completeHistory.size()+" and last item: %s ", completeHistory.get(completeHistory.size() - 1).toString()));
+
+
+
         });
 
-        jugglucoManager.setHistoryListener((serial, history) -> {
-            Log.d(TAG, "History count=" + history.length + " from " + serial);
-            // history: long[points][2] -> [timeMillis, mgdl]
-            for (int i = 0; i < history.length; i++) {
-                long timeMillis = history[i][0];
-                long mgdl = history[i][1];
-                Log.d(TAG, "idx=" + i + " time=" + timeMillis + " mgdl=" + mgdl);
-            }
 
-            activity.runOnUiThread(() ->
-                    Toast.makeText(activity, "History points: " + history.length, Toast.LENGTH_SHORT).show()
-            );
-        });
-
-        jugglucoManager.setStatsListener((serial, stats) -> {
-            Log.d(TAG, "Stats for " + serial +
+        jugglucoManager.setStatsListener(( stats) -> {
+            Log.d(TAG, "Stats for "  +
                     ": n=" + stats.numberOfMeasurements +
                     ", avg=" + String.format("%.1f", stats.averageGlucose) +
                     ", sd=" + String.format("%.2f", stats.standardDeviation) +
@@ -123,16 +121,11 @@ public class UsageExample {
             jugglucoManager.stopBluetoothScanning();
         }
     }
+
     
-    public void getGlucoseHistory(String serial) {
+    public void getGlucoseStats() {
         if (jugglucoManager != null) {
-            jugglucoManager.getGlucoseHistory(serial);
-        }
-    }
-    
-    public void getGlucoseStats(String serial) {
-        if (jugglucoManager != null) {
-            jugglucoManager.getGlucoseStats(serial);
+            jugglucoManager.getGlucoseStats();
         }
     }
     
@@ -147,4 +140,5 @@ public class UsageExample {
         }
         initialized = false;
     }
+
 }

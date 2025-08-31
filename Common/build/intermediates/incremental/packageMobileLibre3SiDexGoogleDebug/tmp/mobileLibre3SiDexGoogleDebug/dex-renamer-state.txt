@@ -1,4 +1,4 @@
-#Wed Aug 27 14:41:45 IRST 2025
+#Sat Aug 30 18:18:47 IRST 2025
 base.0=/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/dex/mobileLibre3SiDexGoogleDebug/mergeExtDexMobileLibre3SiDexGoogleDebug/classes.dex
 base.1=/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/dex/mobileLibre3SiDexGoogleDebug/mergeProjectDexMobileLibre3SiDexGoogleDebug/0/classes.dex
 base.10=/home/hossein/AndroidStudioProjects/juggluco/Common/build/intermediates/dex/mobileLibre3SiDexGoogleDebug/mergeProjectDexMobileLibre3SiDexGoogleDebug/4/classes.dex
