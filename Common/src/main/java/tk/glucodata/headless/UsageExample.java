@@ -14,10 +14,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Example usage of the headless Juggluco system
- * This shows how to integrate Libre sensor functionality into your own module
+ * Example implementation of the headless Juggluco system
+ * Demonstrates NFC scanning, BLE management, and glucose data access
  */
-public class UsageExample {
+public class UsageExample implements ScanNfcV.ScanResultListener {
     private static final String TAG = "JugglucoManager";
     private static volatile UsageExample instance;
     public static UsageExample getInstance() {
@@ -37,145 +37,160 @@ public class UsageExample {
     private UsageExample() {}
     
     /**
-     * Initialize the headless Juggluco system in your module
-     * @param activity Your main activity
+     * Initialize the headless Juggluco system
+     * @param ctx Android context
+     * @return true if initialization was successful
      */
-    public void initializeJuggluco(Activity activity) {
-        if (initialized) return;
-        this.context = activity;
-        
-
-        jugglucoManager = new HeadlessJugglucoManager();
-        
-        if (!jugglucoManager.init(activity)) {
-            Toast.makeText(activity, "Failed to initialize Juggluco", Toast.LENGTH_LONG).show();
+    public boolean init(Context ctx) {
+        try {
+            this.context = ctx;
+            
+            // Initialize Juggluco manager
+            jugglucoManager = HeadlessJugglucoManager.getInstance();
+            boolean initialized = jugglucoManager.init((Activity) ctx);
+            
+            if (initialized) {
+                // Set up device connection listener
+                jugglucoManager.setDeviceConnectionListener(new DeviceConnectionListener() {
+                    @Override
+                    public void onDeviceConnected(String serialNumber, String deviceAddress) {
+                        Log.i(TAG, "Device connected: " + serialNumber + " at " + deviceAddress);
+                        Toast.makeText(context, "Device connected: " + serialNumber, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onDeviceDisconnected(String serialNumber, String deviceAddress) {
+                        Log.i(TAG, "Device disconnected: " + serialNumber + " from " + deviceAddress);
+                        Toast.makeText(context, "Device disconnected: " + serialNumber, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onDeviceConnecting(String serialNumber, String deviceAddress) {
+                        Log.i(TAG, "Device connecting: " + serialNumber + " to " + deviceAddress);
+                        Toast.makeText(context, "Connecting to " + serialNumber, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onDeviceConnectionFailed(String serialNumber, String deviceAddress, int errorCode) {
+                        Log.e(TAG, "Device connection failed: " + serialNumber + " error: " + errorCode);
+                        Toast.makeText(context, "Connection failed: " + serialNumber, Toast.LENGTH_LONG).show();
+                    }
+                    
+                    @Override
+                    public void onDevicePaired(String serialNumber, String deviceAddress) {
+                        Log.i(TAG, "Device paired: " + serialNumber + " at " + deviceAddress);
+                        Toast.makeText(context, "Device paired: " + serialNumber, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onDeviceUnpaired(String serialNumber, String deviceAddress) {
+                        Log.i(TAG, "Device unpaired: " + serialNumber + " from " + deviceAddress);
+                        Toast.makeText(context, "Device unpaired: " + serialNumber, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onDevicePairing(String serialNumber, String deviceAddress) {
+                        Log.i(TAG, "Device pairing: " + serialNumber + " at " + deviceAddress);
+                        Toast.makeText(context, "Pairing with " + serialNumber, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onScanStarted() {
+                        Log.i(TAG, "Bluetooth scan started");
+                        Toast.makeText(context, "Bluetooth scan started", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onScanStopped() {
+                        Log.i(TAG, "Bluetooth scan stopped");
+                        Toast.makeText(context, "Bluetooth scan stopped", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onDeviceFound(String serialNumber, String deviceAddress, String deviceName) {
+                        Log.i(TAG, "Device found: " + serialNumber + " (" + deviceName + ") at " + deviceAddress);
+                        Toast.makeText(context, "Found device: " + deviceName, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onBluetoothEnabled() {
+                        Log.i(TAG, "Bluetooth enabled");
+                        Toast.makeText(context, "Bluetooth enabled", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onBluetoothDisabled() {
+                        Log.i(TAG, "Bluetooth disabled");
+                        Toast.makeText(context, "Bluetooth disabled", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onConnectionPriorityChanged(String serialNumber, String deviceAddress, int priority) {
+                        Log.i(TAG, "Connection priority changed: " + serialNumber + " priority: " + priority);
+                    }
+                    
+                    @Override
+                    public void onConnectionUpdated(String serialNumber, String deviceAddress, int interval, int latency, int timeout) {
+                        Log.i(TAG, "Connection updated: " + serialNumber + " interval: " + interval + " latency: " + latency + " timeout: " + timeout);
+                    }
+                });
+                
+                // Set up NFC scan result listener
+                ScanNfcV.setScanResultListener(this);
+                
+                // Set up stats listener
+                jugglucoManager.setStatsListener(new StatsListener() {
+                    @Override
+                    public void onStatsReady(HeadlessStats.Stats stats) {
+                        Log.i(TAG, "=== GLUCOSE STATISTICS ===");
+                        Log.i(TAG, "Sensor: " + stats.serial);
+                        Log.i(TAG, "Time Range: " + new Date(stats.startMillis) + " to " + new Date(stats.endMillis));
+                        Log.i(TAG, "Total Readings: " + stats.totalReadings);
+                        Log.i(TAG, "Mean: " + String.format("%.1f", stats.mean) + " mg/dL");
+                        Log.i(TAG, "Standard Deviation: " + String.format("%.1f", stats.stdDev) + " mg/dL");
+                        Log.i(TAG, "Time in Range: " + String.format("%.1f", stats.timeInRange) + "%");
+                        Log.i(TAG, "Below Range: " + String.format("%.1f", stats.belowRange) + "%");
+                        Log.i(TAG, "Above Range: " + String.format("%.1f", stats.aboveRange) + "%");
+                        Log.i(TAG, "Very High: " + String.format("%.1f", stats.veryHigh) + "%");
+                        Log.i(TAG, "=== END STATISTICS ===");
+                        
+                        Toast.makeText(context, "Stats: " + String.format("%.1f", stats.timeInRange) + "% in range", Toast.LENGTH_LONG).show();
+                    }
+                });
+                
+                this.initialized = true;
+                Log.i(TAG, "UsageExample initialized successfully");
+                return true;
+            } else {
+                Log.e(TAG, "Failed to initialize Juggluco manager");
+                return false;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing UsageExample", e);
+            return false;
+        }
+    }
+    
+    /**
+     * Implementation of ScanResultListener
+     * This method is called automatically when NFC scan completes
+     * @param result The scan result from ScanNfcV
+     */
+    @Override
+    public void onScanResult(ScanResult result) {
+        if (result == null) {
+            Log.e(TAG, "Received null scan result");
             return;
         }
         
-            if (!jugglucoManager.ensurePermissionsAndBluetooth()) {
-                Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-        // Set device connection listener for comprehensive Bluetooth monitoring
-        jugglucoManager.setDeviceConnectionListener(new DeviceConnectionListener() {
-            @Override
-            public void onDeviceConnected(String serialNumber, String deviceAddress) {
-                String message = String.format("Device connected: %s at %s", serialNumber, deviceAddress);
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onDeviceDisconnected(String serialNumber, String deviceAddress) {
-                String message = String.format("Device disconnected: %s at %s", serialNumber, deviceAddress);
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onDeviceConnectionFailed(String serialNumber, String deviceAddress, int errorCode) {
-                String message = String.format("Device connection failed: %s at %s (Error: %d)", serialNumber, deviceAddress, errorCode);
-                Log.e(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-                });
-            }
-            
-            @Override
-            public void onDevicePaired(String serialNumber, String deviceAddress) {
-                String message = String.format("Device paired: %s at %s", serialNumber, deviceAddress);
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onDeviceUnpaired(String serialNumber, String deviceAddress) {
-                String message = String.format("Device unpaired: %s at %s", serialNumber, deviceAddress);
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onDeviceFound(String serialNumber, String deviceAddress) {
-                String message = String.format("Device found: %s at %s", serialNumber, deviceAddress);
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onBluetoothEnabled() {
-                String message = "Bluetooth enabled";
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onBluetoothDisabled() {
-                String message = "Bluetooth disabled";
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-                });
-            }
-        });
-
-        jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
-            String message = String.format("Glucose: %.1f mg/dL, Rate: %.1f", value, rate);
-            Log.d(TAG, String.format(
-                    "Glucose update - Serial: %s, mgdl: %b, Value: %.1f, Rate: %.1f, Alarm: %s, Time: %d, SensorStart: %d, SensorGen: %d",
-                    serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen
-            ));
-            activity.runOnUiThread(() -> {
-                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-            });
-            jugglucoManager.getGlucoseStats(0L,System.currentTimeMillis());
-            jugglucoManager.getSensorInfo(serial);
-
-            // Example 3: Get complete glucose history (improved method)
-            List<HeadlessHistory.GlucoseData> completeHistory = HeadlessHistory.getCompleteGlucoseHistory();
-            Log.d(TAG, String.format("Complete history contains size: "+completeHistory.size()+" and last item: %s ", completeHistory.get(completeHistory.size() - 1).toString()));
-
-
-
-        });
-
-
-        jugglucoManager.setStatsListener(( stats) -> {
-            Log.d(TAG, "Stats for "  +
-                    ": n=" + stats.numberOfMeasurements +
-                    ", avg=" + String.format("%.1f", stats.averageGlucose) +
-                    ", sd=" + String.format("%.2f", stats.standardDeviation) +
-                    ", gv%=" + String.format("%.1f", stats.glucoseVariabilityPercent) +
-                    ", durDays=" + String.format("%.1f", stats.durationDays) +
-                    ", active%=" + String.format("%.1f", stats.timeActivePercent) +
-                    ", A1C%=" + (stats.estimatedA1CPercent==null ? "-" : String.format("%.2f", stats.estimatedA1CPercent)) +
-                    ", GMI%=" + (stats.gmiPercent==null ? "-" : String.format("%.2f", stats.gmiPercent)) +
-                    ", below%=" + String.format("%.1f", stats.percentBelow) +
-                    ", inRange%=" + String.format("%.1f", stats.percentInRange) +
-                    ", high%=" + String.format("%.1f", stats.percentHigh) +
-                    ", veryHigh%=" + String.format("%.1f", stats.percentVeryHigh)
-            );
-            activity.runOnUiThread(() -> {
-                Toast.makeText(activity, "Stats ready: n=" + stats.numberOfMeasurements,
-                        Toast.LENGTH_SHORT).show();
-            });
-        });
+        // Log the scan result comprehensively
+        logScanResult(result);
         
-        initialized = true;
-        Toast.makeText(activity, "Juggluco initialized successfully", Toast.LENGTH_SHORT).show();
+        // Show result to user
+        showScanResultToUser(result);
+        
+        // Handle the result based on its type
+        handleScanResult(result);
     }
 
     public void startBluetoothScanning() {
@@ -217,70 +232,6 @@ public class UsageExample {
         // This method is kept for compatibility
         Toast.makeText(context, "NFC scanning is handled by MainActivity", Toast.LENGTH_SHORT).show();
         Log.i(TAG, "NFC scanning request - scanning is handled by MainActivity and ScanNfcV");
-    }
-    
-    /**
-     * Process an NFC tag that was discovered using ScanNfcV
-     * This method should be called from MainActivity's onTagDiscovered callback
-     * @param tag The discovered NFC tag
-     * @param curve The glucose curve context (can be null for headless mode)
-     * @return ScanResult containing the scan information
-     */
-    public ScanResult processNfcTag(Tag tag, GlucoseCurve curve) {
-        if (!initialized) {
-            return new ScanResult(false, 0, 19, "", "Juggluco not initialized");
-        }
-        
-        try {
-            // Use ScanNfcV.scanWithResult for structured results
-            ScanResult result = ScanNfcV.scanWithResult(curve, tag);
-            
-            // Log the scan result comprehensively
-            logScanResult(result);
-            
-            // Show result to user
-            showScanResultToUser(result);
-            
-            // Handle the result based on its type
-            handleScanResult(result);
-            
-            return result;
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error processing NFC tag", e);
-            return new ScanResult(false, 0, 19, "", "Error processing tag: " + e.getMessage());
-        }
-    }
-    
-    /**
-     * Process an NFC tag without GlucoseCurve context (for headless mode)
-     * @param tag The discovered NFC tag
-     * @return ScanResult containing the scan information
-     */
-    public ScanResult processNfcTag(Tag tag) {
-        if (!initialized) {
-            return new ScanResult(false, 0, 19, "", "Juggluco not initialized");
-        }
-        
-        try {
-            // For headless mode, we'll use the HeadlessJugglucoManager's scan method
-            ScanResult result = jugglucoManager.scanNfcTag(tag);
-            
-            // Log the scan result comprehensively
-            logScanResult(result);
-            
-            // Show result to user
-            showScanResultToUser(result);
-            
-            // Handle the result based on its type
-            handleScanResult(result);
-            
-            return result;
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error processing NFC tag", e);
-            return new ScanResult(false, 0, 19, "", "Error processing tag: " + e.getMessage());
-        }
     }
     
     /**

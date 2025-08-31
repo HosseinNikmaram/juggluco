@@ -273,124 +273,29 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
     }
 
     /**
-     * Scan NFC tag and return ScanResult
-     * This method provides a structured result for headless mode integration
-     * @param curve The glucose curve context
-     * @param tag The NFC tag to scan
-     * @return ScanResult containing the scan information
+     * Listener interface for NFC scan results
      */
-    static public ScanResult scanWithResult(GlucoseCurve curve, Tag tag) {
-        try {
-            if (tag == null) {
-                return new ScanResult(false, 0, 19, "", "Tag is null");
-            }
-            
-            MainActivity main = (MainActivity) (curve.getContext());
-            var vibrator = getvibrator(main);
-            
-            if (!Natives.gethaslibrary()) {
-                vibrator.cancel();
-                failure(vibrator);
-                return new ScanResult(false, 0, 19, "", "Library not available");
-            }
-            
-            byte[] uid = tag.getId();
-            if (uid == null || uid.length == 0) {
-                return new ScanResult(false, 0, 19, "", "Invalid tag UID");
-            }
-            
-            // Log tag ID for debugging
-            if (doLog) {
-                String sensid = "";
-                for (var e : uid) {
-                    sensid = String.format("%02X", (0xFF & e)) + sensid;
-                }
-                Log.i(LOG_ID, "TAG::sensid=" + sensid);
-            }
-            
-            // Check if it's a Libre3 sensor
-            var isLibre3 = uid.length == 8 && uid[6] != 7;
-            
-            // Get sensor info
-            byte[] info = AlgNfcV.nfcinfotimes(tag, (isLibre3 || doLog) ? 1 : 15);
-            if (info == null || info.length != 6) {
-                if (isLibre3) {
-                    // Try Libre3 scan
-                    int[] uit = libre3scan(curve, main, vibrator, tag);
-                    int ret = uit[0];
-                    int value = uit[1];
-                    String serialNumber = "Libre3_" + bytesToHex(uid);
-                    String message = createScanMessage(ret, value, serialNumber);
-                    boolean success = value > 0 || (ret & 0xFF) == 0;
-                    return new ScanResult(success, value, ret, serialNumber, message);
-                } else {
-                    vibrator.cancel();
-                    return new ScanResult(false, 0, 17, "", "Failed to read tag info");
-                }
-            }
-            
-            // Read tag data
-            byte[] data = AlgNfcV.readNfcTag(tag, uid, info);
-            if (data == null) {
-                vibrator.cancel();
-                return new ScanResult(false, 0, 18, "", "Failed to read tag data");
-            }
-            
-            // Process the data using native method
-            int result = Natives.nfcdata(uid, info, data);
-            int glucoseValue = result & 0xFFFF;
-            int returnCode = result >> 16;
-            
-            // Get serial number
-            String serialNumber = Natives.getserial(uid, info);
-            if (serialNumber == null) {
-                serialNumber = "";
-            }
-            
-            // Create message
-            String message = createScanMessage(returnCode, glucoseValue, serialNumber);
-            
-            // Determine success
-            boolean success = glucoseValue > 0 || (returnCode & 0xFF) == 0 || 
-                            (returnCode & 0xFF) == 8 || (returnCode & 0xFF) == 9;
-            
-            // Handle special cases
-            if (success) {
-                curve.render.badscan = 0xff;
-                curve.requestRender();
-                
-                // Handle streaming enable
-                if ((returnCode & 0xFF) == 8 || (returnCode & 0xFF) == 9 || 
-                    (returnCode & 0xFF) == 0x85 || (returnCode & 0xFF) == 0x87) {
-                    mayEnablestreaming(tag, uid, info);
-                }
-                
-                // Handle new device
-                if (newdevice != null && Arrays.equals(newdevice, uid) && Applic.app.canusebluetooth()) {
-                    if (glucoseValue != 0 || (returnCode & 0xFF) == 5 || (returnCode & 0xFF) == 7) {
-                        if (SensorBluetooth.resetDevice(serialNumber)) {
-                            askpermission = true;
-                        }
-                        newdevice = null;
-                    }
-                }
-            }
-            
-            // Cancel vibration
-            vibrator.cancel();
-            
-            // Update curve render
-            curve.render.badscan = returnCode;
-            curve.requestRender();
-            
-            return new ScanResult(success, glucoseValue, returnCode, serialNumber, message);
-            
-        } catch (Exception e) {
-            Log.e(LOG_ID, "Error in scanWithResult", e);
-            return new ScanResult(false, 0, 19, "", "Scan error: " + e.getMessage());
-        }
+    public interface ScanResultListener {
+        void onScanResult(ScanResult result);
     }
     
+    private static ScanResultListener scanResultListener;
+    
+    /**
+     * Set the scan result listener
+     * @param listener The listener to receive scan results
+     */
+    public static void setScanResultListener(ScanResultListener listener) {
+        scanResultListener = listener;
+    }
+    
+    /**
+     * Remove the scan result listener
+     */
+    public static void removeScanResultListener() {
+        scanResultListener = null;
+    }
+
     /**
      * Create a human-readable message based on the scan result
      * @param returnCode The return code from the scan
