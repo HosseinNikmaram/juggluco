@@ -732,7 +732,14 @@ boolean needsnatives() {
      //smallfontsize = res.getDimension(R.dimen.abc_text_size_small_material);
     // largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
     // mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
-     Natives.initopengl(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
+     // Initialize OpenGL after ensuring metrics is available
+     try {
+         if(GlucoseCurve.metrics != null) {
+             Natives.initopengl(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
+         }
+     } catch(Exception e) {
+         Log.e(LOG_ID, "Could not initialize OpenGL", e);
+     }
      
      // Initialize notification audio after native methods are ready
      try {

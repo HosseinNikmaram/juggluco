@@ -183,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
        // Applic app = (Applic) getApplication();
        // app.setbackgroundcolor(this);
         //if (Applic.Nativesloaded)
-           Applic.needsnatives();
+           // Delay calling needsnatives until after GlucoseCurve is created
+           // Applic.needsnatives();
 
         curve = new GlucoseCurve(this);
         {
@@ -193,6 +194,9 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             ;
         }
         ;
+        
+        // Now call needsnatives after GlucoseCurve is created and metrics is available
+        Applic.needsnatives();
         if (!isWearable) {
             if (Build.VERSION.SDK_INT >= 30) {
                 setOnApplyWindowInsetsListener(curve, (v, windowInsets) -> {
