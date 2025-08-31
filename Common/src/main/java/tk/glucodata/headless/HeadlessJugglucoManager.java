@@ -19,6 +19,7 @@ import java.util.List;
 public class HeadlessJugglucoManager {
     private static final String TAG = "HeadlessHead";
     public static GlucoseListener glucoseListener;
+    private DeviceConnectionListener deviceConnectionListener;
     private Activity activity;
     private HeadlessNfcReader nfcReader;
     private HeadlessStats statsManager;
@@ -40,6 +41,12 @@ public class HeadlessJugglucoManager {
             }
             Natives.setusebluetooth(true);
             this.activity = ctx;
+            
+            // Register device connection listener if available
+            if (deviceConnectionListener != null) {
+                registerDeviceConnectionListener();
+            }
+            
             return true;
         } catch (Exception e) {
             return false;
@@ -73,6 +80,31 @@ public class HeadlessJugglucoManager {
         glucoseListener = listener;
     }
     
+    /**
+     * Set device connection listener for Bluetooth connection, pairing, and scanning events
+     * @param listener Device connection listener implementation
+     */
+    public void setDeviceConnectionListener(DeviceConnectionListener listener) {
+        this.deviceConnectionListener = listener;
+        if (nativesInitialized && listener != null) {
+            registerDeviceConnectionListener();
+        }
+    }
+    
+    /**
+     * Register the device connection listener with SensorBluetooth
+     */
+    private void registerDeviceConnectionListener() {
+        if (deviceConnectionListener != null) {
+            try {
+                // Register with SensorBluetooth for connection events
+                SensorBluetooth.registerDeviceConnectionListener(deviceConnectionListener);
+                Log.d(TAG, "Device connection listener registered successfully");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to register device connection listener", e);
+            }
+        }
+    }
 
     /**
      * Set stats listener for glucose statistics

@@ -58,6 +58,7 @@ import static tk.glucodata.Log.doLog;
 //import static tk.glucodata.Log.showScanfilters;
 
 import tk.glucodata.headless.HeadlessHooks;
+import tk.glucodata.headless.DeviceConnectionListener;
 
 public class SensorBluetooth {
 static void    setAutoconnect(boolean val) {
@@ -224,6 +225,7 @@ private boolean checkdevice(BluetoothDevice device) {
             }
             if(ret) SensorBluetooth.this.stopScan(false);
             if(newdev) {
+                notifyDeviceFoundListeners(cb.SerialNumber, device.getAddress(), deviceName);
                 SensorBluetooth.this.connectToActiveDevice(cb, 0);
                 }
             return ret;
@@ -453,6 +455,7 @@ final private Runnable scanRunnable = new Runnable() {
                }
        if(scanner.start()) {
          mScanning = true;
+         notifyScanningListeners(ScanningEvent.SCAN_STARTED);
           Applic.app.getHandler().postDelayed(sensorBluetooth.mScanTimeoutRunnable, scantimeout);
           }
       else {
@@ -492,6 +495,7 @@ private void stopScan(boolean retry) {
             stopscantime=System.currentTimeMillis();
             this.mScanning = false;
             scanner.stop();
+            notifyScanningListeners(ScanningEvent.SCAN_STOPPED);
             if(retry) {
                if(bluetoothIsEnabled()) {
                     int waitscan=scaninterval;
@@ -911,11 +915,13 @@ private void addBluetoothStateReceiver() {
                 {if(doLog) {Log.v(LOG_ID,"BLUETOOTH switched OFF");};};
                 // wasScanning=mScanning; 
                 SensorBluetooth.this.stopScan(false);
+                notifyBluetoothStateListeners(false);
             for(var cb: gattcallbacks)  
                 cb.close();
             if(keepBluetooth) mBluetoothAdapter.enable();
             } else if (intExtra == BluetoothAdapter.STATE_ON) {
                 {if(doLog) {Log.v(LOG_ID,"BLUETOOTH switched ON");};};
+                notifyBluetoothStateListeners(true);
                 if(!isWearable) {
                     Applic.app.numdata.startall();
                     }
@@ -1008,12 +1014,15 @@ private void addBondStateReceiver() {
                   switch (bondState) {
                         case BOND_BONDING:
                             {if(doLog) {Log.i(LOG_ID,"Broadcast: BOND_BONDING "+address);};};
+                            notifyPairingListeners(cb.SerialNumber, address, PairingEvent.PAIRING);
                             break;
                         case BOND_BONDED:
                             {if(doLog) {Log.i(LOG_ID,"Broadcast: BOND_BONDED "+address);};};
+                            notifyPairingListeners(cb.SerialNumber, address, PairingEvent.PAIRED);
                             break;
                         case BOND_NONE:
                             {if(doLog) {Log.i(LOG_ID,"Broadcast: BOND_NONE "+address);};};
+                            notifyPairingListeners(cb.SerialNumber, address, PairingEvent.UNPAIRED);
                             break;
                         case BluetoothDevice.ERROR:
                             {if(doLog) {Log.i(LOG_ID,"Broadcast: ERROR "+address);};};
@@ -1085,5 +1094,151 @@ private boolean initializeBluetooth() {
             }
 
     return false;
+    }
+
+    // Device connection listeners for headless mode
+    private static List<DeviceConnectionListener> deviceConnectionListeners = new ArrayList<>();
+    
+    /**
+     * Register a device connection listener for headless mode
+     * @param listener The listener to register
+     */
+    public static void registerDeviceConnectionListener(DeviceConnectionListener listener) {
+        if (listener != null && !deviceConnectionListeners.contains(listener)) {
+            deviceConnectionListeners.add(listener);
+            if (doLog) Log.i(LOG_ID, "Device connection listener registered: " + listener.getClass().getSimpleName());
+        }
+    }
+    
+    /**
+     * Unregister a device connection listener
+     * @param listener The listener to unregister
+     */
+    public static void unregisterDeviceConnectionListener(DeviceConnectionListener listener) {
+        if (deviceConnectionListeners.remove(listener)) {
+            if (doLog) Log.i(LOG_ID, "Device connection listener unregistered: " + listener.getClass().getSimpleName());
+        }
+    }
+    
+    /**
+     * Notify all device connection listeners about connection events
+     */
+    private void notifyConnectionListeners(String serialNumber, String deviceAddress, ConnectionEvent event, int errorCode) {
+        if (deviceConnectionListeners.isEmpty()) return;
+        
+        for (DeviceConnectionListener listener : deviceConnectionListeners) {
+            try {
+                switch (event) {
+                    case CONNECTED:
+                        listener.onDeviceConnected(serialNumber, deviceAddress);
+                        break;
+                    case DISCONNECTED:
+                        listener.onDeviceDisconnected(serialNumber, deviceAddress);
+                        break;
+                    case CONNECTING:
+                        listener.onDeviceConnecting(serialNumber, deviceAddress);
+                        break;
+                    case CONNECTION_FAILED:
+                        listener.onDeviceConnectionFailed(serialNumber, deviceAddress, errorCode);
+                        break;
+                }
+            } catch (Exception e) {
+                Log.e(LOG_ID, "Error notifying connection listener: " + listener.getClass().getSimpleName(), e);
+            }
+        }
+    }
+    
+    /**
+     * Notify all device connection listeners about pairing events
+     */
+    private void notifyPairingListeners(String serialNumber, String deviceAddress, PairingEvent event) {
+        if (deviceConnectionListeners.isEmpty()) return;
+        
+        for (DeviceConnectionListener listener : deviceConnectionListeners) {
+            try {
+                switch (event) {
+                    case PAIRED:
+                        listener.onDevicePaired(serialNumber, deviceAddress);
+                        break;
+                    case UNPAIRED:
+                        listener.onDeviceUnpaired(serialNumber, deviceAddress);
+                        break;
+                    case PAIRING:
+                        listener.onDevicePairing(serialNumber, deviceAddress);
+                        break;
+                }
+            } catch (Exception e) {
+                Log.e(LOG_ID, "Error notifying pairing listener: " + listener.getClass().getSimpleName(), e);
+            }
+        }
+    }
+    
+    /**
+     * Notify all device connection listeners about scanning events
+     */
+    private void notifyScanningListeners(ScanningEvent event) {
+        if (deviceConnectionListeners.isEmpty()) return;
+        
+        for (DeviceConnectionListener listener : deviceConnectionListeners) {
+            try {
+                switch (event) {
+                    case SCAN_STARTED:
+                        listener.onScanStarted();
+                        break;
+                    case SCAN_STOPPED:
+                        listener.onScanStopped();
+                        break;
+                }
+            } catch (Exception e) {
+                Log.e(LOG_ID, "Error notifying scanning listener: " + listener.getClass().getSimpleName(), e);
+            }
+        }
+    }
+    
+    /**
+     * Notify all device connection listeners about Bluetooth state changes
+     */
+    private void notifyBluetoothStateListeners(boolean enabled) {
+        if (deviceConnectionListeners.isEmpty()) return;
+        
+        for (DeviceConnectionListener listener : deviceConnectionListeners) {
+            try {
+                if (enabled) {
+                    listener.onBluetoothEnabled();
+                } else {
+                    listener.onBluetoothDisabled();
+                }
+            } catch (Exception e) {
+                Log.e(LOG_ID, "Error notifying Bluetooth state listener: " + listener.getClass().getSimpleName(), e);
+            }
+        }
+    }
+    
+    /**
+     * Notify all device connection listeners about device discovery
+     */
+    private void notifyDeviceFoundListeners(String serialNumber, String deviceAddress, String deviceName) {
+        if (deviceConnectionListeners.isEmpty()) return;
+        
+        for (DeviceConnectionListener listener : deviceConnectionListeners) {
+            try {
+                listener.onDeviceFound(serialNumber, deviceAddress, deviceName);
+            } catch (Exception e) {
+                Log.e(LOG_ID, "Error notifying device found listener: " + listener.getClass().getSimpleName(), e);
+            }
+        }
+    }
+    
+    // Enums for event types
+    private enum ConnectionEvent {
+        CONNECTED, DISCONNECTED, CONNECTING, CONNECTION_FAILED
+    }
+    
+    private enum PairingEvent {
+        PAIRED, UNPAIRED, PAIRING
+    }
+    
+    private enum ScanningEvent {
+        SCAN_STARTED, SCAN_STOPPED
     }
 }
