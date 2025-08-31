@@ -677,6 +677,22 @@ boolean needsnatives() {
   var newinitscreenwidth= Math.max(GlucoseCurve.metrics.heightPixels,GlucoseCurve.metrics.widthPixels);
   boolean ret;
  // menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
+  if(menufontsize == 0.0f) {
+      // Initialize menufontsize with a default value if not set
+      menufontsize = 16.0f * GlucoseCurve.metrics.density; // Default menu font size
+  }
+  if(headfontsize == 0.0f) {
+      // Initialize headfontsize with a default value if not set
+      headfontsize = 32.0f * GlucoseCurve.metrics.density; // Default head font size
+  }
+  if(mediumfontsize == 0.0f) {
+      // Initialize mediumfontsize with a default value if not set
+      mediumfontsize = 18.0f * GlucoseCurve.metrics.density; // Default medium font size
+  }
+  if(largefontsize == 0.0f) {
+      // Initialize largefontsize with a default value if not set
+      largefontsize = 22.0f * GlucoseCurve.metrics.density; // Default large font size
+  }
     final double screensize=(newinitscreenwidth/menufontsize);
   final boolean smallsize=screensize<34.0;
     if(newinitscreenwidth!=initscreenwidth)  {
