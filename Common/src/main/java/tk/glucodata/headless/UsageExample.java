@@ -17,24 +17,25 @@ import java.util.List;
  * Example implementation of the headless Juggluco system
  * Demonstrates NFC scanning, BLE management, and glucose data access
  */
-public class UsageExample implements ScanNfcV.ScanResultListener {
+public class UsageExample {
     private static final String TAG = "JugglucoManager";
     private static volatile UsageExample instance;
     public static UsageExample getInstance() {
         if (instance == null) {
             synchronized (UsageExample.class) {
-                if (instance == null) instance = new UsageExample();
+                if (instance == null) {
+                    instance = new UsageExample();
+                }
             }
         }
         return instance;
     }
     
-    private HeadlessJugglucoManager jugglucoManager;
-    private Context context;
-    private boolean initialized = false;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     private UsageExample() {}
+    
+    private Context context;
+    private HeadlessJugglucoManager jugglucoManager;
+    private boolean initialized = false;
     
     /**
      * Initialize the headless Juggluco system
@@ -135,8 +136,8 @@ public class UsageExample implements ScanNfcV.ScanResultListener {
                     }
                 });
                 
-                // Set up NFC scan result listener
-                ScanNfcV.setScanResultListener(this);
+                // Set up NFC scan result callback
+                ScanNfcV.setScanResultCallback(this::handleNfcScanResult);
                 
                 // Set up stats listener
                 jugglucoManager.setStatsListener(new StatsListener() {
@@ -172,12 +173,11 @@ public class UsageExample implements ScanNfcV.ScanResultListener {
     }
     
     /**
-     * Implementation of ScanResultListener
+     * Callback method for NFC scan results
      * This method is called automatically when NFC scan completes
      * @param result The scan result from ScanNfcV
      */
-    @Override
-    public void onScanResult(ScanResult result) {
+    public void handleNfcScanResult(ScanResult result) {
         if (result == null) {
             Log.e(TAG, "Received null scan result");
             return;

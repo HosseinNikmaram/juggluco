@@ -41,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import tk.glucodata.headless.ScanResult;
 import tk.glucodata.settings.Settings;
@@ -273,27 +274,23 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
     }
 
     /**
-     * Listener interface for NFC scan results
+     * Callback interface for NFC scan results
      */
-    public interface ScanResultListener {
-        void onScanResult(ScanResult result);
-    }
-    
-    private static ScanResultListener scanResultListener;
+    private static Consumer<ScanResult> scanResultCallback;
     
     /**
-     * Set the scan result listener
-     * @param listener The listener to receive scan results
+     * Set the scan result callback
+     * @param callback The callback to receive scan results
      */
-    public static void setScanResultListener(ScanResultListener listener) {
-        scanResultListener = listener;
+    public static void setScanResultCallback(Consumer<ScanResult> callback) {
+        scanResultCallback = callback;
     }
     
     /**
-     * Remove the scan result listener
+     * Remove the scan result callback
      */
-    public static void removeScanResultListener() {
-        scanResultListener = null;
+    public static void removeScanResultCallback() {
+        scanResultCallback = null;
     }
 
     /**
@@ -409,8 +406,8 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                            boolean success = value > 0 || (ret & 0xFF) == 0;
                            ScanResult result = new ScanResult(success, value, ret, serialNumber, message);
                            
-                           if(scanResultListener != null) {
-                               scanResultListener.onScanResult(result);
+                           if(scanResultCallback != null) {
+                               scanResultCallback.accept(result);
                            }
                            return;
                           }
@@ -420,8 +417,8 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                         vibrator.cancel();
                         
                         // Notify listener of tag info error
-                        if(scanResultListener != null) {
-                            scanResultListener.onScanResult(new ScanResult(false, 0, ret, "", "Failed to read tag info"));
+                        if(scanResultCallback != null) {
+                            scanResultCallback.accept(new ScanResult(false, 0, ret, "", "Failed to read tag info"));
                         }
                         return;
                         }
@@ -461,8 +458,8 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                         boolean success = value > 0 || (ret & 0xFF) == 0 || (ret & 0xFF) == 8 || (ret & 0xFF) == 9;
                         ScanResult result = new ScanResult(success, value, ret, serialNumber, message);
                         
-                        if(scanResultListener != null) {
-                            scanResultListener.onScanResult(result);
+                        if(scanResultCallback != null) {
+                            scanResultCallback.accept(result);
                         }
                         switch(ret&0xFF) {
                             case 8: {
@@ -539,8 +536,8 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                     {if(doLog) {Log.i(LOG_ID,"Read Tag Data Error");};};
                     
                     // Notify listener of tag data error
-                    if(scanResultListener != null) {
-                        scanResultListener.onScanResult(new ScanResult(false, 0, ret, "", "Failed to read tag data"));
+                    if(scanResultCallback != null) {
+                        scanResultCallback.accept(new ScanResult(false, 0, ret, "", "Failed to read tag data"));
                     }
                     
                     if(getversion(info)==2&&!Natives.switchgen2()) {
