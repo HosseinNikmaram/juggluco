@@ -312,10 +312,10 @@ static boolean canBluetooth() {
        }
     return true;
     }
-/*@Keep
+@Keep
 static int bluePermission() {
     if(Build.VERSION.SDK_INT > 23) {
-        if(Applic.hasPermissions(app, scanpermissions).length==0)
+        if(Applic.hasPermissions(getContext(), scanpermissions).length==0)
                return 2;
         if(Build.VERSION.SDK_INT > 30) {
            return 0;
@@ -323,7 +323,7 @@ static int bluePermission() {
         return 1;
         }
     return 2;
-    }*/
+    }
 public static void updateservice(Context context,boolean usebluetooth) {
         try {
             if(Class.forName("tk.glucodata.keeprunning") != null) {
@@ -432,23 +432,29 @@ public static boolean hasip() {
     }
 //@RequiresApi(api = Build.VERSION_CODES.M)
 private static boolean hasonAvailable=false;
-/*
+@Keep
 public static void sendsettings() {
       {if(doLog) {Log.i(LOG_ID,"sendsettings");};};
-         if(!MessageSender.cansend()) {
-                       {if(doLog) {Log.i(LOG_ID,"!cansend()");};};
-            return;
-            }
-        var sender=tk.glucodata.MessageSender.getMessageSender();
-        if(sender!=null) {
-            sender.sendsettings();
-            }
-        } */
+         try {
+             if(Class.forName("tk.glucodata.MessageSender") != null) {
+                 if(!MessageSender.cansend()) {
+                               {if(doLog) {Log.i(LOG_ID,"!cansend()");};};
+                    return;
+                    }
+                var sender=tk.glucodata.MessageSender.getMessageSender();
+                if(sender!=null) {
+                    sender.sendsettings();
+                    }
+             }
+         } catch(ClassNotFoundException e) {
+             // MessageSender class not available in this build variant
+         }
+        }
 
 static public boolean useWearos() {
    return  false;
     }
-/*
+@Keep
 private void initialize() {
         if (android.os.Build.VERSION.SDK_INT >=  android.os.Build.VERSION_CODES.LOLLIPOP) {
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -508,21 +514,27 @@ private void initialize() {
         }
     else
         Natives.networkpresent();
-}
-*/
+    }
 
 
 
 public static int initscreenwidth=-1;
 
-/*static private final BroadcastReceiver minTimeReceiver = new BroadcastReceiver() {
+@Keep
+static private final BroadcastReceiver minTimeReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Applic app=(Applic) context.getApplicationContext();
-        app.initproc();
-        app.domintime();
+        try {
+            if(Class.forName("tk.glucodata.Applic") != null) {
+                Applic app=(Applic) context.getApplicationContext();
+                app.initproc();
+                app.domintime();
+            }
+        } catch(ClassNotFoundException e) {
+            // Applic class not available in this build variant
         }
-};*/
+        }
+    };
 void domintime() {
     {if(doLog) {Log.i(LOG_ID,"TICK");};};
     if (curve != null) {
@@ -751,21 +763,25 @@ static boolean updateDevices() { //Rename to reset
     Log.e(LOG_ID,"tk.glucodata.SensorBluetooth.blueone==null");
     return false;
      }
-        /*
 @Keep
 static boolean updateDevices() { //Rename to reset
-    if(tk.glucodata.SensorBluetooth.blueone!=null) {
-           if(tk.glucodata.SensorBluetooth.blueone.resetDevices()) {
-        var main=MainActivity.thisone;
-        if(main!=null)
-            main.finepermission();
-         }
-          return true;
-      }
+    try {
+        if(Class.forName("tk.glucodata.SensorBluetooth") != null) {
+            if(tk.glucodata.SensorBluetooth.blueone!=null) {
+               if(tk.glucodata.SensorBluetooth.blueone.resetDevices()) {
+            var main=MainActivity.thisone;
+            if(main!=null)
+                main.finepermission();
+             }
+              return true;
+          }
+        }
+    } catch(ClassNotFoundException e) {
+        // SensorBluetooth class not available in this build variant
+    }
     Log.e(LOG_ID,"tk.glucodata.SensorBluetooth.blueone==null");
     return false;
      }
-         */
      /*
     @Override
     protected void attachBaseContext(Context base) {
@@ -880,10 +896,16 @@ static public boolean getHeartRate() {
         return false;
     }
     }
-/*@Keep
+@Keep
 static void changedProfile() {
-        SuperGattCallback.init();
-        } */
+        try {
+            if(Class.forName("tk.glucodata.SuperGattCallback") != null) {
+                SuperGattCallback.init();
+            }
+        } catch(ClassNotFoundException e) {
+            // SuperGattCallback class not available in this build variant
+        }
+        }
 @Keep
 static void setinittext(String str) {
    RunOnUiThread(()-> {
@@ -910,13 +932,24 @@ static void rminitlayout() {
     }
 @Keep
 static void toGarmin(int base) {
-
+   if(!isWearable) { 
+        if(MainActivity.thisone != null && MainActivity.thisone.numdata != null) {
+            MainActivity.thisone.numdata.changedback(base);
+        }
+        }
     }
 @Keep
 static void Garmindeletelast(int base,int pos,int end ) {
+       if(!isWearable) { 
+            if(MainActivity.thisone != null && MainActivity.thisone.numdata != null) {
+                MainActivity.thisone.numdata.deletelast(base,pos,end);
+                MainActivity.thisone.numdata.changedback(base);
+            }
+          }
         }
+@Keep
 static public void startMain() {
-/*    final var act=MainActivity.thisone;
+    final var act=MainActivity.thisone;
     final var intent=new Intent(Applic.getContext(),MainActivity.class);
     intent.putExtra(Notify.fromnotification,true);
     intent.addCategory(Intent. CATEGORY_LAUNCHER ) ;
@@ -936,7 +969,7 @@ static public void startMain() {
         } catch(ClassNotFoundException e) {
             // keeprunning class not available in this build variant
         }
-        }*/
+        }
       }
 }
 
