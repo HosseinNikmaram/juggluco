@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
        // Applic app = (Applic) getApplication();
        // app.setbackgroundcolor(this);
         //if (Applic.Nativesloaded)
-          //  app.needsnatives();
+           Applic.needsnatives();
 
         curve = new GlucoseCurve(this);
         {

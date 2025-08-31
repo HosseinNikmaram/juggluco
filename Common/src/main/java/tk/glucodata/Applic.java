@@ -693,6 +693,10 @@ boolean needsnatives() {
       // Initialize largefontsize with a default value if not set
       largefontsize = 22.0f * GlucoseCurve.metrics.density; // Default large font size
   }
+  if(GlucoseCurve.smallfontsize == 0.0f) {
+      // Initialize smallfontsize with a default value if not set
+      GlucoseCurve.smallfontsize = 14.0f * GlucoseCurve.metrics.density; // Default small font size
+  }
     final double screensize=(newinitscreenwidth/menufontsize);
   final boolean smallsize=screensize<34.0;
     if(newinitscreenwidth!=initscreenwidth)  {
@@ -714,7 +718,7 @@ boolean needsnatives() {
      //smallfontsize = res.getDimension(R.dimen.abc_text_size_small_material);
     // largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
     // mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
-//     Natives.setfontsize(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
+     Natives.setfontsize(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
       Notify.mkpaint();
      return ret;
      }
