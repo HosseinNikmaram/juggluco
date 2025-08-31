@@ -10,6 +10,7 @@ import tk.glucodata.Natives;
 import tk.glucodata.SensorBluetooth;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * Provides NFC scanning, BLE management, and glucose data access
  */
 public class HeadlessJugglucoManager {
-    private static final String TAG = "HeadlessHead";
+    private static final String TAG = "JugglucoManager";
     public static GlucoseListener glucoseListener;
     private DeviceConnectionListener deviceConnectionListener;
     private Activity activity;
@@ -99,7 +100,6 @@ public class HeadlessJugglucoManager {
             try {
                 // Register with SensorBluetooth for connection events
                 SensorBluetooth.registerDeviceConnectionListener(deviceConnectionListener);
-                Log.d(TAG, "Device connection listener registered successfully");
             } catch (Exception e) {
                 Log.e(TAG, "Failed to register device connection listener", e);
             }
@@ -230,11 +230,15 @@ public class HeadlessJugglucoManager {
         Long lastScannedMillis = null;
 
         HeadlessSensorInfo info = new HeadlessSensorInfo(serial, lastScannedMillis, lastStreamMillis, sensorEndsMillis, expectedEndMillis);
-        Log.d(TAG, "Sensor info for " + serial +
-                ": lastScanned=" + lastScannedMillis +
-                ", lastStream=" + lastStreamMillis +
-                ", endsOfficial=" + sensorEndsMillis +
-                ", expectedEnd=" + expectedEndMillis);
+        try {
+            Log.d(TAG, "Sensor info for " + serial +
+                    ": lastScanned=" + new Date(lastScannedMillis) +
+                    ", lastStream=" + new Date(lastStreamMillis) +
+                    ", endsOfficial=" + new Date(sensorEndsMillis) +
+                    ", expectedEnd=" + new Date(expectedEndMillis));
+        }
+        catch (Exception e){}
+
         return info;
     }
     

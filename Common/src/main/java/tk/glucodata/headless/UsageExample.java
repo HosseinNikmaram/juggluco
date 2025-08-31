@@ -75,15 +75,6 @@ public class UsageExample {
             }
             
             @Override
-            public void onDeviceConnecting(String serialNumber, String deviceAddress) {
-                String message = String.format("Device connecting: %s at %s", serialNumber, deviceAddress);
-                Log.d(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
             public void onDeviceConnectionFailed(String serialNumber, String deviceAddress, int errorCode) {
                 String message = String.format("Device connection failed: %s at %s (Error: %d)", serialNumber, deviceAddress, errorCode);
                 Log.e(TAG, message);
@@ -111,35 +102,8 @@ public class UsageExample {
             }
             
             @Override
-            public void onDevicePairing(String serialNumber, String deviceAddress) {
-                String message = String.format("Device pairing: %s at %s", serialNumber, deviceAddress);
-                Log.d(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onScanStarted() {
-                String message = "Bluetooth scanning started";
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onScanStopped() {
-                String message = "Bluetooth scanning stopped";
-                Log.i(TAG, message);
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-            
-            @Override
-            public void onDeviceFound(String serialNumber, String deviceAddress, String deviceName) {
-                String message = String.format("Device found: %s at %s (%s)", serialNumber, deviceAddress, deviceName);
+            public void onDeviceFound(String serialNumber, String deviceAddress) {
+                String message = String.format("Device found: %s at %s", serialNumber, deviceAddress);
                 Log.i(TAG, message);
                 activity.runOnUiThread(() -> {
                     Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
@@ -162,19 +126,6 @@ public class UsageExample {
                 activity.runOnUiThread(() -> {
                     Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
                 });
-            }
-            
-            @Override
-            public void onConnectionPriorityChanged(String serialNumber, String deviceAddress, int priority) {
-                String message = String.format("Connection priority changed: %s at %s (Priority: %d)", serialNumber, deviceAddress, priority);
-                Log.d(TAG, message);
-            }
-            
-            @Override
-            public void onConnectionUpdated(String serialNumber, String deviceAddress, int interval, int latency, int timeout) {
-                String message = String.format("Connection updated: %s at %s (Interval: %d, Latency: %d, Timeout: %d)", 
-                    serialNumber, deviceAddress, interval, latency, timeout);
-                Log.d(TAG, message);
             }
         });
 
