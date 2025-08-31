@@ -2,11 +2,11 @@ package tk.glucodata.headless;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.widget.Toast;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,24 +64,20 @@ public class UsageExample {
             activity.runOnUiThread(() -> {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             });
-            jugglucoManager.getGlucoseStats(serial,0L,System.currentTimeMillis());
-            
-            // Example 2: Using HeadlessHistory to get latest reading
-            HeadlessHistory.GlucoseData latestReading = HeadlessHistory.getLatestGlucoseReading(serial);
-            if (latestReading != null) {
-                String latestTimeStr = sdf.format(new Date(latestReading.timeMillis));
-                Log.d(TAG, String.format(
-                        "Latest reading - Time: %s, Glucose: %d mg/dL (%.1f mmol/L)",
-                        latestTimeStr, latestReading.mgdl, latestReading.mmolL
-                ));
-            }
-
+            jugglucoManager.getGlucoseStats(0L,System.currentTimeMillis());
             jugglucoManager.getSensorInfo(serial);
+
+            // Example 3: Get complete glucose history (improved method)
+            List<HeadlessHistory.GlucoseData> completeHistory = HeadlessHistory.getCompleteGlucoseHistory();
+            Log.d(TAG, String.format("Complete history contains size: "+completeHistory.size()+" and last item: %s ", completeHistory.get(completeHistory.size() - 1).toString()));
+
+
+
         });
 
 
-        jugglucoManager.setStatsListener((serial, stats) -> {
-            Log.d(TAG, "Stats for " + serial +
+        jugglucoManager.setStatsListener(( stats) -> {
+            Log.d(TAG, "Stats for "  +
                     ": n=" + stats.numberOfMeasurements +
                     ", avg=" + String.format("%.1f", stats.averageGlucose) +
                     ", sd=" + String.format("%.2f", stats.standardDeviation) +
@@ -127,9 +123,9 @@ public class UsageExample {
     }
 
     
-    public void getGlucoseStats(String serial) {
+    public void getGlucoseStats() {
         if (jugglucoManager != null) {
-            jugglucoManager.getGlucoseStats(serial);
+            jugglucoManager.getGlucoseStats();
         }
     }
     

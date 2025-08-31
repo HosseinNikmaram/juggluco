@@ -136,8 +136,8 @@ public class HeadlessJugglucoManager {
      * Get complete glucose history for a sensor as a list of GlucoseData objects
      * @return List of GlucoseData objects, or empty list if no data
      */
-    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory(String serial) {
-        return HeadlessHistory.getCompleteGlucoseHistory(serial);
+    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory() {
+        return HeadlessHistory.getCompleteGlucoseHistory();
     }
 
 
@@ -147,25 +147,24 @@ public class HeadlessJugglucoManager {
      * @param endMillis End time in milliseconds (null for no limit)
      * @return List of GlucoseData objects within the time range
      */
-    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(String serial,Long startMillis, Long endMillis) {
-        return HeadlessHistory.getGlucoseHistoryInRange(serial,startMillis, endMillis);
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
+        return HeadlessHistory.getGlucoseHistoryInRange(startMillis, endMillis);
     }
     
     /**
      * Get glucose statistics for a sensor
-     * @param serial Sensor serial number
      */
-    public void getGlucoseStats(String serial) {
+    public void getGlucoseStats() {
         if (statsManager != null) {
-            statsManager.emitIfReady(serial);
+            statsManager.emitIfReady();
         }
     }
     /**
      * Get glucose statistics for a sensor within an optional time range
      */
-    public void getGlucoseStats(String serial, Long startMillis, Long endMillis) {
+    public void getGlucoseStats(Long startMillis, Long endMillis) {
         if (statsManager != null) {
-            statsManager.emitIfReady(serial, startMillis, endMillis);
+            statsManager.emitIfReady( startMillis, endMillis);
         }
     }
 

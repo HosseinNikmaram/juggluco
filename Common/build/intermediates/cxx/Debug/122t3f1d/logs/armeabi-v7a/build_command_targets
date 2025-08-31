@@ -1,5 +1,5 @@
 /home/hossein/Android/Sdk/cmake/3.31.6/bin/ninja \
   -C \
-  /home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a \
+  /home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a \
   g \
   libnative.so

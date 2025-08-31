@@ -2,6 +2,8 @@ package tk.glucodata.headless;
 
 import android.util.Log;
 import tk.glucodata.Natives;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class HeadlessStats {
     private static final String TAG = "HeadlessStats";
@@ -16,69 +18,73 @@ public final class HeadlessStats {
         this.listener = listener;
     }
 
-    public void emitIfReady(String serial) {
+    public void emitIfReady() {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistoryAccessor.getAll();
-        if (hist == null || hist.length < 2) return;
+        var hist = HeadlessHistoryAccessor.getAllGlucoseData();
+        if (hist == null || hist.isEmpty()) return;
         HeadlessStatsSummary stats = computeSummary(hist);
-        listener.onStats(serial, stats);
+        listener.onStats( stats);
     }
 
-    public void emitIfReady(String serial, Long startMillis, Long endMillis) {
+    public void emitIfReady(Long startMillis, Long endMillis) {
         if (listener == null) return;
         if (!Natives.makepercentages()) return;
-        var hist = HeadlessHistoryAccessor.getAll();
-        if (hist == null || hist.length < 2) return;
-        var ranged = HeadlessHistoryAccessor.filter(hist, startMillis, endMillis);
-        if (ranged == null || ranged.length < 2) return;
+        var ranged = HeadlessHistoryAccessor.filterByTime(startMillis, endMillis);
+        if (ranged == null || ranged.isEmpty()) return;
         HeadlessStatsSummary stats = computeSummary(ranged);
-        listener.onStats(serial, stats);
+        listener.onStats(stats);
     }
 
-    private HeadlessStatsSummary computeSummary(long[] flat) {
-        int n = flat.length / 2;
+    private HeadlessStatsSummary computeSummary(List<HeadlessHistory.GlucoseData> glucoseDataList) {
+        int n = glucoseDataList.size();
         if (n == 0) return new HeadlessStatsSummary(0, 0, 0, 0, 0, 0, null, null,
                 lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl,
                 0, 0, 0, 0);
-        long firstMillis = flat[0] * 1000L;
-        long lastMillis = flat[(n - 1) * 2] * 1000L;
+        
+        long firstMillis = glucoseDataList.get(0).timeMillis;
+        long lastMillis = glucoseDataList.get(n - 1).timeMillis;
+        
         double sum = 0.0;
         double sumSq = 0.0;
         int below = 0, inRange = 0, high = 0, veryHigh = 0;
-        for (int i = 0; i < n; i++) {
-            long packed = flat[2 * i + 1];
-            // Decode Q32.32 mmol/L to mg/dL
-            double mmolL = (double) packed / 4294967296.0;
-            double g = mmolL * 18.0;
+        
+        for (HeadlessHistory.GlucoseData data : glucoseDataList) {
+            // Use the already decoded mg/dL value - no need for manual decoding!
+            double g = data.mgdl;
             sum += g;
             sumSq += g * g;
+            
+            // Threshold categorization - this part is correct as you mentioned
             if (g < lowThresholdMgdl) below++;
             else if (g <= inRangeUpperThresholdMgdl) inRange++;
             else if (g <= highUpperThresholdMgdl) high++;
             else veryHigh++;
         }
+        
         double mean = sum / n;
         double variance = Math.max(0.0, (sumSq / n) - (mean * mean));
         double sd = Math.sqrt(variance);
         double gv = mean > 0 ? (sd * 100.0 / mean) : 0.0;
         double durationDays = (lastMillis > firstMillis) ? (lastMillis - firstMillis) / 86_400_000.0 : 0.0;
+        
         // Rough time active based on expected 5-min intervals (Libre3 history)
         double expected = durationDays > 0 ? (durationDays * 24 * 12) : n;
         double timeActivePercent = expected > 0 ? Math.min(100.0, n * 100.0 / expected) : 0.0;
+        
         // Simple A1C/GMI estimates from mean mg/dL
         Double estA1C = (mean > 0) ? ((mean + 46.7) / 28.7) : null; // NGSP %
         Double gmi = (mean > 0) ? (3.31 + 0.02392 * mean) : null;
+        
         double pBelow = below * 100.0 / n;
         double pIn = inRange * 100.0 / n;
         double pHigh = high * 100.0 / n;
         double pVeryHigh = veryHigh * 100.0 / n;
+        
         return new HeadlessStatsSummary(n, mean, sd, gv, durationDays, timeActivePercent, estA1C, gmi,
                 lowThresholdMgdl, inRangeUpperThresholdMgdl, highUpperThresholdMgdl,
                 pBelow, pIn, pHigh, pVeryHigh);
     }
-
-    // No logging; thresholds are computed and carried in the summary only
 
     // Setters to configure thresholds dynamically
     public void setLowThresholdMgdl(double value) { this.lowThresholdMgdl = value; }
@@ -87,7 +93,17 @@ public final class HeadlessStats {
 
     // Internal helper to reuse existing native history without duplicating code
     private static final class HeadlessHistoryAccessor {
-        static long[] getAll() { return Natives.getlastGlucose(); }
+        // Get all glucose data as GlucoseData objects (cleaner approach)
+        static List<HeadlessHistory.GlucoseData> getAllGlucoseData() {
+            return HeadlessHistory.getCompleteGlucoseHistory();
+        }
+        
+        // Filter glucose data by time range
+        static List<HeadlessHistory.GlucoseData> filterByTime(Long startMillis, Long endMillis) {
+            return HeadlessHistory.getGlucoseHistoryInRange(startMillis, endMillis);
+        }
+        
+        // Legacy filter method for backward compatibility (if needed)
         static long[] filter(long[] flat, Long startMillis, Long endMillis) {
             if (flat == null) return null;
             if (startMillis == null && endMillis == null) return flat;
