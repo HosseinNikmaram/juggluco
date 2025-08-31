@@ -8,11 +8,11 @@ import android.util.Log;
 
 import tk.glucodata.Natives;
 import tk.glucodata.SensorBluetooth;
+import tk.glucodata.ScanNfcV;
 import tk.glucodata.AlgNfcV;
 import android.nfc.Tag;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +26,6 @@ public class HeadlessJugglucoManager {
     public static GlucoseListener glucoseListener;
     private DeviceConnectionListener deviceConnectionListener;
     private Activity activity;
-    private HeadlessNfcReader nfcReader;
     private HeadlessStats statsManager;
     private static volatile boolean nativesInitialized = false;
     
@@ -67,7 +66,8 @@ public class HeadlessJugglucoManager {
                 nativesInitialized = true;
             }
             Natives.setusebluetooth(true);
-
+            this.activity = ctx;
+            
             // Register device connection listener if available
             if (deviceConnectionListener != null) {
                 registerDeviceConnectionListener();
@@ -81,9 +81,10 @@ public class HeadlessJugglucoManager {
     
     /**
      * Check and enable Bluetooth if needed
+     * @param ctx Android context
      * @return true if Bluetooth is available and enabled
      */
-    public boolean ensurePermissionsAndBluetooth() {
+    public boolean ensurePermissionsAndBluetooth(Context ctx) {
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter == null) return false;
         
@@ -93,7 +94,6 @@ public class HeadlessJugglucoManager {
         return true;
     }
     
-
     /**
      * Set glucose listener for real-time glucose updates
      * @param listener Glucose listener implementation
@@ -121,6 +121,7 @@ public class HeadlessJugglucoManager {
             try {
                 // Register with SensorBluetooth for connection events
                 SensorBluetooth.registerDeviceConnectionListener(deviceConnectionListener);
+                Log.d(TAG, "Device connection listener registered successfully");
             } catch (Exception e) {
                 Log.e(TAG, "Failed to register device connection listener", e);
             }
@@ -147,136 +148,24 @@ public class HeadlessJugglucoManager {
         if (inRangeUpper != null) statsManager.setInRangeUpperThresholdMgdl(inRangeUpper);
         if (highUpper != null) statsManager.setHighUpperThresholdMgdl(highUpper);
     }
-
-    /**
-     * Get complete glucose history for a sensor as a list of GlucoseData objects
-     * @return List of GlucoseData objects, or empty list if no data
-     */
-    public List<HeadlessHistory.GlucoseData> getAllGlucoseHistory() {
-        return HeadlessHistory.getCompleteGlucoseHistory();
-    }
-
-
-    /**
-     * Get glucose history for a sensor within a time range as a list of GlucoseData objects
-     * @param startMillis Start time in milliseconds (null for no limit)
-     * @param endMillis End time in milliseconds (null for no limit)
-     * @return List of GlucoseData objects within the time range
-     */
-    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
-        return HeadlessHistory.getGlucoseHistoryInRange(startMillis, endMillis);
-    }
     
-    /**
-     * Get glucose statistics for a sensor
-     */
-    public void getGlucoseStats() {
-        if (statsManager != null) {
-            statsManager.emitIfReady();
-        }
-    }
-    /**
-     * Get glucose statistics for a sensor within an optional time range
-     */
-    public void getGlucoseStats(Long startMillis, Long endMillis) {
-        if (statsManager != null) {
-            statsManager.emitIfReady( startMillis, endMillis);
-        }
-    }
-
-    /**
-     * Retrieve sensor timeline info: last scanned, last stream, official and expected ends.
-     * lastScannedMillis currently not exposed via Natives; returns null.
-     */
-    public HeadlessSensorInfo getSensorInfo(String serial) {
-        // Official end from natives; value appears to be in seconds -> convert to ms
-        Long sensorEndsMillis = null;
-        try {
-            long endsSec = Natives.sensorends();
-            if (endsSec > 0) sensorEndsMillis = endsSec * 1000L;
-        } catch (Throwable ignored) { }
-
-        // Expected end: if not exposed separately, reuse official
-        Long expectedEndMillis = sensorEndsMillis;
-
-        // Last stream: derive from latest native glucose timestamp if available
-        Long lastStreamMillis = null;
-        try {
-            long[] flat = Natives.getlastGlucose();
-            if (flat != null && flat.length >= 2) {
-                int n = flat.length / 2;
-                long lastSec = flat[(n - 1) * 2];
-                if (lastSec > 0) lastStreamMillis = lastSec * 1000L;
-            }
-        } catch (Throwable ignored) { }
-
-        // Last scanned time: not directly available in Java; leave null for now
-        Long lastScannedMillis = null;
-
-        HeadlessSensorInfo info = new HeadlessSensorInfo(serial, lastScannedMillis, lastStreamMillis, sensorEndsMillis, expectedEndMillis);
-        try {
-            Log.d(TAG, "Sensor info for " + serial +
-                    ": lastScanned=" + new Date(lastScannedMillis) +
-                    ", lastStream=" + new Date(lastStreamMillis) +
-                    ", endsOfficial=" + new Date(sensorEndsMillis) +
-                    ", expectedEnd=" + new Date(expectedEndMillis));
-        }
-        catch (Exception e){}
-
-        return info;
-    }
-    
-    /**
-     * Check if Bluetooth streaming is active
-     * @return true if Bluetooth streaming is active
-     */
-    public boolean isBluetoothStreamingActive() {
-        return SensorBluetooth.isActive();
-    }
-    
-    /**
-     * Start Bluetooth scanning for paired sensors
-     */
-    public void startBluetoothScanning() {
-        if (SensorBluetooth.isActive()) return;
-        SensorBluetooth.start(true);
-    }
-    
-    /**
-     * Stop Bluetooth scanning
-     */
-    public void stopBluetoothScanning() {
-        if (!SensorBluetooth.isActive()) return;
-        SensorBluetooth.stopScanning();
-    }
-    
-    /**
-     * Clean up resources
-     */
-    public void cleanup() {
-        stopBluetoothScanning();
-        SensorBluetooth.destructor();
-        glucoseListener = null;
-    }
-
     /**
      * Start NFC scanning for Libre sensor pairing
      * @return true if NFC scanning was started successfully
      */
     public boolean startNfcScanning() {
-        if (nfcReader == null) {
-            nfcReader = new HeadlessNfcReader();
-        }
-        return nfcReader.startScanning();
+        // NFC scanning is handled by MainActivity and ScanNfcV
+        // This method is kept for compatibility but doesn't start actual scanning
+        Log.d(TAG, "NFC scanning request - scanning is handled by MainActivity");
+        return true;
     }
     
     /**
      * Stop NFC scanning
      */
     public void stopNfcScanning() {
-        if (nfcReader != null) {
-            nfcReader.stopScanning();
-        }
+        // NFC scanning is handled by MainActivity and ScanNfcV
+        Log.d(TAG, "NFC scanning stop request - scanning is handled by MainActivity");
     }
     
     /**
@@ -284,7 +173,8 @@ public class HeadlessJugglucoManager {
      * @return true if NFC scanning is currently active
      */
     public boolean isNfcScanning() {
-        return nfcReader != null && nfcReader.isScanning();
+        // NFC scanning status is managed by MainActivity
+        return false;
     }
     
     /**
@@ -417,6 +307,115 @@ public class HeadlessJugglucoManager {
             sb.append(String.format("%02X", b & 0xFF));
         }
         return sb.toString();
+    }
+
+    /**
+     * Get glucose history for a sensor
+     * @param serial Sensor serial number
+     * @return List of GlucoseData objects
+     */
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistory(String serial) {
+        return HeadlessHistory.getCompleteGlucoseHistory(serial);
+    }
+    
+    /**
+     * Get glucose history for a sensor within a time range
+     * @param serial Sensor serial number
+     * @param startMillis Start time in milliseconds (null for no limit)
+     * @param endMillis End time in milliseconds (null for no limit)
+     * @return List of GlucoseData objects within the time range
+     */
+    public List<HeadlessHistory.GlucoseData> getGlucoseHistoryInRange(Long startMillis, Long endMillis) {
+        return HeadlessHistory.getGlucoseHistoryInRange(startMillis, endMillis);
+    }
+    
+    /**
+     * Get glucose statistics for a sensor
+     * @param serial Sensor serial number
+     */
+    public void getGlucoseStats(String serial) {
+        if (statsManager != null) {
+            statsManager.emitIfReady(serial);
+        }
+    }
+    /**
+     * Get glucose statistics for a sensor within an optional time range
+     */
+    public void getGlucoseStats(String serial, Long startMillis, Long endMillis) {
+        if (statsManager != null) {
+            statsManager.emitIfReady(serial, startMillis, endMillis);
+        }
+    }
+
+    /**
+     * Retrieve sensor timeline info: last scanned, last stream, official and expected ends.
+     * lastScannedMillis currently not exposed via Natives; returns null.
+     */
+    public HeadlessSensorInfo getSensorInfo(String serial) {
+        // Official end from natives; value appears to be in seconds -> convert to ms
+        Long sensorEndsMillis = null;
+        try {
+            long endsSec = Natives.sensorends();
+            if (endsSec > 0) sensorEndsMillis = endsSec * 1000L;
+        } catch (Throwable ignored) { }
+
+        // Expected end: if not exposed separately, reuse official
+        Long expectedEndMillis = sensorEndsMillis;
+
+        // Last stream: derive from latest native glucose timestamp if available
+        Long lastStreamMillis = null;
+        try {
+            long[] flat = Natives.getlastGlucose();
+            if (flat != null && flat.length >= 2) {
+                int n = flat.length / 2;
+                long lastSec = flat[(n - 1) * 2];
+                if (lastSec > 0) lastStreamMillis = lastSec * 1000L;
+            }
+        } catch (Throwable ignored) { }
+
+        // Last scanned time: not directly available in Java; leave null for now
+        Long lastScannedMillis = null;
+
+        HeadlessSensorInfo info = new HeadlessSensorInfo(serial, lastScannedMillis, lastStreamMillis, sensorEndsMillis, expectedEndMillis);
+        Log.d(TAG, "Sensor info for " + serial +
+                ": lastScanned=" + lastScannedMillis +
+                ", lastStream=" + lastStreamMillis +
+                ", endsOfficial=" + sensorEndsMillis +
+                ", expectedEnd=" + expectedEndMillis);
+        return info;
+    }
+    
+    /**
+     * Check if Bluetooth streaming is active
+     * @return true if Bluetooth streaming is active
+     */
+    public boolean isBluetoothStreamingActive() {
+        return SensorBluetooth.isActive();
+    }
+    
+    /**
+     * Start Bluetooth scanning for paired sensors
+     */
+    public void startBluetoothScanning() {
+        if (SensorBluetooth.isActive()) return;
+        SensorBluetooth.start(true);
+    }
+    
+    /**
+     * Stop Bluetooth scanning
+     */
+    public void stopBluetoothScanning() {
+        if (!SensorBluetooth.isActive()) return;
+        SensorBluetooth.stopScanning();
+    }
+    
+    /**
+     * Clean up resources
+     */
+    public void cleanup() {
+        stopBluetoothScanning();
+        SensorBluetooth.destructor();
+        glucoseListener = null;
     }
 
 }

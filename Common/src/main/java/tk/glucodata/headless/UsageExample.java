@@ -6,6 +6,8 @@ import android.os.Build;
 import android.widget.Toast;
 import android.util.Log;
 import android.nfc.Tag;
+import tk.glucodata.ScanNfcV;
+import tk.glucodata.GlucoseCurve;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -210,45 +212,37 @@ public class UsageExample {
 
     public void startNfcScanning() {
         if (!initialized) return;
-        if (jugglucoManager.isNfcScanning()) return;
         
-        boolean started = jugglucoManager.startNfcScanning();
-        if (started) {
-            Toast.makeText(context, "NFC scanning started", Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "NFC scanning started successfully");
-        } else {
-            Toast.makeText(context, "Failed to start NFC scanning", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "Failed to start NFC scanning");
-        }
+        // NFC scanning is handled by MainActivity and ScanNfcV
+        // This method is kept for compatibility
+        Toast.makeText(context, "NFC scanning is handled by MainActivity", Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "NFC scanning request - scanning is handled by MainActivity and ScanNfcV");
     }
     
     /**
-     * Process an NFC tag that was discovered
+     * Process an NFC tag that was discovered using ScanNfcV
      * This method should be called from MainActivity's onTagDiscovered callback
      * @param tag The discovered NFC tag
+     * @param curve The glucose curve context (can be null for headless mode)
      * @return ScanResult containing the scan information
      */
-    public ScanResult processNfcTag(Tag tag) {
-        if (!initialized || jugglucoManager == null) {
+    public ScanResult processNfcTag(Tag tag, GlucoseCurve curve) {
+        if (!initialized) {
             return new ScanResult(false, 0, 19, "", "Juggluco not initialized");
         }
         
         try {
-            ScanResult result = jugglucoManager.scanNfcTag(tag);
+            // Use ScanNfcV.scanWithResult for structured results
+            ScanResult result = ScanNfcV.scanWithResult(curve, tag);
             
-            // Log the scan result
-            Log.i(TAG, "NFC Scan Result: " + result.toString());
+            // Log the scan result comprehensively
+            logScanResult(result);
             
             // Show result to user
-            String message = String.format("NFC Scan: %s", result.getMessage());
-            if (result.isSuccess()) {
-                if (result.hasGlucoseReading()) {
-                    message += String.format(" - Glucose: %d mg/dL", result.getGlucoseValue());
-                }
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-            }
+            showScanResultToUser(result);
+            
+            // Handle the result based on its type
+            handleScanResult(result);
             
             return result;
             
@@ -259,7 +253,118 @@ public class UsageExample {
     }
     
     /**
-     * Example of how to handle NFC scan results
+     * Process an NFC tag without GlucoseCurve context (for headless mode)
+     * @param tag The discovered NFC tag
+     * @return ScanResult containing the scan information
+     */
+    public ScanResult processNfcTag(Tag tag) {
+        if (!initialized) {
+            return new ScanResult(false, 0, 19, "", "Juggluco not initialized");
+        }
+        
+        try {
+            // For headless mode, we'll use the HeadlessJugglucoManager's scan method
+            ScanResult result = jugglucoManager.scanNfcTag(tag);
+            
+            // Log the scan result comprehensively
+            logScanResult(result);
+            
+            // Show result to user
+            showScanResultToUser(result);
+            
+            // Handle the result based on its type
+            handleScanResult(result);
+            
+            return result;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Error processing NFC tag", e);
+            return new ScanResult(false, 0, 19, "", "Error processing tag: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Comprehensive logging of NFC scan results
+     * @param result The scan result to log
+     */
+    private void logScanResult(ScanResult result) {
+        if (result == null) {
+            Log.e(TAG, "Scan result is null");
+            return;
+        }
+        
+        Log.i(TAG, "=== NFC SCAN RESULT LOG ===");
+        Log.i(TAG, "Timestamp: " + System.currentTimeMillis());
+        Log.i(TAG, "Success: " + result.isSuccess());
+        Log.i(TAG, "Glucose Value: " + result.getGlucoseValue() + " mg/dL");
+        Log.i(TAG, "Return Code: " + result.getReturnCode() + " (0x" + String.format("%02X", result.getReturnCode()) + ")");
+        Log.i(TAG, "Return Code Description: " + result.getReturnCodeDescription());
+        Log.i(TAG, "Serial Number: " + result.getSerialNumber());
+        Log.i(TAG, "Message: " + result.getMessage());
+        Log.i(TAG, "Has Glucose Reading: " + result.hasGlucoseReading());
+        
+        // Log additional context information
+        if (result.hasGlucoseReading()) {
+            float mmolL = result.getGlucoseValueFloat() / 18.0f;
+            Log.i(TAG, "Glucose in mmol/L: " + String.format("%.2f", mmolL));
+            
+            // Categorize glucose level
+            String category = categorizeGlucoseLevel(result.getGlucoseValue());
+            Log.i(TAG, "Glucose Category: " + category);
+        }
+        
+        // Log return code details
+        int baseCode = result.getReturnCode() & 0xFF;
+        Log.i(TAG, "Base Return Code: " + baseCode + " (0x" + String.format("%02X", baseCode) + ")");
+        
+        // Log flags if present
+        if ((result.getReturnCode() & 0x80) != 0) {
+            Log.i(TAG, "High Bit Flag Set: 0x80");
+        }
+        if ((result.getReturnCode() & 0x100) != 0) {
+            Log.i(TAG, "Extended Flag Set: 0x100");
+        }
+        
+        Log.i(TAG, "=== END NFC SCAN RESULT LOG ===");
+    }
+    
+    /**
+     * Categorize glucose level based on standard ranges
+     * @param glucoseValue Glucose value in mg/dL
+     * @return Category string
+     */
+    private String categorizeGlucoseLevel(int glucoseValue) {
+        if (glucoseValue < 70) {
+            return "Low (< 70 mg/dL)";
+        } else if (glucoseValue <= 180) {
+            return "Normal (70-180 mg/dL)";
+        } else if (glucoseValue <= 250) {
+            return "High (181-250 mg/dL)";
+        } else {
+            return "Very High (> 250 mg/dL)";
+        }
+    }
+    
+    /**
+     * Show scan result to user via Toast
+     * @param result The scan result to display
+     */
+    private void showScanResultToUser(ScanResult result) {
+        if (result == null) return;
+        
+        String message = String.format("NFC Scan: %s", result.getMessage());
+        if (result.isSuccess()) {
+            if (result.hasGlucoseReading()) {
+                message += String.format(" - Glucose: %d mg/dL", result.getGlucoseValue());
+            }
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    /**
+     * Handle different scan results based on their type
      * @param result The scan result to process
      */
     public void handleScanResult(ScanResult result) {
@@ -268,68 +373,119 @@ public class UsageExample {
             return;
         }
         
-        Log.i(TAG, "=== NFC SCAN RESULT ===");
-        Log.i(TAG, "Success: " + result.isSuccess());
-        Log.i(TAG, "Glucose Value: " + result.getGlucoseValue() + " mg/dL");
-        Log.i(TAG, "Return Code: " + result.getReturnCode() + " (" + result.getReturnCodeDescription() + ")");
-        Log.i(TAG, "Serial Number: " + result.getSerialNumber());
-        Log.i(TAG, "Message: " + result.getMessage());
-        
-        // Handle different scan results
+        // Handle different result types
         if (result.isSuccess()) {
             if (result.hasGlucoseReading()) {
-                // Process glucose reading
-                Log.i(TAG, "Valid glucose reading received: " + result.getGlucoseValue() + " mg/dL");
-                
-                // You can trigger glucose listener here if needed
-                if (jugglucoManager != null) {
-                    // Get stats for this sensor
-                    jugglucoManager.getGlucoseStats(result.getSerialNumber());
-                }
+                handleGlucoseReading(result);
             } else {
-                // Handle successful scan without glucose reading
-                switch (result.getReturnCode() & 0xFF) {
-                    case 3:
-                        Log.i(TAG, "Sensor needs activation");
-                        break;
-                    case 4:
-                        Log.i(TAG, "Sensor has ended");
-                        break;
-                    case 5:
-                    case 7:
-                        Log.i(TAG, "New sensor detected");
-                        break;
-                    case 8:
-                    case 9:
-                    case 0x85:
-                    case 0x87:
-                        Log.i(TAG, "Streaming enabled");
-                        break;
-                    default:
-                        Log.i(TAG, "Other successful operation");
-                        break;
-                }
+                handleNonGlucoseResult(result);
             }
         } else {
-            // Handle failed scan
-            Log.e(TAG, "NFC scan failed: " + result.getMessage());
-            
-            // You might want to retry or show error to user
-            switch (result.getReturnCode() & 0xFF) {
-                case 17:
-                    Log.e(TAG, "Tag info read error - sensor might be damaged");
-                    break;
-                case 18:
-                    Log.e(TAG, "Tag data read error - try again");
-                    break;
-                case 19:
-                    Log.e(TAG, "Unknown error occurred");
-                    break;
-                default:
-                    Log.e(TAG, "Unexpected error code: " + result.getReturnCode());
-                    break;
-            }
+            handleScanError(result);
         }
+    }
+    
+    /**
+     * Handle successful glucose reading
+     * @param result The scan result containing glucose data
+     */
+    private void handleGlucoseReading(ScanResult result) {
+        Log.i(TAG, "=== PROCESSING GLUCOSE READING ===");
+        Log.i(TAG, "Glucose reading: " + result.getGlucoseValue() + " mg/dL");
+        Log.i(TAG, "Serial number: " + result.getSerialNumber());
+        
+        // Get glucose stats for this sensor
+        if (jugglucoManager != null) {
+            jugglucoManager.getGlucoseStats(result.getSerialNumber());
+        }
+        
+        // Get sensor info
+        if (jugglucoManager != null) {
+            jugglucoManager.getSensorInfo(result.getSerialNumber());
+        }
+        
+        Log.i(TAG, "=== END PROCESSING GLUCOSE READING ===");
+    }
+    
+    /**
+     * Handle successful scan without glucose reading
+     * @param result The scan result to process
+     */
+    private void handleNonGlucoseResult(ScanResult result) {
+        Log.i(TAG, "=== PROCESSING NON-GLUCOSE RESULT ===");
+        String message = result.getMessage();
+        Log.i(TAG, "Non-glucose result: " + message);
+        
+        switch (result.getReturnCode() & 0xFF) {
+            case 3: // Sensor needs activation
+                Log.i(TAG, "Sensor needs activation - " + result.getSerialNumber());
+                break;
+            case 4: // Sensor ended
+                Log.i(TAG, "Sensor has ended - " + result.getSerialNumber());
+                break;
+            case 5: // New sensor
+            case 7: // New sensor (V2)
+                Log.i(TAG, "New sensor detected - " + result.getSerialNumber());
+                break;
+            case 8: // Streaming enabled
+            case 9: // Streaming already enabled
+            case 0x85: // Streaming enabled (V2)
+            case 0x87: // Streaming enabled (V2)
+                Log.i(TAG, "Streaming enabled - " + result.getSerialNumber());
+                break;
+            default:
+                Log.i(TAG, "Other successful operation - " + result.getMessage());
+                break;
+        }
+        Log.i(TAG, "=== END PROCESSING NON-GLUCOSE RESULT ===");
+    }
+    
+    /**
+     * Handle scan errors
+     * @param result The scan result containing error information
+     */
+    private void handleScanError(ScanResult result) {
+        Log.e(TAG, "=== PROCESSING SCAN ERROR ===");
+        Log.e(TAG, "Scan error: " + result.getMessage());
+        
+        // Handle specific error types
+        switch (result.getReturnCode() & 0xFF) {
+            case 17: // Read Tag Info Error
+                Log.e(TAG, "Tag info read error - sensor might be damaged");
+                break;
+            case 18: // Read Tag Data Error
+                Log.e(TAG, "Tag data read error - try again");
+                break;
+            case 19: // Unknown error
+                Log.e(TAG, "Unknown error occurred");
+                break;
+            default:
+                Log.e(TAG, "Unexpected error code: " + result.getReturnCode());
+                break;
+        }
+        Log.e(TAG, "=== END PROCESSING SCAN ERROR ===");
+    }
+    
+    /**
+     * Simulate NFC scan for testing purposes
+     * This method creates a test ScanResult for development and testing
+     * @return Test ScanResult
+     */
+    public ScanResult simulateNfcScan() {
+        Log.i(TAG, "=== SIMULATING NFC SCAN ===");
+        
+        // Create a test result
+        ScanResult testResult = new ScanResult(true, 120, 0, "TEST123", "Test glucose reading");
+        
+        // Log the test result
+        logScanResult(testResult);
+        
+        // Handle the test result
+        handleScanResult(testResult);
+        
+        Log.i(TAG, "=== END SIMULATING NFC SCAN ===");
+        
+        return testResult;
     }
 
 }
