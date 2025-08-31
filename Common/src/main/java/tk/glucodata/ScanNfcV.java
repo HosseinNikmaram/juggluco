@@ -354,37 +354,37 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
     }
 
     static public synchronized void scan(GlucoseCurve curve,Tag tag) {
-    askpermission=false;
-    MainActivity main= (MainActivity)(curve.getContext());
-    if(!isWearable) {
-        if (Menus.on) {
-            Applic.RunOnUiThread(() -> {
-                main.doonback();
-                Menus.on = true;
-            });
+        askpermission=false;
+        MainActivity main= (MainActivity)(curve.getContext());
+        if(!isWearable) {
+            if (Menus.on) {
+                Applic.RunOnUiThread(() -> {
+                    main.doonback();
+                    Menus.on = true;
+                });
+            }
         }
-    }
-    var vibrator=getvibrator(main);
-    startvibration(vibrator);
-    curve.render.stepresult=GlucoseCurve.STEPBACK;
+        var vibrator=getvibrator(main);
+        startvibration(vibrator);
+        curve.render.stepresult=GlucoseCurve.STEPBACK;
         {
-    if(!Natives.gethaslibrary()) {
-        vibrator.cancel();
-        failure(vibrator);
-        if(main.openfile!=null)
-            Applic.RunOnUiThread(() -> {   main.openfile.showchoice(main,true); });
-        return;
-        }
-    int value=0;
-    int ret = 0x100000;
-        try {
-           byte[] uid=tag.getId();
-            if(doLog) {
-                String sensid="";
-                for(var e:uid) {
-                    sensid=String.format("%02X",(0xFF&e))+sensid;
+            if(!Natives.gethaslibrary()) {
+                vibrator.cancel();
+                failure(vibrator);
+                if(main.openfile!=null)
+                    Applic.RunOnUiThread(() -> {   main.openfile.showchoice(main,true); });
+                return;
+            }
+            int value=0;
+            int ret = 0x100000;
+            try {
+                byte[] uid=tag.getId();
+                if(doLog) {
+                    String sensid="";
+                    for(var e:uid) {
+                        sensid=String.format("%02X",(0xFF&e))+sensid;
                     }
-                {if(doLog) {Log.i(LOG_ID,"TAG::sensid="+sensid);};};
+                    {if(doLog) {Log.i(LOG_ID,"TAG::sensid="+sensid);};};
                 }
 /*
         if(uid.length==8&&uid[6]!=7) {
@@ -402,11 +402,28 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                            int[] uit= libre3scan(curve,main,vibrator,tag);
                            ret=uit[0];
                            value=uit[1];
+                           
+                           // Create ScanResult for Libre3 and notify listener
+                           String serialNumber = "Libre3_" + bytesToHex(uid);
+                           String message = createScanMessage(ret, value, serialNumber);
+                           boolean success = value > 0 || (ret & 0xFF) == 0;
+                           ScanResult result = new ScanResult(success, value, ret, serialNumber, message);
+                           
+                           if(scanResultListener != null) {
+                               scanResultListener.onScanResult(result);
+                           }
+                           return;
                           }
                     else {
                         ret=17;
                         {if(doLog) {Log.i(LOG_ID,"Read Tag Info Error");};};
                         vibrator.cancel();
+                        
+                        // Notify listener of tag info error
+                        if(scanResultListener != null) {
+                            scanResultListener.onScanResult(new ScanResult(false, 0, ret, "", "Failed to read tag info"));
+                        }
+                        return;
                         }
                     }
                 else  {
@@ -422,15 +439,31 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                         value = uit & 0xFFFF;
                         Log.format("glucose=%.1f\n",(float)value/mgdLmult);
                         ret = uit >> 16;
+                        
+                        // Get serial number for ScanResult
+                        String serialNumber = Natives.getserial(uid, info);
+                        if (serialNumber == null) {
+                            serialNumber = "";
+                        }
+                        
                         if(newdevice!=null&& Arrays.equals(newdevice,uid)&& Applic.app.canusebluetooth() ) {
                             if(value!=0|| (ret&0xFF)==5||(ret&0xFF)==7) {
-                                if(SensorBluetooth.resetDevice(Natives.getserial(uid,info)))
+                                if(SensorBluetooth.resetDevice(serialNumber))
                                     askpermission=true;
                                 newdevice=null;
                                 }
                             }
                         {if(doLog) {Log.d(LOG_ID,"Badscan "+ret);};};
                         vibrator.cancel();
+                        
+                        // Create ScanResult and notify listener
+                        String message = createScanMessage(ret, value, serialNumber);
+                        boolean success = value > 0 || (ret & 0xFF) == 0 || (ret & 0xFF) == 8 || (ret & 0xFF) == 9;
+                        ScanResult result = new ScanResult(success, value, ret, serialNumber, message);
+                        
+                        if(scanResultListener != null) {
+                            scanResultListener.onScanResult(result);
+                        }
                         switch(ret&0xFF) {
                             case 8: {
                                 mayEnablestreaming(tag,uid,info);
@@ -444,9 +477,10 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                                     askpermission=true;
                                 }
                                 ret=0;
-                                    break;
+                                break;
                             case 4: 
-                                 SensorBluetooth.sensorEnded(Natives.getserial(uid, info)); ;break;
+                                 SensorBluetooth.sensorEnded(serialNumber); 
+                                 break;
                             case 3: {
                                 if (value == 0) {
                                 
@@ -482,9 +516,9 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                                         vibrator.vibrate(newsensorwait, -1);
                                     else
                                         vibrator.vibrate(VibrationEffect.createWaveform(newsensorwait, -1));
-                                    String sensorident = Natives.getserial(uid, info);
-                                    curve.render.badscan = calendar(main,ret,sensorident);
-                                };break;
+                                    curve.render.badscan = calendar(main,ret,serialNumber);
+                                };
+                                break;
                                 case 0x87:  mayEnablestreaming(tag,uid,info); 
                                             ret&=~0x80;
                                 case 7:
@@ -493,8 +527,7 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                                         vibrator.vibrate(newsensorVib, -1);
                                     else
                                         vibrator.vibrate(VibrationEffect.createWaveform(newsensorVib, -1));
-                                    String sensorident = Natives.getserial(uid, info);
-                                    curve.render.badscan =calendar(main,ret,sensorident);
+                                    curve.render.badscan =calendar(main,ret,serialNumber);
             //                        ret=0;
                                     break;
                         };
@@ -504,6 +537,12 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                     ret=18;
                     vibrator.cancel();
                     {if(doLog) {Log.i(LOG_ID,"Read Tag Data Error");};};
+                    
+                    // Notify listener of tag data error
+                    if(scanResultListener != null) {
+                        scanResultListener.onScanResult(new ScanResult(false, 0, ret, "", "Failed to read tag data"));
+                    }
+                    
                     if(getversion(info)==2&&!Natives.switchgen2()) {
                             Openfile.reinstall=true;
                             Natives.closedynlib();
