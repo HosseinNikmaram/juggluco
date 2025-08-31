@@ -380,7 +380,7 @@ static     void explicit(Context context) {
             context.startActivity(intent);
         } catch(ActivityNotFoundException e) {
             // Activity not found
-            Log.e(LOG_ID, "Activity not found for ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS", e);
+            Log.e(LOG_ID, "Activity not found for ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
         }
         } catch(Throwable e) {
             Log.stack(LOG_ID,"explicit",e);
@@ -422,7 +422,7 @@ static boolean possiblybluetooth(Context context) {
         new Applic().initbluetooth(useblue,context,false);
     } catch(Exception e) {
         // initbluetooth failed
-        Log.e(LOG_ID, "initbluetooth failed", e);
+        Log.e(LOG_ID, "initbluetooth failed");
     }
     return useblue;
     }
@@ -719,9 +719,9 @@ static final boolean usewakelock=true;
 static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int alarm, long timmsec,boolean wasblueoff,long sensorstartmsec, long sensorptr,int sensorgen) {
    if(doLog) {Log.i(LOG_ID,"doglucose "+SerialNumber+" "+ mgdl+" "+ gl+" "+rate+" "+ alarm+" "+timmsec+" "+ wasblueoff+ " "+ sensorstartmsec +" sensorptr="+format("%x",sensorptr)+" "+ sensorgen);};
 
-    var wakelock=    usewakelock?(((PowerManager) MainActivity.thisone.getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Applic")):null;
-    if(wakelock!=null)
-        wakelock.acquire();
+    //var wakelock=    usewakelock?(((PowerManager) MainActivity.thisone.getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Applic")):null;
+   // if(wakelock!=null)
+    //    wakelock.acquire();
     if(!wasblueoff) {
         Applic.dontusebluetooth();
         }
@@ -734,8 +734,8 @@ static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int a
                     }
                }
         }
-    if(wakelock!=null)
-        wakelock.release();
+   // if(wakelock!=null)
+   //     wakelock.release();
     }
 
 static boolean updateDevices() { //Rename to reset
@@ -910,20 +910,10 @@ static void rminitlayout() {
     }
 @Keep
 static void toGarmin(int base) {
-   if(!isWearable) { 
-        if(MainActivity.thisone != null && MainActivity.thisone.numdata != null) {
-            MainActivity.thisone.numdata.changedback(base);
-        }
-        }
+
     }
 @Keep
 static void Garmindeletelast(int base,int pos,int end ) {
-       if(!isWearable) { 
-            if(MainActivity.thisone != null && MainActivity.thisone.numdata != null) {
-                MainActivity.thisone.numdata.deletelast(base,pos,end);
-                MainActivity.thisone.numdata.changedback(base);
-            }
-          }
         }
 static public void startMain() {
 /*    final var act=MainActivity.thisone;
