@@ -22,65 +22,65 @@
 
 package tk.glucodata;
 
-import static android.graphics.Color.BLACK;
-import static android.graphics.Color.RED;
-import static android.graphics.Color.BLUE;
-import static android.graphics.Color.WHITE;
-import static android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH;
-import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
-import static android.net.NetworkCapabilities.TRANSPORT_WIFI_AWARE;
-import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
-import static android.view.View.INVISIBLE;
+// import static android.graphics.Color.BLACK;
+// import static android.graphics.Color.RED;
+// import static android.graphics.Color.BLUE;
+// import static android.graphics.Color.WHITE;
+// import static android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH;
+// import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
+// import static android.net.NetworkCapabilities.TRANSPORT_WIFI_AWARE;
+// import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
+// import static android.view.View.INVISIBLE;
 //import java.text.DateFormat;
-import static java.lang.String.format;
-import static java.util.Locale.US;
+// import static java.lang.String.format;
+// import static java.util.Locale.US;
 // import static tk.glucodata.GlucoseCurve.STEPBACK;
 // import static tk.glucodata.GlucoseCurve.smallfontsize;
-import static tk.glucodata.Log.doLog;
-import static tk.glucodata.MessageSender.initwearos;
-import static tk.glucodata.Natives.hasData;
-import static tk.glucodata.SuperGattCallback.endtalk;
-import static tk.glucodata.util.getlocale;
+// import static tk.glucodata.Log.doLog;
+// import static tk.glucodata.MessageSender.initwearos;
+// import static tk.glucodata.Natives.hasData;
+// import static tk.glucodata.SuperGattCallback.endtalk;
+// import static tk.glucodata.util.getlocale;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.Application;
-import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
+// import android.Manifest;
+// import android.app.Activity;
+// import android.app.Application;
+// import android.content.ActivityNotFoundException;
+// import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.net.ConnectivityManager;
-import android.net.LinkProperties;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkRequest;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.PowerManager;
-import android.text.format.DateFormat;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.widget.Toast;
+// import android.content.Intent;
+// import android.content.IntentFilter;
+// import android.content.pm.PackageManager;
+// import android.content.res.Configuration;
+// import android.net.ConnectivityManager;
+// import android.net.LinkProperties;
+// import android.net.Network;
+// import android.net.NetworkCapabilities;
+// import android.net.NetworkRequest;
+// import android.net.Uri;
+// import android.os.Build;
+// import android.os.Handler;
+// import android.os.Looper;
+// import android.os.PowerManager;
+// import android.text.format.DateFormat;
+// import android.util.DisplayMetrics;
+// import android.util.TypedValue;
+// import android.widget.Toast;
 
-import androidx.annotation.Keep;
-import androidx.annotation.MainThread;
-import androidx.core.content.ContextCompat;
+// import androidx.annotation.Keep;
+// import androidx.annotation.MainThread;
+// import androidx.core.content.ContextCompat;
 
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+// import java.util.ArrayList;
+// import java.util.Locale;
+// import java.util.concurrent.ScheduledExecutorService;
+// import java.util.concurrent.ScheduledExecutorService;
+// import java.util.concurrent.ScheduledFuture;
+// import java.util.concurrent.TimeUnit;
 
-import tk.glucodata.nums.AllData;
-import tk.glucodata.nums.numio;
-import tk.glucodata.settings.Broadcasts;
+// import tk.glucodata.nums.AllData;
+// import tk.glucodata.nums.numio;
+// import tk.glucodata.settings.Broadcasts;
 //import static tk.glucodata.MessageSender.messagesender;
 
 public class Applic {
@@ -109,10 +109,10 @@ public static final Locale usedlocale=US;
 // boolean usebluetooth=true;
 final private static String LOG_ID="Applic";
 //ArrayList<String> labels = null;
-public  ArrayList<String> getlabels() {
-        return  Natives.getLabels();
-    }
-public tk.glucodata.nums.AllData numdata=null;
+// public  ArrayList<String> getlabels() {
+//         return  Natives.getLabels();
+//     }
+// public tk.glucodata.nums.AllData numdata=null;
 // public GlucoseCurve curve=null; // Commented out for headless mode - no UI needed
     public static int unit=0;
 // public void redraw() { // Commented out for headless mode - no UI needed
@@ -676,16 +676,7 @@ boolean needsnatives() {
  // MainActivity.screenwidth= metrics.widthPixels;
   
   // For headless module usage, skip all UI-related initializations
-  // DisplayMetrics metrics = GlucoseCurve.metrics;
-  // if(metrics == null) {
-  //     try {
-  //         metrics = MainActivity.thisone.getResources().getDisplayMetrics();
-  //     } catch(Exception e) {
-  //         // Fallback to default values if context is not available
-  //         Log.e(LOG_ID, "Could not get DisplayMetrics, using default values");
-  //         return false;
-  //     }
-  // }
+  // No need for DisplayMetrics in headless mode
   
   // {if(doLog) {Log.i(LOG_ID,"heightPixels="+metrics.heightPixels+" widthPixels="+metrics.widthPixels);};};
   // var newinitscreenwidth= Math.max(metrics.heightPixels,metrics.widthPixels);

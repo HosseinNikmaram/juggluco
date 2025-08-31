@@ -40,7 +40,7 @@ import static tk.glucodata.Applic.useZXing;
 import static tk.glucodata.BuildConfig.SiBionics;
 import static tk.glucodata.Floating.setfloatglucose;
 import static tk.glucodata.Floating.shoulduseadb;
-import static tk.glucodata.GlucoseCurve.STEPBACK;
+// import static tk.glucodata.GlucoseCurve.STEPBACK;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Log.showbytes;
 // import static tk.glucodata.Natives.getInvertColors;
