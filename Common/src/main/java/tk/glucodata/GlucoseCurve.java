@@ -121,7 +121,6 @@ static   public float smallfontsize;
  final   private ScaleGestureDetector mScaleDetector;
  final   private GestureDetector mGestureDetector;
     static final int STEPBACK = 1;
-    boolean waitnfc = false;
     MyRenderer render = new MyRenderer();
     static int height,width;
 

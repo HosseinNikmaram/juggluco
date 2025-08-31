@@ -350,9 +350,9 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
         return sb.toString();
     }
 
-    static public synchronized void scan(GlucoseCurve curve,Tag tag) {
+    static public synchronized void scan(MainActivity activity,Tag tag) {
         askpermission=false;
-        MainActivity main= (MainActivity)(curve.getContext());
+        MainActivity main= activity;
         if(!isWearable) {
             if (Menus.on) {
                 Applic.RunOnUiThread(() -> {
@@ -363,7 +363,6 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
         }
         var vibrator=getvibrator(main);
         startvibration(vibrator);
-        curve.render.stepresult=GlucoseCurve.STEPBACK;
         {
             if(!Natives.gethaslibrary()) {
                 vibrator.cancel();
@@ -396,7 +395,7 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
             byte[] info = AlgNfcV.nfcinfotimes(tag,(isLibre3||doLog)?1:15);
             if(info==null||info.length!=6) {
                     if(isLibre3) {
-                           int[] uit= libre3scan(curve,main,vibrator,tag);
+                           int[] uit= libre3scan(vibrator,tag);
                            ret=uit[0];
                            value=uit[1];
                            
@@ -426,8 +425,6 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                 else  {
                     byte[] data;
                     if((data = AlgNfcV.readNfcTag(tag,uid,info)) != null) {
-                        curve.render.badscan =0xff;
-                        curve.requestRender();
                         {if(doLog) {Log.d(LOG_ID,"Read Tag");};};
                         /*showbytes("uid",uid);
                         showbytes("info",info);
@@ -513,7 +510,6 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                                         vibrator.vibrate(newsensorwait, -1);
                                     else
                                         vibrator.vibrate(VibrationEffect.createWaveform(newsensorwait, -1));
-                                    curve.render.badscan = calendar(main,ret,serialNumber);
                                 };
                                 break;
                                 case 0x87:  mayEnablestreaming(tag,uid,info); 
@@ -524,7 +520,6 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                                         vibrator.vibrate(newsensorVib, -1);
                                     else
                                         vibrator.vibrate(VibrationEffect.createWaveform(newsensorVib, -1));
-                                    curve.render.badscan =calendar(main,ret,serialNumber);
             //                        ret=0;
                                     break;
                         };
@@ -562,176 +557,13 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
 
             }
     if(value==0) {
-        curve.render.badscan = ret;
         failure(vibrator);
         }
             }
-    curve.requestRender();
-  if(curve.waitnfc) {
-      curve.waitnfc = false;
-      ((MainActivity) curve.getContext()).setnfc();
+  if(activity.waitnfc) {
+      activity.waitnfc = false;
+      activity.setnfc();
         }
-    main.runOnUiThread(() -> {
-    if(main.curve.numcontrol!=null) 
-        main.curve.numcontrol.setVisibility(GONE);
-        main.curve.numberview.closenumview(); Settings.closeview();
-        if(askpermission)
-            main.finepermission();
-        });
-    }
-static public synchronized void scan(Activity activity,Tag tag) {
-        askpermission=false;
-        Activity main= activity;
-
-        var vibrator=getvibrator(main);
-        startvibration(vibrator);
-        {
-            if(!Natives.gethaslibrary()) {
-                vibrator.cancel();
-                failure(vibrator);
-            }
-            int value=0;
-            int ret = 0x100000;
-            try {
-                byte[] uid=tag.getId();
-                if(doLog) {
-                    String sensid="";
-                    for(var e:uid) {
-                        sensid=String.format("%02X",(0xFF&e))+sensid;
-                    }
-                    {if(doLog) {Log.i(LOG_ID,"TAG::sensid="+sensid);};};
-                }
-/*
-        if(uid.length==8&&uid[6]!=7) {
-               int[] uit= libre3scan(curve,main,vibrator,tag);
-               ret=uit[0];
-               value=uit[1];
-              }
-        else  */
-
-                    var isLibre3=uid.length==8&&uid[6]!=7;
-                    // Try more times for non-Libre3 sensors to reduce transient failures
-                    byte[] info = AlgNfcV.nfcinfotimes(tag,(isLibre3||doLog)?1:15);
-                    if(info==null||info.length!=6) {
-                        if(isLibre3) {
-                            int[] uit= libre3scan(vibrator,tag);
-                            ret=uit[0];
-                            value=uit[1];
-                        }
-                        else {
-                            Toast.makeText(activity, "Read Tag Info Error", Toast.LENGTH_SHORT).show();
-                            ret=17;
-                            {if(doLog) {Log.i(LOG_ID,"Read Tag Info Error");};};
-                            vibrator.cancel();
-                        }
-                    }
-                    else  {
-                        byte[] data;
-                        if((data = AlgNfcV.readNfcTag(tag,uid,info)) != null) {
-                            {if(doLog) {Log.d(LOG_ID,"Read Tag");};};
-                        /*showbytes("uid",uid);
-                        showbytes("info",info);
-                        showbytes("data",data); */
-                            int uit = Natives.nfcdata(uid, info, data);
-                            value = uit & 0xFFFF;
-                            Log.format("glucose=%.1f\n",(float)value/mgdLmult);
-                            ret = uit >> 16;
-                            if(newdevice!=null&& Arrays.equals(newdevice,uid)) {
-                                if(value!=0|| (ret&0xFF)==5||(ret&0xFF)==7) {
-                                    Toast.makeText(activity, "New sensor detected", Toast.LENGTH_SHORT).show();
-                                    if(SensorBluetooth.resetDevice(Natives.getserial(uid,info)))
-                                        askpermission=true;
-                                    newdevice=null;
-                                }
-                            }
-                            {if(doLog) {Log.d(LOG_ID,"Badscan "+ret);};};
-                            vibrator.cancel();
-                            switch(ret&0xFF) {
-                                case 8: {
-                                    mayEnablestreaming(tag,uid,info);
-                                    ret=0;
-                                    break;
-                                }
-                                case 9: {
-                                    String sensorident = Natives.getserial(uid, info);
-                                    {if(doLog) {Log.d(LOG_ID, "Streaming enabled, resetDevice " + sensorident);};};
-                                    Toast.makeText(activity, "New sensor detected", Toast.LENGTH_SHORT).show();
-                                    if(SensorBluetooth.resetDevice(sensorident))
-                                        askpermission=true;
-                                }
-                                ret=0;
-                                break;
-                                case 4:
-                                    SensorBluetooth.sensorEnded(Natives.getserial(uid, info)); ;break;
-                                case 3: {
-                                    if (value == 0) {
-
-                                        boolean actsuccess = AlgNfcV.activate(tag, info, uid);
-                                        if(actsuccess) {
-                                            final long[] needsactivationthrill = {20, 10, 40, 5,   2, 15,  35, 7, 12}; // [ms]
-                                            if(android.os.Build.VERSION.SDK_INT < 26) {
-                                                vibrator.vibrate(needsactivationthrill, -1);
-                                            }
-                                            else{
-                                                final int[] needsactivationthrillamp = {0,  255, 0, 255, 0, 255, 0, 255, 0}; //
-                                                vibrator.vibrate(VibrationEffect.createWaveform(needsactivationthrill,needsactivationthrillamp, -1));
-                                            }
-                                            newdevice = uid;
-                                        } else {
-                                            failure(vibrator);
-                                        }
-
-                                        ret=0;
-                                    }
-                                    ;
-                                } ;break;
-
-                            };
-                        }
-
-                        else  {
-                            ret=18;
-                            vibrator.cancel();
-                            {if(doLog) {Log.i(LOG_ID,"Read Tag Data Error");};}
-                            Toast.makeText(activity, "Read Tag Data Error" , Toast.LENGTH_SHORT).show();;
-                            if(getversion(info)==2&&!Natives.switchgen2()) {
-                                Openfile.reinstall=true;
-                                Natives.closedynlib();
-                             //   Applic.RunOnUiThread(() -> { getlibrary.openlibrary(main);    });
-                            }
-
-                        }
-                    }
-            }
-            catch( Throwable  error) {
-                Log.e(LOG_ID,error.getMessage());
-                ret=19;
-                vibrator.cancel();
-                String mess=error.getMessage();
-                if(mess==null)
-                    mess="unknown error";
-                Log.stack(LOG_ID,mess,error);
-
-                failure(vibrator);
-
-            }
-            if(value==0) {
-              //  curve.render.badscan = ret;
-                failure(vibrator);
-            }
-        }
-       // curve.requestRender();
-       /* if(curve.waitnfc) {
-            curve.waitnfc = false;
-            ((MainActivity) curve.getContext()).setnfc();
-        }
-        main.runOnUiThread(() -> {
-            if(main.curve.numcontrol!=null)
-                main.curve.numcontrol.setVisibility(GONE);
-            main.curve.numberview.closenumview(); Settings.closeview();
-            if(askpermission)
-                main.finepermission();
-        });*/
     }
 
 

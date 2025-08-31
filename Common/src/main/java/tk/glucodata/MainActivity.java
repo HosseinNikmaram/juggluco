@@ -107,6 +107,7 @@ import tk.glucodata.headless.UsageExample;
 //public class MainActivity extends ComponentActivity implements NfcAdapter.ReaderCallback  {
 public class MainActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
     private UsageExample jugglucoExample;
+    boolean waitnfc = false;
 
     public MainActivity() {
         clearonback();
@@ -478,7 +479,7 @@ void showSystemBarsAppearance() {
         var action = intent.getAction();
 
         if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0 && "android.nfc.action.TECH_DISCOVERED".intern() == action) {
-            curve.waitnfc = true;
+            waitnfc = true;
             {
                 if (doLog) {
                     Log.d(LOG_ID, "TECH_DISCOVERED");
@@ -635,7 +636,7 @@ void showSystemBarsAppearance() {
         ;
         super.onResume();
         if (curve != null) {
-            if (!curve.waitnfc) {
+            if (!waitnfc) {
                 {
                     if (doLog) {
                         Log.d(LOG_ID, "onResume setnfc");
@@ -791,10 +792,10 @@ void showSystemBarsAppearance() {
         ;
         if (Thread.currentThread().equals(Looper.getMainLooper().getThread())) {
             new Thread(() ->
-                    ScanNfcV.scan(curve, tag)
+                    ScanNfcV.scan(thisone, tag)
             ).start();
         } else
-            ScanNfcV.scan(curve, tag);
+            ScanNfcV.scan(thisone, tag);
     }
 
     private void outofStorageSpace() {
