@@ -2,16 +2,12 @@ package tk.glucodata.headless;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.widget.Toast;
 import android.util.Log;
-import android.nfc.Tag;
-import tk.glucodata.ScanNfcV;
-import tk.glucodata.GlucoseCurve;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
+import tk.glucodata.ScanNfcV;
 
 /**
  * Example implementation of the headless Juggluco system
@@ -48,7 +44,7 @@ public class UsageExample {
             
             // Initialize Juggluco manager
             jugglucoManager = HeadlessJugglucoManager.getInstance();
-            boolean initialized = jugglucoManager.init((Activity) ctx);
+            boolean initialized = jugglucoManager.init(ctx);
             
             if (initialized) {
                 // Set up device connection listener
@@ -63,12 +59,6 @@ public class UsageExample {
                     public void onDeviceDisconnected(String serialNumber, String deviceAddress) {
                         Log.i(TAG, "Device disconnected: " + serialNumber + " from " + deviceAddress);
                         Toast.makeText(context, "Device disconnected: " + serialNumber, Toast.LENGTH_SHORT).show();
-                    }
-                    
-                    @Override
-                    public void onDeviceConnecting(String serialNumber, String deviceAddress) {
-                        Log.i(TAG, "Device connecting: " + serialNumber + " to " + deviceAddress);
-                        Toast.makeText(context, "Connecting to " + serialNumber, Toast.LENGTH_SHORT).show();
                     }
                     
                     @Override
@@ -88,31 +78,13 @@ public class UsageExample {
                         Log.i(TAG, "Device unpaired: " + serialNumber + " from " + deviceAddress);
                         Toast.makeText(context, "Device unpaired: " + serialNumber, Toast.LENGTH_SHORT).show();
                     }
-                    
+
                     @Override
-                    public void onDevicePairing(String serialNumber, String deviceAddress) {
-                        Log.i(TAG, "Device pairing: " + serialNumber + " at " + deviceAddress);
-                        Toast.makeText(context, "Pairing with " + serialNumber, Toast.LENGTH_SHORT).show();
+                    public void onDeviceFound(String serialNumber, String deviceAddress) {
+                        Log.i(TAG, "Device found: " + serialNumber + " at " + deviceAddress);
+                        Toast.makeText(context, "Found device: " , Toast.LENGTH_SHORT).show();
                     }
-                    
-                    @Override
-                    public void onScanStarted() {
-                        Log.i(TAG, "Bluetooth scan started");
-                        Toast.makeText(context, "Bluetooth scan started", Toast.LENGTH_SHORT).show();
-                    }
-                    
-                    @Override
-                    public void onScanStopped() {
-                        Log.i(TAG, "Bluetooth scan stopped");
-                        Toast.makeText(context, "Bluetooth scan stopped", Toast.LENGTH_SHORT).show();
-                    }
-                    
-                    @Override
-                    public void onDeviceFound(String serialNumber, String deviceAddress, String deviceName) {
-                        Log.i(TAG, "Device found: " + serialNumber + " (" + deviceName + ") at " + deviceAddress);
-                        Toast.makeText(context, "Found device: " + deviceName, Toast.LENGTH_SHORT).show();
-                    }
-                    
+
                     @Override
                     public void onBluetoothEnabled() {
                         Log.i(TAG, "Bluetooth enabled");
@@ -124,16 +96,7 @@ public class UsageExample {
                         Log.i(TAG, "Bluetooth disabled");
                         Toast.makeText(context, "Bluetooth disabled", Toast.LENGTH_SHORT).show();
                     }
-                    
-                    @Override
-                    public void onConnectionPriorityChanged(String serialNumber, String deviceAddress, int priority) {
-                        Log.i(TAG, "Connection priority changed: " + serialNumber + " priority: " + priority);
-                    }
-                    
-                    @Override
-                    public void onConnectionUpdated(String serialNumber, String deviceAddress, int interval, int latency, int timeout) {
-                        Log.i(TAG, "Connection updated: " + serialNumber + " interval: " + interval + " latency: " + latency + " timeout: " + timeout);
-                    }
+
                 });
                 
                 // Set up NFC scan result callback
@@ -142,21 +105,22 @@ public class UsageExample {
                 // Set up stats listener
                 jugglucoManager.setStatsListener(new StatsListener() {
                     @Override
-                    public void onStatsReady(HeadlessStats.Stats stats) {
-                        Log.i(TAG, "=== GLUCOSE STATISTICS ===");
-                        Log.i(TAG, "Sensor: " + stats.serial);
-                        Log.i(TAG, "Time Range: " + new Date(stats.startMillis) + " to " + new Date(stats.endMillis));
-                        Log.i(TAG, "Total Readings: " + stats.totalReadings);
-                        Log.i(TAG, "Mean: " + String.format("%.1f", stats.mean) + " mg/dL");
-                        Log.i(TAG, "Standard Deviation: " + String.format("%.1f", stats.stdDev) + " mg/dL");
-                        Log.i(TAG, "Time in Range: " + String.format("%.1f", stats.timeInRange) + "%");
-                        Log.i(TAG, "Below Range: " + String.format("%.1f", stats.belowRange) + "%");
-                        Log.i(TAG, "Above Range: " + String.format("%.1f", stats.aboveRange) + "%");
-                        Log.i(TAG, "Very High: " + String.format("%.1f", stats.veryHigh) + "%");
-                        Log.i(TAG, "=== END STATISTICS ===");
-                        
-                        Toast.makeText(context, "Stats: " + String.format("%.1f", stats.timeInRange) + "% in range", Toast.LENGTH_LONG).show();
+                    public void onStats(HeadlessStatsSummary stats) {
+                        stats.toString();
                     }
+                });
+
+                jugglucoManager.setGlucoseListener((serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen) -> {
+                    Log.d(TAG, String.format(
+                            "Glucose update - Serial: %s, mgdl: %b, Value: %.1f, Rate: %.1f, Alarm: %s, Time: %d, SensorStart: %d, SensorGen: %d",
+                            serial, mgdl, value, rate, alarm, timeMillis, sensorStartMillis, sensorGen
+                    ));
+                    jugglucoManager.getGlucoseStats();
+                    jugglucoManager.getSensorInfo(serial);
+
+                    // Example 3: Get complete glucose history (improved method)
+                    List<HeadlessHistory.GlucoseData> completeHistory = HeadlessHistory.getCompleteGlucoseHistory();
+                    Log.d(TAG, String.format("Complete history contains size: "+completeHistory.size()+" and last item: %s ", completeHistory.get(completeHistory.size() - 1).toString()));
                 });
                 
                 this.initialized = true;
@@ -196,7 +160,6 @@ public class UsageExample {
     public void startBluetoothScanning() {
         if (jugglucoManager != null) {
             jugglucoManager.startBluetoothScanning();
-            Toast.makeText(context, "Bluetooth scanning started", Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -225,15 +188,7 @@ public class UsageExample {
         initialized = false;
     }
 
-    public void startNfcScanning() {
-        if (!initialized) return;
-        
-        // NFC scanning is handled by MainActivity and ScanNfcV
-        // This method is kept for compatibility
-        Toast.makeText(context, "NFC scanning is handled by MainActivity", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "NFC scanning request - scanning is handled by MainActivity and ScanNfcV");
-    }
-    
+
     /**
      * Comprehensive logging of NFC scan results
      * @param result The scan result to log
@@ -258,10 +213,6 @@ public class UsageExample {
         if (result.hasGlucoseReading()) {
             float mmolL = result.getGlucoseValueFloat() / 18.0f;
             Log.i(TAG, "Glucose in mmol/L: " + String.format("%.2f", mmolL));
-            
-            // Categorize glucose level
-            String category = categorizeGlucoseLevel(result.getGlucoseValue());
-            Log.i(TAG, "Glucose Category: " + category);
         }
         
         // Log return code details
@@ -278,23 +229,7 @@ public class UsageExample {
         
         Log.i(TAG, "=== END NFC SCAN RESULT LOG ===");
     }
-    
-    /**
-     * Categorize glucose level based on standard ranges
-     * @param glucoseValue Glucose value in mg/dL
-     * @return Category string
-     */
-    private String categorizeGlucoseLevel(int glucoseValue) {
-        if (glucoseValue < 70) {
-            return "Low (< 70 mg/dL)";
-        } else if (glucoseValue <= 180) {
-            return "Normal (70-180 mg/dL)";
-        } else if (glucoseValue <= 250) {
-            return "High (181-250 mg/dL)";
-        } else {
-            return "Very High (> 250 mg/dL)";
-        }
-    }
+
     
     /**
      * Show scan result to user via Toast
@@ -347,7 +282,7 @@ public class UsageExample {
         
         // Get glucose stats for this sensor
         if (jugglucoManager != null) {
-            jugglucoManager.getGlucoseStats(result.getSerialNumber());
+            jugglucoManager.getGlucoseStats();
         }
         
         // Get sensor info
@@ -415,28 +350,6 @@ public class UsageExample {
                 break;
         }
         Log.e(TAG, "=== END PROCESSING SCAN ERROR ===");
-    }
-    
-    /**
-     * Simulate NFC scan for testing purposes
-     * This method creates a test ScanResult for development and testing
-     * @return Test ScanResult
-     */
-    public ScanResult simulateNfcScan() {
-        Log.i(TAG, "=== SIMULATING NFC SCAN ===");
-        
-        // Create a test result
-        ScanResult testResult = new ScanResult(true, 120, 0, "TEST123", "Test glucose reading");
-        
-        // Log the test result
-        logScanResult(testResult);
-        
-        // Handle the test result
-        handleScanResult(testResult);
-        
-        Log.i(TAG, "=== END SIMULATING NFC SCAN ===");
-        
-        return testResult;
     }
 
 }

@@ -1,5 +1,7 @@
 package tk.glucodata.headless;
 
+import androidx.annotation.NonNull;
+
 /**
  * Lightweight summary of glucose statistics for headless usage.
  * All units are mg/dL-based; convert on the UI side if needed.
@@ -57,5 +59,27 @@ public final class HeadlessStatsSummary {
         this.percentHigh = percentHigh;
         this.percentVeryHigh = percentVeryHigh;
     }
+    @NonNull
+    @Override
+    public String toString() {
+        return "{" +
+                "\"numberOfMeasurements\": " + numberOfMeasurements + "," +
+                "\"averageGlucose\": " + averageGlucose + "," +
+                "\"standardDeviation\": " + standardDeviation + "," +
+                "\"glucoseVariabilityPercent\": " + glucoseVariabilityPercent + "," +
+                "\"durationDays\": " + durationDays + "," +
+                "\"timeActivePercent\": " + timeActivePercent + "," +
+                "\"estimatedA1CPercent\": " + estimatedA1CPercent + "," +
+                "\"gmiPercent\": " + gmiPercent + "," +
+                "\"lowThresholdMgdl\": " + lowThresholdMgdl + "," +
+                "\"inRangeUpperThresholdMgdl\": " + inRangeUpperThresholdMgdl + "," +
+                "\"highUpperThresholdMgdl\": " + highUpperThresholdMgdl + "," +
+                "\"percentBelow\": " + percentBelow + "," +
+                "\"percentInRange\": " + percentInRange + "," +
+                "\"percentHigh\": " + percentHigh + "," +
+                "\"percentVeryHigh\": " + percentVeryHigh +
+                "}";
+    }
+
 }
 
