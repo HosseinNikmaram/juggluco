@@ -81,7 +81,29 @@ import tk.glucodata.nums.numio;
 import tk.glucodata.settings.Broadcasts;
 //import static tk.glucodata.MessageSender.messagesender;
 
-public class Applic {
+public class Applic extends Application {
+    private static Applic instance;
+    
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+    }
+    
+    public static Applic getInstance() {
+        return instance;
+    }
+    
+    public static Context getContext() {
+        return instance.getApplicationContext();
+    }
+    
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        instance = null;
+    }
+    
 static final boolean ALLGALAXY=true;
 static final boolean hasNotChinese=true;
 public static final  boolean scrollbar=true;
@@ -130,9 +152,6 @@ static public MainActivity getActivity() {
 static public android.app.Activity getActivity(android.app.Activity activity) {
    return activity;
     }
-static public Context getContext() {
-      Context cont=getActivity();
-        return cont;}
 static public void Toaster(String mess) {
    // RunOnUiThread(()-> { Applic.argToaster(getContext() ,mess, Toast.LENGTH_SHORT);}) ;
     }
