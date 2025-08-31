@@ -49,7 +49,7 @@ public class UsageExample {
             return;
         }
         
-            if (!jugglucoManager.ensurePermissionsAndBluetooth(context)) {
+            if (!jugglucoManager.ensurePermissionsAndBluetooth()) {
                 Toast.makeText(activity, "Bluetooth not available", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -173,14 +173,6 @@ public class UsageExample {
         
         initialized = true;
         Toast.makeText(activity, "Juggluco initialized successfully", Toast.LENGTH_SHORT).show();
-    }
-    
-
-    
-    public void startNfcScanning() {
-        if (!initialized) return;
-        if (jugglucoManager.isNfcScanning()) return;
-        jugglucoManager.startNfcScanning();
     }
 
     public void startBluetoothScanning() {

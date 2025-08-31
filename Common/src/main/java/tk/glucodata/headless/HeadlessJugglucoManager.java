@@ -21,8 +21,6 @@ public class HeadlessJugglucoManager {
     private static final String TAG = "JugglucoManager";
     public static GlucoseListener glucoseListener;
     private DeviceConnectionListener deviceConnectionListener;
-    private Activity activity;
-    private HeadlessNfcReader nfcReader;
     private HeadlessStats statsManager;
     private static volatile boolean nativesInitialized = false;
     
@@ -41,8 +39,7 @@ public class HeadlessJugglucoManager {
                 nativesInitialized = true;
             }
             Natives.setusebluetooth(true);
-            this.activity = ctx;
-            
+
             // Register device connection listener if available
             if (deviceConnectionListener != null) {
                 registerDeviceConnectionListener();
@@ -56,10 +53,9 @@ public class HeadlessJugglucoManager {
     
     /**
      * Check and enable Bluetooth if needed
-     * @param ctx Android context
      * @return true if Bluetooth is available and enabled
      */
-    public boolean ensurePermissionsAndBluetooth(Context ctx) {
+    public boolean ensurePermissionsAndBluetooth() {
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter == null) return false;
         
@@ -69,10 +65,7 @@ public class HeadlessJugglucoManager {
         return true;
     }
     
-    public boolean isNfcScanning() {
-        return HeadlessNfcReader.isScanning();
-    }
-    
+
     /**
      * Set glucose listener for real-time glucose updates
      * @param listener Glucose listener implementation
@@ -125,43 +118,6 @@ public class HeadlessJugglucoManager {
         if (low != null) statsManager.setLowThresholdMgdl(low);
         if (inRangeUpper != null) statsManager.setInRangeUpperThresholdMgdl(inRangeUpper);
         if (highUpper != null) statsManager.setHighUpperThresholdMgdl(highUpper);
-    }
-    
-    /**
-     * Start NFC scanning for Libre sensor pairing
-     * @return true if NFC scanning was started successfully
-     */
-    public void startNfcScanning() {
-        if(activity==null) return;
-        nfcReader = new HeadlessNfcReader();
-        Intent intent = new Intent(activity, HeadlessNfcReader.class);
-        activity.startActivity(intent);
-    }
-    
-    /**
-     * Check if NFC is available
-     * @return true if NFC is available and enabled
-     */
-    public boolean isNfcAvailable() {
-        return nfcReader != null && nfcReader.isNfcAvailable();
-    }
-    
-    /**
-     * Manually scan an NFC tag (useful for testing or custom NFC handling)
-     * @param ctx Android context
-     * @param tag NFC tag from onTagDiscovered
-     * @return Scan result with detailed information
-     */
-    public HeadlessNfcScanner.ScanResult scanNfcTag(Context ctx, android.nfc.Tag tag) {
-        return HeadlessNfcScanner.scanTag(ctx, tag);
-    }
-    
-    /**
-     * Mark a new device for pairing (call before scanning)
-     * @param uid Device UID bytes
-     */
-    public void markNewDevice(byte[] uid) {
-        HeadlessNfcScanner.markNewDevice(uid);
     }
 
     /**
