@@ -443,7 +443,7 @@ public static void sendsettings() {
                     }
                 var sender=tk.glucodata.MessageSender.getMessageSender();
                 if(sender!=null) {
-                    sender.sendsettings();
+                   // sender.sendsettings();
                     }
              }
          } catch(ClassNotFoundException e) {
@@ -457,7 +457,7 @@ static public boolean useWearos() {
 @Keep
 private void initialize() {
         if (android.os.Build.VERSION.SDK_INT >=  android.os.Build.VERSION_CODES.LOLLIPOP) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             connectivityManager.registerNetworkCallback((new NetworkRequest.Builder()).build(), new ConnectivityManager.NetworkCallback() {
         @Override
         public void onAvailable(Network network) {
@@ -520,21 +520,7 @@ private void initialize() {
 
 public static int initscreenwidth=-1;
 
-@Keep
-static private final BroadcastReceiver minTimeReceiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        try {
-            if(Class.forName("tk.glucodata.Applic") != null) {
-                Applic app=(Applic) context.getApplicationContext();
-                app.initproc();
-                app.domintime();
-            }
-        } catch(ClassNotFoundException e) {
-            // Applic class not available in this build variant
-        }
-        }
-    };
+
 void domintime() {
     {if(doLog) {Log.i(LOG_ID,"TICK");};};
     if (curve != null) {
@@ -750,19 +736,7 @@ static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int a
    //     wakelock.release();
     }
 
-static boolean updateDevices() { //Rename to reset
-     final var blue=  tk.glucodata.SensorBluetooth.blueone;
-     if(blue!=null) {
-           if(blue.updateDevicers()) {
-        var main=MainActivity.thisone;
-        if(main!=null)
-            main.finepermission();
-         }
-          return true;
-      }
-    Log.e(LOG_ID,"tk.glucodata.SensorBluetooth.blueone==null");
-    return false;
-     }
+
 @Keep
 static boolean updateDevices() { //Rename to reset
     try {
@@ -900,7 +874,7 @@ static public boolean getHeartRate() {
 static void changedProfile() {
         try {
             if(Class.forName("tk.glucodata.SuperGattCallback") != null) {
-                SuperGattCallback.init();
+               // SuperGattCallback.init();
             }
         } catch(ClassNotFoundException e) {
             // SuperGattCallback class not available in this build variant
@@ -933,17 +907,17 @@ static void rminitlayout() {
 @Keep
 static void toGarmin(int base) {
    if(!isWearable) { 
-        if(MainActivity.thisone != null && MainActivity.thisone.numdata != null) {
-            MainActivity.thisone.numdata.changedback(base);
+        if(MainActivity.thisone != null ) {
+           // MainActivity.thisone.numdata.changedback(base);
         }
         }
     }
 @Keep
 static void Garmindeletelast(int base,int pos,int end ) {
        if(!isWearable) { 
-            if(MainActivity.thisone != null && MainActivity.thisone.numdata != null) {
-                MainActivity.thisone.numdata.deletelast(base,pos,end);
-                MainActivity.thisone.numdata.changedback(base);
+            if(MainActivity.thisone != null) {
+               // MainActivity.thisone.numdata.deletelast(base,pos,end);
+              //  MainActivity.thisone.numdata.changedback(base);
             }
           }
         }
