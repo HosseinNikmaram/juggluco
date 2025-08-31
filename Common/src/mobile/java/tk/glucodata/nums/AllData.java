@@ -121,11 +121,11 @@ final    private IQOpenApplicationListener mOpenAppListener = new IQOpenApplicat
         public void onOpenApplicationResponse(IQDevice device, IQApp app, IQOpenApplicationStatus status) {
            appmissing=-1;
            if (status == IQOpenApplicationStatus.APP_IS_ALREADY_RUNNING) {
-                Applic.argToaster(getApplication(), "APP_IS_ALREADY_RUNNING", Toast.LENGTH_SHORT);
+                //Applic.argToaster(getApplication(), "APP_IS_ALREADY_RUNNING", Toast.LENGTH_SHORT);
                 mAppIsOpen = true;
                 startall() ;
             } else {
-                Applic.argToaster(getApplication(), "Open App", Toast.LENGTH_SHORT);
+               // Applic.argToaster(getApplication(), "Open App", Toast.LENGTH_SHORT);
                 mAppIsOpen = false;
 //      sync();
             }
@@ -295,9 +295,9 @@ public void backglucose() {
    sendtowatch=wasglucose;
 //   setSending(false);
    }
-private final static Application getApplication() {
-   return Applic.app;
-    }
+/*private  static Application getApplication() {
+   return new Applic();
+    }*/
 
 static private void senderror(int type) {
    errorm("Senderror "+type);
@@ -381,7 +381,7 @@ public void onMessageReceived(IQDevice device, IQApp app, List<Object> message, 
           case DELETE: {
              log("DELETE "+base+" "+num);
              numio.delete(base,num);
-             Applic.app.redraw();
+              new Applic().redraw();
              realsendmessage(Arrays.asList(DELETED,base, num)); 
              return;
              }
@@ -389,7 +389,7 @@ public void onMessageReceived(IQDevice device, IQApp app, List<Object> message, 
              int last=(Integer)li.get(2);
              log("NOMORENUMS "+base+ " "+last);
              numio.updated(base,last);
-             Applic.app.redraw();
+              new Applic().redraw();
 
              }
              ;break;
@@ -797,7 +797,6 @@ public boolean realsendmessage(Object message) {
             
              Log.stack(LOG_ID,mess,error);
 
-         Applic.app.Toaster(mess);
 
              return false;
          }
@@ -812,15 +811,6 @@ public void sendshortcuts(ArrayList<ArrayList<Object>> shortcuts) {
 public void sendlabels() {
    if(!usewatch)
       return;
-   List<String> labs= Applic.app.getlabels();
-   int len=   labs.size()-1;
-   if(len>0)
-       sendmessage(Arrays.asList(PUTLABELS, labs.subList(0,len)));
-   ArrayList<Float> precs   =new ArrayList<> ();
-   precs.ensureCapacity(len);
-   for(int i=0;i<len;i++)
-      precs.add(Natives.getPrecision(i));
-    sendmessage(Arrays.asList(PUTPRECISION, precs));
     }
 /*
 int getlastnum(int base) {
@@ -969,7 +959,7 @@ void register(Context context) {
          appmissing=-1;
          {if(doLog) {Log.i(LOG_ID,"onApplicationInfoReceived");};};
                         try {
-                            Applic.argToaster(getApplication(), "Opening  Kerfstok...", Toast.LENGTH_SHORT);
+                          //  Applic.argToaster(getApplication(), "Opening  Kerfstok...", Toast.LENGTH_SHORT);
                             mConnectIQ.openApplication(devices.get(devused), app, mOpenAppListener);
                         } catch (Exception ex) {
             String mess=ex!=null?ex.getMessage():null;
@@ -1014,13 +1004,13 @@ void register(Context context) {
             } catch (ServiceUnavailableException e1) {
       Log.e(LOG_ID,"register: ServiceUnavailableException "+ e1.getMessage());
             }
-            // Let's register to receive messages from our Applic.app on the device.
+            // Let's register to receive messages from our Applic.getContext() on the device.
             try {
                {if(doLog) {Log.d(LOG_ID,"registerForAppEvents");};};
                mConnectIQ.registerForAppEvents(devices.get(devused), mMyApp, IQlistener);
                usewatch=true;
             } catch (InvalidStateException e) {
-                Applic.argToaster(getApplication(), "ConnectIQ is not in a valid state", Toast.LENGTH_SHORT);
+              //  Applic.argToaster(getApplication(), "ConnectIQ is not in a valid state", Toast.LENGTH_SHORT);
             }
         }
    }
@@ -1038,7 +1028,7 @@ void unregister() {
          }
          }
 
-          mConnectIQ.shutdown(getApplication());
+        //  mConnectIQ.shutdown(getApplication());
       } catch (InvalidStateException e) {
       }
       }
@@ -1072,10 +1062,10 @@ MyConnectIQListener mListener=null;
 public void initIQ(Context context) {
 try {
       mMyApp = new IQApp(Natives.getgarminid());
-     mConnectIQ = ConnectIQ.getInstance(getApplication(), IQConnectType.WIRELESS);
+    // mConnectIQ = ConnectIQ.getInstance(getApplication(), IQConnectType.WIRELESS);
 {if(doLog) {Log.v(LOG_ID,"initIQ");};};
     mListener = new MyConnectIQListener(context);
-    mConnectIQ.initialize(getApplication(), false, mListener);
+  //  mConnectIQ.initialize(getApplication(), false, mListener);
     }
     catch(Throwable error) {
    String mess="";

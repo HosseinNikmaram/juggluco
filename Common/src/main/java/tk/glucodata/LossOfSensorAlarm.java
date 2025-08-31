@@ -38,14 +38,14 @@ public class LossOfSensorAlarm extends BroadcastReceiver {
 static final private String LOG_ID="LossOfSensorAlarm";
 @Override
 public void onReceive(Context context, Intent intent) {
-       {if(doLog) {Log.i(LOG_ID,"onReceive ");};};
+/*       {if(doLog) {Log.i(LOG_ID,"onReceive ");};};
        Applic app=(Applic) context.getApplicationContext();
        app.initproc();
        SuperGattCallback.initAlarmTalk();
        SuperGattCallback.glucosealarms.handlealarm();
        if(!keeprunning.started) {
             Applic.possiblybluetooth(context) ;
-            }
+            }*/
         }
 
 static private PendingIntent onalarm=null ;
@@ -91,7 +91,7 @@ static void cancelalarm() {
     if(onalarm!=null) {
         {if(doLog) {Log.i(LOG_ID,"cancelalarm");};};
         Notify.shownovalue();
-        AlarmManager manager= (AlarmManager) Applic.app.getSystemService(ALARM_SERVICE);
+        AlarmManager manager= (AlarmManager) Applic.getContext().getSystemService(ALARM_SERVICE);
         manager.cancel(onalarm);
         onalarm=null;//TODO: ?????
         }

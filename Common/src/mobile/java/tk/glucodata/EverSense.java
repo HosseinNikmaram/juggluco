@@ -69,7 +69,7 @@ static void broadcastglucose(int mgdl, float rate, long timmsec) {
         bundle.putString("collection", "entries");
         final Intent intent = new Intent(glucoseaction);
         intent.putExtras(bundle);
-        sendIntent(Applic.app, intent);
+        sendIntent(Applic.getContext(), intent);
     } catch(Throwable th) {
             Log.stack(LOG_ID,"broadcastglucose",th);
         }

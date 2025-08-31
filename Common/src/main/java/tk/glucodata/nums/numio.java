@@ -36,6 +36,7 @@ import tk.glucodata.R;
 
 import static android.os.Build.VERSION.RELEASE;
 import static java.lang.System.exit;
+import static tk.glucodata.Applic.getContext;
 import static tk.glucodata.Applic.isWearable;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Natives.setDevice;
@@ -90,13 +91,13 @@ static void settingsnoaccessdir()   {
 
 static void makefilesfailed()   { throw new noAccessToFilesDirException("no access files: ETXTBSY"); }
 
-static public boolean setlibrary(Applic con) {
+static public boolean setlibrary() {
 if(true) {
    var loc=Locale.getDefault();
    String country=loc.getCountry();
    var locstr=loc.getLanguage();
    Applic.curlang=locstr;
-   File files=con.getFilesDir();
+   File files=getContext().getFilesDir();
    String filespath=files.getAbsolutePath();
    if(!files.isDirectory())  {
        Log.e(LOG_ID,filespath+" not a directory");
@@ -108,7 +109,7 @@ if(true) {
            catch(Throwable th) {
               Log.stack(LOG_ID,"sleep",th);
               };
-          files=con.getFilesDir();
+          files=getContext().getFilesDir();
           filespath=files.getAbsolutePath();
           if(!files.isDirectory()) {
                 if(!files.mkdirs()) {
@@ -125,7 +126,7 @@ if(true) {
           }
       }
    int ret=130;
-   final String nativedir=con.getApplicationInfo().nativeLibraryDir;
+   final String nativedir=getContext().getApplicationInfo().nativeLibraryDir;
    Natives.setlocale(locstr);
    switch (ret=Natives.setfilesdir(filespath, country,nativedir)) {
       case 1:

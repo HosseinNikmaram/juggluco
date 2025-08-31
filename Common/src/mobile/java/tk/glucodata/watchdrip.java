@@ -80,7 +80,7 @@ private static String  LOG_ID="watchdrip";
 				var newintent=WearInt.mksendglucoseintent(settings,glumgdl,rate,alarm,  gl[0]*1000L);
 				newintent.putExtra( "FUNCTION","update_bg_force");
 				newintent.setPackage(key);
-				Applic.app.sendBroadcast(newintent);
+				Applic.getContext().sendBroadcast(newintent);
 				}
 			}
 
@@ -91,15 +91,15 @@ static void register() {
 	if(receiver==null)
 		receiver=new watchdrip();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        Applic.app.registerReceiver(receiver, new IntentFilter("com.eveningoutpost.dexdrip.watch.wearintegration.BROADCAST_SERVICE_RECEIVER"),RECEIVER_EXPORTED);
+        Applic.getContext().registerReceiver(receiver, new IntentFilter("com.eveningoutpost.dexdrip.watch.wearintegration.BROADCAST_SERVICE_RECEIVER"),RECEIVER_EXPORTED);
     }
 	else
-        Applic.app.registerReceiver(receiver, new IntentFilter("com.eveningoutpost.dexdrip.watch.wearintegration.BROADCAST_SERVICE_RECEIVER"));
+        Applic.getContext().registerReceiver(receiver, new IntentFilter("com.eveningoutpost.dexdrip.watch.wearintegration.BROADCAST_SERVICE_RECEIVER"));
 }
 static void unregister() {
 	if(receiver!=null) {
         try {
-            Applic.app.unregisterReceiver(receiver);
+            Applic.getContext().unregisterReceiver(receiver);
             } 
        catch(Throwable th) {
           Log.stack(LOG_ID,"unregister",th);

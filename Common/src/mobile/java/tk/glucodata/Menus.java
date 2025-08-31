@@ -139,22 +139,22 @@ static public void show(MainActivity act) {
             }
         else  {
            aboutview.setOnClickListener(v ->{
-                       var c=Applic.app.curve;
-                       if(c!=null)
-                        c.doabout(act);
+                  //     var c=Applic.getContext().curve;
+                      // if(c!=null)
+                       // c.doabout(act);
                   }); 
                  }
         var closeview=view.findViewById(R.id.close);closeview.setOnClickListener(v ->{
 		act.moveTaskToBack(true);
 	}); 
         var exportview=view.findViewById(R.id.export);exportview.setOnClickListener(v ->{
-		var c=Applic.app.curve;
-		  if(c!=null) {
+		//var c=Applic.getContext().curve;
+		/*  if(c!=null) {
 			  {if(doLog) {Log.i(LOG_ID,"EXPORT");};};
    		   act.lightBars(!getInvertColors( ));
 		     removeContentView(view);
 		     c.dialogs.showexport(act,c.getWidth(),c.getHeight(),null); 
-		     }
+		     }*/
 
 	}); 
         var mirrorview=view.findViewById(R.id.mirror);mirrorview.setOnClickListener(v ->{
@@ -167,26 +167,26 @@ static public void show(MainActivity act) {
         					help.help(R.string.staticnum,act);
 						}
 					else {
-						var c=Applic.app.curve;
+					/*	var c=Applic.getContext().curve;
 						if (c != null) {
    		         act.lightBars(!getInvertColors( ));
 							removeContentView(view);
-							c.numberview.addnumberview(act);
+							*//*c.numberview.addnumberview(act);
 							if (!smallScreen)
-								c.showkeyboard(act);
-						}
+								c.showkeyboard(act);*//*
+						}*/
 					}
 
 	}); 
         var listview=view.findViewById(R.id.list);listview.setOnClickListener(v -> {
-				var c = Applic.app.curve;
+				/*var c = Applic.getContext().curve;
 				if (c != null) {
    		         act.lightBars(!getInvertColors( ));
 					removeContentView(view);
 					Natives.makenumbers();
 					act.requestRender();
 					c.getnumcontrol(act);
-				}
+				}*/
 			}
 						);
         var statisticsview=view.findViewById(R.id.statistics);statisticsview.setOnClickListener(v ->{
@@ -262,22 +262,22 @@ static public void show(MainActivity act) {
 
 	});
         var searchview=view.findViewById(R.id.search);searchview.setOnClickListener(v ->{
-		  var c=Applic.app.curve;
-		  if(c!=null) {
+		//  var c=Applic.getContext().curve;
+		/*  if(c!=null) {
                act.lightBars(!getInvertColors( ));
 			removeContentView(view);
 			c.startsearch();
-			}
+			}*/
 		}); 
 
         var dateview=view.findViewById(R.id.date);dateview.setOnClickListener(v ->{
-		  var c=Applic.app.curve;
+/*		  var c=Applic.getContext().curve;
 		  if(c!=null) {
                act.lightBars(!getInvertColors( ));
 			removeContentView(view);
 			  c.startdatepick(Natives.getstarttime());
 			  }
-		
+		*/
 		}); 
         var daybackview=view.findViewById(R.id.dayback);daybackview.setOnClickListener(v ->{
                act.lightBars(!getInvertColors( ));

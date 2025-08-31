@@ -99,7 +99,7 @@ fun getview(type: ComplicationType):GlucoseValue {
    	 val now = System.currentTimeMillis()
       if(glucose==null ||(now-glucose.time*1000L)>=tk.glucodata.Notify.glucosetimeout) {
          Log.i(LOG_ID,"no glucose") 
-           return ShortTextComplicationData.Builder(text= PlainComplicationText.Builder(text = Applic.app.getString( R.string.novalue)).build()
+           return ShortTextComplicationData.Builder(text= PlainComplicationText.Builder(text = Applic.getContext().getString( R.string.novalue)).build()
              ,contentDescription = PlainComplicationText.Builder(text = "Small Glucose").build())
                 .setTapAction(complicationPendingIntent)
                 .build()
@@ -120,7 +120,7 @@ fun getview(type: ComplicationType):GlucoseValue {
 
     companion object {
         private const val LOG_ID = "ShortArrowValueDataSourceService"
-   private val complicationDataSourceUpdateRequester = ComplicationDataSourceUpdateRequester.create( context=tk.glucodata.Applic.app, complicationDataSourceComponent = ComponentName(tk.glucodata.Applic.app,
+   private val complicationDataSourceUpdateRequester = ComplicationDataSourceUpdateRequester.create( context=tk.glucodata.Applic.getContext(), complicationDataSourceComponent = ComponentName(tk.glucodata.Applic.getContext(),
     ShortArrowValueDataSourceService::class.java
    ))
 

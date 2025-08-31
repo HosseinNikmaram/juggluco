@@ -184,7 +184,7 @@ private val requestPermissionLauncher = registerForActivityResult(ActivityResult
         val on=box.isChecked()
         if(on) {
             val bodies= Manifest.permission.BODY_SENSORS
-            if(ActivityCompat.checkSelfPermission(Applic.app, bodies) != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.checkSelfPermission(Applic.getContext(), bodies) != PackageManager.PERMISSION_GRANTED) {
                 heartratebox=box
                    box.setChecked(false)
                 Log.i(LOG_ID,"No sensor permission")

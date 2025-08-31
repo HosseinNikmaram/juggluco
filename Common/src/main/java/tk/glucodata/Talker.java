@@ -148,7 +148,7 @@ if(!DontTalk) {
 if(!DontTalk) {
 
 //    var context=cont==null?Applic.getContext():cont;
-    var context=Applic.app;
+    var context=Applic.getContext();
      engine=new TextToSpeech(context, new TextToSpeech.OnInitListener() {
        @Override
       public void onInit(int status) {
@@ -182,7 +182,7 @@ if(!DontTalk) {
                     if(spin!=null) {
                         {if(doLog) {Log.i(LOG_ID,"Talker spinner!=null");};};
                           Applic.RunOnUiThread(() -> {
-                            spin.setAdapter(new RangeAdapter<Voice>(voiceChoice, Applic.app, voice -> {
+                            spin.setAdapter(new RangeAdapter<Voice>(voiceChoice, Applic.getContext(), voice -> {
                                     return voice.getName();
                                     })); 
                             if(voicepos>=0&&voicepos<voiceChoice.size())

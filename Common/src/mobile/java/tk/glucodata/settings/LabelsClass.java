@@ -215,7 +215,7 @@ private void	askdeletelast(Spinner spinner,	LabelAdapter<String> numspinadapt, B
 
 void    mklabellayout(View parent ) {
 	parent.setVisibility(INVISIBLE);
-	labels=Applic.app.getlabels();
+	//labels=Applic.getContext().getlabels();
 	MainActivity context = activity;
 //    if(labellayout==null) {
 	Button ok = new Button(context);
@@ -305,10 +305,10 @@ void    mklabellayout(View parent ) {
 	Runnable closerun=()-> {
 		parent.setVisibility(VISIBLE);
  		tk.glucodata.help.hidekeyboard(activity) ;
-		Applic app=(tk.glucodata.Applic )context.getApplication();
+		//Applic app=(tk.glucodata.Applic )context.getApplication();
 		if(Natives.shouldsendlabels())  {
 		    Applic.wakemirrors();
-		    app.sendlabels();
+		  //  app.sendlabels();
 		}
 		/*
 		if(app.curve!=null&&app.curve.search!=null) {

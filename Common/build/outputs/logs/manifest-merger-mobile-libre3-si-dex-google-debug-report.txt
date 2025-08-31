@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 application
-INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:65:5-156:19
-MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:46:5-103:19
-MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:46:5-103:19
-MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:65:5-156:19
-MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:65:5-156:19
+INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:65:5-147:19
+MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:46:5-102:19
+MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:46:5-102:19
+MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:65:5-147:19
+MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:65:5-147:19
 MERGED from [androidx.emoji2:emoji2:1.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/e22d10433d0304e2248541f0e721d56a/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/e22d10433d0304e2248541f0e721d56a/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:23:5-33:19
@@ -50,7 +50,7 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/hossein/.gradle/ca
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.16.0] /home/hossein/.gradle/caches/8.11.1/transforms/d0f8e735630a065e2aa03bb0e62770a7/transformed/core-1.16.0/AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:49:9-41
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:48:9-41
 	android:debuggable
 		INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:67:9-43
@@ -65,13 +65,13 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] /home/hossein/.gradle/ca
 	android:pageSizeCompat
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:74:9-41
 	android:theme
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:50:9-40
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:49:9-40
 	android:usesCleartextTraffic
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:73:9-44
 	android:name
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:6:18-52
 provider#androidx.startup.InitializationProvider
-INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:143:9-146:35
+INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:134:9-137:35
 REJECTED from [androidx.emoji2:emoji2:1.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/e22d10433d0304e2248541f0e721d56a/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] /home/hossein/.gradle/caches/8.11.1/transforms/7a4b2a057dd45494866024fa53bf5b1b/transformed/jetified-lifecycle-process-2.6.2/AndroidManifest.xml:24:9-32:20
 MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] /home/hossein/.gradle/caches/8.11.1/transforms/7a4b2a057dd45494866024fa53bf5b1b/transformed/jetified-lifecycle-process-2.6.2/AndroidManifest.xml:24:9-32:20
@@ -84,9 +84,9 @@ MERGED from [androidx.startup:startup-runtime:1.2.0] /home/hossein/.gradle/cache
 	android:exported
 		ADDED from [androidx.lifecycle:lifecycle-process:2.6.2] /home/hossein/.gradle/caches/8.11.1/transforms/7a4b2a057dd45494866024fa53bf5b1b/transformed/jetified-lifecycle-process-2.6.2/AndroidManifest.xml:27:13-37
 manifest
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:2:1-158:12
-MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:2:1-105:12
-MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:2:1-158:12
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:2:1-149:12
+MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:2:1-104:12
+MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:2:1-149:12
 INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:2:1-18:12
 INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:2:1-18:12
 INJECTED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:2:1-18:12
@@ -479,97 +479,97 @@ MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle
 	android:name
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:44:19-63
 receiver#tk.glucodata.GlucoseWidget
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:51:9-61:20
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:50:9-60:20
 	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:53:13-37
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:52:13-37
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:52:13-42
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:51:13-42
 intent-filter#action:name:android.appwidget.action.APPWIDGET_UPDATE
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:54:13-56:29
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:53:13-55:29
 action#android.appwidget.action.APPWIDGET_UPDATE
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:55:17-84
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:54:17-84
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:55:25-81
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:54:25-81
 meta-data#android.appwidget.provider
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:58:13-60:63
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:57:13-59:63
 	android:resource
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:60:17-60
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:59:17-60
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:59:17-58
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:58:17-58
 activity#tk.glucodata.MainActivity
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:63:9-76:20
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:62:9-75:20
 MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:76:9-92:20
 MERGED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:76:9-92:20
 	android:screenOrientation
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:70:13-57
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:69:13-57
 	android:stateNotNeeded
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:84:13-42
 	android:label
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:67:13-45
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:66:13-45
 	android:excludeFromRecents
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:81:13-47
 	android:autoRemoveFromRecents
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:80:13-50
 	android:launchMode
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:68:13-44
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:67:13-44
 	android:windowSoftInputMode
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:85:13-64
 	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:66:13-36
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:65:13-36
 	android:resizeableActivity
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:69:13-46
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:68:13-46
 	android:configChanges
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:79:13-111
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:64:13-41
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:63:13-41
 	android:allowEmbedded
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:65:13-41
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:64:13-41
 intent-filter#action:name:androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:72:13-74:29
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:71:13-73:29
 action#androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:73:17-92
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:72:17-92
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:73:25-89
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:72:25-89
 activity-alias#tk.glucodata.ViewPermissionUsageActivity
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:77:3-86:20
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:76:3-85:20
 	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:79:7-30
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:78:7-30
 	android:targetActivity
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:80:7-45
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:79:7-45
 	android:permission
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:81:7-74
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:80:7-74
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:78:7-49
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:77:7-49
 intent-filter#action:name:android.intent.action.VIEW_PERMISSION_USAGE+category:name:android.intent.category.HEALTH_PERMISSIONS
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:82:5-85:21
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:81:5-84:21
 action#android.intent.action.VIEW_PERMISSION_USAGE
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:7-76
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:82:7-76
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:15-73
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:82:15-73
 category#android.intent.category.HEALTH_PERMISSIONS
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:84:7-77
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:7-77
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:84:17-74
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:17-74
 service#tk.glucodata.MessageReceiver
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:88:9-100:19
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:87:9-99:19
 	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:90:13-36
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:89:13-36
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:89:13-44
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:88:13-44
 intent-filter#action:name:com.google.android.gms.wearable.MESSAGE_RECEIVED+data:host:*+data:host:*+data:host:*+data:host:*+data:host:*+data:host:*+data:pathPrefix:/askforstart+data:pathPrefix:/data+data:pathPrefix:/messages+data:pathPrefix:/netinfo+data:pathPrefix:/wake+data:pathPrefix:/wakestream+data:scheme:wear+data:scheme:wear+data:scheme:wear+data:scheme:wear+data:scheme:wear+data:scheme:wear
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:91:13-99:29
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:90:13-98:29
 action#com.google.android.gms.wearable.MESSAGE_RECEIVED
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:17-91
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:91:17-91
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:25-88
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:91:25-88
 data
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:17-91
 	android:host
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:23-39
 	android:scheme
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:67-88
 	android:pathPrefix
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:40-66
 intent#action:name:android.intent.action.TTS_SERVICE
 ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:49:9-51:18
 action#android.intent.action.TTS_SERVICE
@@ -628,80 +628,62 @@ ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidM
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:95:13-38
 intent-filter#action:name:android.nfc.action.TECH_DISCOVERED+category:name:android.intent.category.DEFAULT
 ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:100:13-104:29
-receiver#tk.glucodata.NumAlarm
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:110:9-119:20
-	android:enabled
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:112:13-35
-	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:113:13-36
-	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:111:13-37
-intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.QUICKBOOT_POWERON+category:name:android.intent.category.DEFAULT
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:114:13-118:29
-action#android.intent.action.BOOT_COMPLETED
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:115:17-79
-	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:115:25-76
-action#android.intent.action.QUICKBOOT_POWERON
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:116:17-82
-	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:116:25-79
 receiver#tk.glucodata.DeleteReceiver
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:120:9-123:38
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:111:9-114:38
 	android:enabled
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:122:13-35
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:113:13-35
 	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:123:13-36
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:114:13-36
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:121:13-43
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:112:13-43
 receiver#tk.glucodata.LossOfSensorAlarm
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:124:9-127:38
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:115:9-118:38
 	android:enabled
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:126:13-35
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:117:13-35
 	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:127:13-36
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:118:13-36
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:125:13-46
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:116:13-46
 receiver#tk.glucodata.ConnectReceiver
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:128:9-131:38
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:119:9-122:38
+	android:enabled
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:121:13-35
+	android:exported
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:122:13-36
+	android:name
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:120:13-44
+receiver#tk.glucodata.Maintenance
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:123:9-126:38
+	android:enabled
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:125:13-35
+	android:exported
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:126:13-36
+	android:name
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:124:13-40
+service#tk.glucodata.keeprunning
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:128:9-132:63
 	android:enabled
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:130:13-35
 	android:exported
 		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:131:13-36
-	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:129:13-44
-receiver#tk.glucodata.Maintenance
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:132:9-135:38
-	android:enabled
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:134:13-35
-	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:135:13-36
-	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:133:13-40
-service#tk.glucodata.keeprunning
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:137:9-141:63
-	android:enabled
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:139:13-35
-	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:140:13-36
 	android:foregroundServiceType
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:141:13-60
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:132:13-60
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:138:13-40
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:129:13-40
 service#androidx.appcompat.app.AppLocalesMetadataHolderService
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:148:9-155:19
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:139:9-146:19
 	android:enabled
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:150:13-36
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:141:13-36
 	android:exported
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:151:13-37
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:142:13-37
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:149:13-82
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:140:13-82
 meta-data#autoStoreLocales
-ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:152:13-154:40
+ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:143:13-145:40
 	android:value
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:154:17-37
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:145:17-37
 	android:name
-		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:153:17-48
+		ADDED from /home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:144:17-48
 service#androidx.health.platform.client.impl.sdkservice.HealthDataSdkService
 ADDED from [androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:24:9-32:19
 	android:enabled

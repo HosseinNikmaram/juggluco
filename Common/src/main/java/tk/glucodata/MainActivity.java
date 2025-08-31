@@ -29,7 +29,7 @@ import static androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener;
 import static tk.glucodata.Applic.DontTalk;
 import static tk.glucodata.Applic.RunOnUiThread;
 import static tk.glucodata.Applic.TargetSDK;
-import static tk.glucodata.Applic.app;
+import static tk.glucodata.Applic.getContext;
 import static tk.glucodata.Applic.explicit;
 import static tk.glucodata.Applic.isRelease;
 import static tk.glucodata.Applic.isWearable;
@@ -180,10 +180,10 @@ public class MainActivity extends AppCompatActivity implements NfcAdapter.Reader
             Log.i(LOG_ID, "startdisplay");
         }
         ;
-        Applic app = (Applic) getApplication();
-        app.setbackgroundcolor(this);
-        if (Applic.Nativesloaded)
-            app.needsnatives();
+       // Applic app = (Applic) getApplication();
+       // app.setbackgroundcolor(this);
+        //if (Applic.Nativesloaded)
+          //  app.needsnatives();
 
         curve = new GlucoseCurve(this);
         {
@@ -880,7 +880,7 @@ void showSystemBarsAppearance() {
             if (Natives.getlibrelinkused()) {
                 final var starttime = Natives.laststarttime();
                 if (starttime != 0L) {
-                    XInfuus.sendSensorActivateBroadcast(app, Natives.lastsensorname(), starttime);
+                   // XInfuus.sendSensorActivateBroadcast(app, Natives.lastsensorname(), starttime);
                 }
             }
         } else {
@@ -1049,7 +1049,7 @@ void switchSystemUI() {
 
 
         screenwidth = 0;
-        if (Applic.Nativesloaded)
+/*        if (Applic.Nativesloaded)
             if (app.needsnatives()) {
                 if (curve != null) {
                     while (doonback())
@@ -1065,7 +1065,7 @@ void switchSystemUI() {
                         curve.searchcontrol = null;
                     }
                 }
-            }
+            }*/
 
 
 //    if(settings!=null) settings.invalidate();
@@ -1413,7 +1413,6 @@ void switchSystemUI() {
                         int type = requestCode & 0xF;
                         Uri uri;
                         if (data == null || (uri = data.getData()) == null) {
-                            curve.dialogs.exportlabel.setText(R.string.nodata);
                             return;
                         }
                         int fd = -1;
@@ -1421,24 +1420,16 @@ void switchSystemUI() {
                             if (parcelFileDescriptor != null)
                                 fd = parcelFileDescriptor.detachFd();
                             else {
-                                curve.dialogs.exportlabel.setText("Can't save: parcelFileDescriptor == null");
                                 return;
                             }
 
                         } catch (IOException e) {
 
                             Log.stack(LOG_ID, e);
-                            curve.dialogs.exportlabel.setText(R.string.failedbyexception);
                             return;
-                        }
-                        if (Natives.exportdata(type, fd, Dialogs.showdays)) {
-                            curve.dialogs.exportlabel.setText(R.string.saved);
-                        } else {
-                            curve.dialogs.exportlabel.setText(R.string.savefailed);
                         }
                     } else {
 
-                        curve.dialogs.exportlabel.setText(R.string.notsaved);
                     }
 
                 } catch (Throwable th) {
@@ -1751,7 +1742,7 @@ void switchSystemUI() {
             }
             Notify.stopalarmnotsend(false);
             if (!isWearable) {
-                Applic.app.numdata.stopalarm();
+               // Applic.getContext().numdata.stopalarm();
             }
         }).setTitle("  ").setMessage(message).create();
         ;
@@ -1969,7 +1960,7 @@ task.addOnFailureListener(this, new OnFailureListener() {
 */
 
     public void useBluetooth(boolean val) {
-        Applic.app.initbluetooth(val, this, true);
+        Applic.initbluetooth(val, this, true);
         if (fineres != null)
             fineres.call();
     }

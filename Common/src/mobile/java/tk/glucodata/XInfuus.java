@@ -64,7 +64,7 @@ static public void setlibrenames() {
     */
 public static final String glucoseaction="com.librelink.app.ThirdPartyIntegration.GLUCOSE_READING";
 public static void sendGlucoseBroadcast(String serial, double currentGlucose,float rate,long mmsec) {
-	final Context context=Applic.app;
+	final Context context=Applic.getContext();
         Intent intent = new Intent(glucoseaction);
         intent.putExtra("glucose", currentGlucose);
         intent.putExtra("timestamp", mmsec);

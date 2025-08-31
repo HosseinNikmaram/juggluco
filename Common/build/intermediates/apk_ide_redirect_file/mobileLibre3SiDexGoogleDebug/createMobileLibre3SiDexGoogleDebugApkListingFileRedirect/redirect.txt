@@ -1,2 +1,2 @@
 #- File Locator -
-listingFile=../../../../outputs/apk/mobileLibre3SiDexGoogle/debug/output-metadata.json
+listingFile=../../../apk/mobileLibre3SiDexGoogle/debug/output-metadata.json

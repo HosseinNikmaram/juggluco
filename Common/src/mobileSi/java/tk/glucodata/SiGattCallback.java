@@ -284,7 +284,7 @@ private void   processchanged(byte[] value) {
   if(res==2L) {
         if(!novalue) {
           novalue=true;
-          Applic.app.getHandler().postDelayed( ()->   {
+          Applic.getHandler().postDelayed( ()->   {
                if(novalue) {
                   Log.e(LOG_ID,"2: postDelayed disconnect");
                   disconnect();
@@ -296,7 +296,7 @@ private void   processchanged(byte[] value) {
   if(res==8L) {
         if(!novalue) {
           novalue=true;
-          Applic.app.getHandler().postDelayed( ()->   {
+          Applic.getHandler().postDelayed( ()->   {
                if(novalue) {
                   Log.e(LOG_ID,"2: postDelayed disconnect");
                   disconnect();
@@ -319,7 +319,7 @@ private void   processchanged(byte[] value) {
          return;
          }
     if(res==4L) {
-          Applic.app.getHandler().postDelayed( ()->   { authenticate(); },1000L);
+          Applic.getHandler().postDelayed( ()->   { authenticate(); },1000L);
          return;
          }
    if(res==5L) { 

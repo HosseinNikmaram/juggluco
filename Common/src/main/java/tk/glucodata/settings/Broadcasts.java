@@ -62,7 +62,7 @@ import tk.glucodata.XInfuus;
 
 public class Broadcasts {
 static private  ArrayList<String> actionListeners(String action) {
-        final Context context= Applic.app;
+        final Context context= Applic.getContext();
         Intent intent = new Intent(action);
    	var receivers = context.getPackageManager().queryBroadcastReceivers(intent, 0);
 	ArrayList<String> names=new ArrayList<String>();

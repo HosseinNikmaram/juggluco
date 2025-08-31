@@ -101,7 +101,7 @@ RemoteGlucose(float gl,float notwidth,float xper,int whiteonblack,boolean giveti
       var style = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) ? android.R.style.TextAppearance_Material_Notification_Title : android.R.style.TextAppearance_StatusBar_EventContent;
       int[] attrs = {android.R.attr.textColor};
       try {
-         @SuppressLint("ResourceType") TypedArray ta = Applic.app.obtainStyledAttributes(style, attrs);
+         @SuppressLint("ResourceType") TypedArray ta = Applic.getContext().obtainStyledAttributes(style, attrs);
          if(ta != null) {
             int col = ta.getColor(0, Color.TRANSPARENT);
             glucosePaint.setColor(col);
@@ -118,12 +118,12 @@ RemoteGlucose(float gl,float notwidth,float xper,int whiteonblack,boolean giveti
 
 static final String stopalarmAction= "StopAlarm";
 final RemoteViews arrowremote(int kind, notGlucose glucose,final boolean alarm) {
-   RemoteViews remoteViews= new RemoteViews(Applic.app.getPackageName(),alarm?R.layout.alarm:R.layout.arrowandvalue);
+   RemoteViews remoteViews= new RemoteViews(Applic.getContext().getPackageName(),alarm?R.layout.alarm:R.layout.arrowandvalue);
    if(alarm) {
-      Intent closeintent=new Intent(Applic.app,NumAlarm.class);
-      closeintent.setAction(stopalarmAction);
-      PendingIntent closepending=PendingIntent.getBroadcast(Applic.app, stopalarmrequest, closeintent,PendingIntent.FLAG_UPDATE_CURRENT|penmutable);
-      remoteViews.setOnClickPendingIntent(R.id.stopalarm, closepending); 
+      //Intent closeintent=new Intent(Applic.getContext(),NumAlarm.class);
+      //closeintent.setAction(stopalarmAction);
+      //PendingIntent closepending=PendingIntent.getBroadcast(Applic.getContext(), stopalarmrequest, closeintent,PendingIntent.FLAG_UPDATE_CURRENT|penmutable);
+     // remoteViews.setOnClickPendingIntent(R.id.stopalarm, closepending);
       }
    if(glucose==null||glucose.value==null) {
       return remoteViews;

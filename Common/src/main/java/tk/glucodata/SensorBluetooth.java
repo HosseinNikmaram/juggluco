@@ -54,8 +54,6 @@ import static android.bluetooth.BluetoothProfile.GATT;
 import static tk.glucodata.Applic.isWearable;
 import static tk.glucodata.BuildConfig.libreVersion;
 import static tk.glucodata.Log.doLog;
-//import static tk.glucodata.Log.showScanSettings;
-//import static tk.glucodata.Log.showScanfilters;
 
 import tk.glucodata.headless.HeadlessHooks;
 import tk.glucodata.headless.DeviceConnectionListener;
@@ -81,7 +79,7 @@ public static void startscan() {
     private static final int scantimeout = 390000;
     private static final int  scaninterval=60000;
 
-//   public Applic Applic.app;
+//   public Applic Applic.getContext();
  static   private BluetoothAdapter mBluetoothAdapter;
     private BroadcastReceiver mBluetoothAdapterReceiver =null; ;
 static    private BluetoothManager mBluetoothManager=null;
@@ -455,7 +453,7 @@ final private Runnable scanRunnable = new Runnable() {
                }
        if(scanner.start()) {
          mScanning = true;
-          Applic.app.getHandler().postDelayed(sensorBluetooth.mScanTimeoutRunnable, scantimeout);
+          Applic.getHandler().postDelayed(sensorBluetooth.mScanTimeoutRunnable, scantimeout);
           }
       else {
                   {if(doLog) {Log.d(LOG_ID,"Start scan failed");};};
@@ -478,9 +476,9 @@ private     boolean startScan(long delayMillis) {
         }
          scanstart=true;    
     if(delayMillis>0)
-        Applic.app.getHandler().postDelayed(scanRunnable , delayMillis);
+        new Applic().postDelayed(scanRunnable , delayMillis);
     else
-        Applic.app.getHandler().post(scanRunnable);
+        Applic.getHandler().post(scanRunnable);
     return false;
     }
 long stopscantime=0L;
@@ -488,8 +486,8 @@ private static final int startincreasedwait=300000;
 private int increasedwait=startincreasedwait;
 private void stopScan(boolean retry) {
         {if(doLog) {Log.d(LOG_ID,"Stop scanning "+(retry?"retry":"don't retry"));};};
-        Applic.app.getHandler().removeCallbacks(this.scanRunnable);
-        Applic.app.getHandler().removeCallbacks(this.mScanTimeoutRunnable);
+        Applic.getHandler().removeCallbacks(this.scanRunnable);
+        Applic.getHandler().removeCallbacks(this.mScanTimeoutRunnable);
         if (this.mScanning) {
             stopscantime=System.currentTimeMillis();
             this.mScanning = false;
@@ -841,7 +839,7 @@ private boolean resetDevicer(String str,long[] ptrptr) {
 static public boolean resetDevice(String str) {
     long[] ptrptr={0L};
     var ret=resetDevicePtr(str,ptrptr);
-    SuperGattCallback.glucosealarms.setLossAlarm();
+   // SuperGattCallback.glucosealarms.setLossAlarm();
     return ret;
     }
 static private boolean resetDevicePtr(String str,long[] ptrptr) {
@@ -871,7 +869,7 @@ public static void start(boolean usebluetooth) {
     final boolean hasSensors= sensors!=null&&sensors.length>0; 
     if(hasSensors) {
             Notify.shownovalue();
-            SuperGattCallback.glucosealarms.setLossAlarm();
+          //  SuperGattCallback.glucosealarms.setLossAlarm();
             }
     if(doLog) {Log.v(LOG_ID,"SensorBluetooth.start("+usebluetooth+")");};
     if(usebluetooth) {
@@ -893,7 +891,7 @@ private void removeBluetoothStateReceiver() {
     mBluetoothAdapterReceiver=null;
     if(rec!=null) {
         try {
-            Applic.app.unregisterReceiver(rec);
+            Applic.getContext().unregisterReceiver(rec);
             }
         catch(Throwable th) {
             Log.stack(LOG_ID, "removeBluetoothStateReceiver",th);
@@ -921,7 +919,7 @@ private void addBluetoothStateReceiver() {
                 {if(doLog) {Log.v(LOG_ID,"BLUETOOTH switched ON");};};
                 notifyBluetoothStateListeners(true);
                 if(!isWearable) {
-                    Applic.app.numdata.startall();
+                    new Applic().numdata.startall();
                     }
 //                if(wasScanning) { SensorBluetooth.this.startScan(250L); }
                 SensorBluetooth.this.connectToActiveDevice(500);
@@ -929,7 +927,7 @@ private void addBluetoothStateReceiver() {
             }
         }
         };
-        Applic.app.registerReceiver( mBluetoothAdapterReceiver, new IntentFilter("android.bluetooth.adapter.action.STATE_CHANGED"));
+        Applic.getContext().registerReceiver( mBluetoothAdapterReceiver, new IntentFilter("android.bluetooth.adapter.action.STATE_CHANGED"));
         }
     }
 
@@ -944,7 +942,7 @@ private void addPairingRequestReceiver() {
                 {if(doLog) {Log.i(LOG_ID,"onReceive ACTION_PAIRING_REQUEST");};};
             }
         };
-         Applic.app.registerReceiver(pairingRequestReceiver, new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST));
+         Applic.getContext().registerReceiver(pairingRequestReceiver, new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST));
          } 
     catch (Throwable e) {
         Log.stack(LOG_ID, "registerReceiver ACTION_PAIRING_REQUEST", e);
@@ -954,7 +952,7 @@ private void removePairingRequestReceiver() {
     var rec=pairingRequestReceiver;
     if(rec!=null) {
         try {
-            Applic.app.unregisterReceiver(rec);
+            Applic.getContext().unregisterReceiver(rec);
              } 
         catch (Throwable e) {
             Log.stack(LOG_ID, "unregisterReceiver ACTION_PAIRING_REQUEST", e);
@@ -1037,7 +1035,7 @@ private void addBondStateReceiver() {
         {if(doLog) {Log.i(LOG_ID,"Bond Broadcast: no sensor matches address "+address);};};
         }
     };
-    Applic.app.registerReceiver(bondStateReceiver, new IntentFilter(ACTION_BOND_STATE_CHANGED));
+    Applic.getContext().registerReceiver(bondStateReceiver, new IntentFilter(ACTION_BOND_STATE_CHANGED));
     }
 
 private void removeBondStateReceiver() {
@@ -1045,7 +1043,7 @@ private void removeBondStateReceiver() {
     bondStateReceiver=null;
     if(rec!=null) {
         try {
-            Applic.app.unregisterReceiver(rec);
+            Applic.getContext().unregisterReceiver(rec);
             }
         catch(Throwable th) {
             Log.stack(LOG_ID, "removeBondStateReceiver",th);
@@ -1060,8 +1058,8 @@ private boolean initializeBluetooth() {
                 Log.e(LOG_ID,"No Blueotooth permission");
                 return false;
                 } 
-//        mBluetoothManager = (BluetoothManager) Applic.app.getSystemService("bluetooth");
-        mBluetoothManager = (BluetoothManager) Applic.app.getSystemService(Context.BLUETOOTH_SERVICE);
+//        mBluetoothManager = (BluetoothManager) Applic.getContext().getSystemService("bluetooth");
+        mBluetoothManager = (BluetoothManager) Applic.getContext().getSystemService(Context.BLUETOOTH_SERVICE);
         if (mBluetoothManager  == null) {
             {if(doLog) {Log.i(LOG_ID, "getSystemService(\"BLUETOOTH_SERVICE\")==null");};};
         } else {

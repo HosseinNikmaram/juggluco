@@ -397,7 +397,7 @@ public   View addnumberview(MainActivity context,final int bron,final long time,
             if(smallScreen)
                 help.hidekeyboard(act);
                 
-            ((Applic) act.getApplication()). redraw();
+           // ((Applic) act.getApplication()). redraw();
               act.poponback();
 
              if(Menus.on) {
@@ -546,12 +546,12 @@ void deletedialog(View v,int[] mealptr) {
     long time= Natives.hittime(currentnum)*1000L;
     float value=Natives.hitvalue(currentnum);
     int type=Natives.hittype(currentnum);
-    ArrayList<String> labels= ((Applic)context.getApplication()).getlabels();
-    String mess= DateFormat.getDateTimeInstance(DateFormat.DEFAULT,DateFormat.DEFAULT).format(time)+" "+ labels.get(type)+" "+value;
+    //ArrayList<String> labels= ((Applic)context.getApplication()).getlabels();
+  //  String mess= DateFormat.getDateTimeInstance(DateFormat.DEFAULT,DateFormat.DEFAULT).format(time)+" "+ labels.get(type)+" "+value;
        // AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.mydialogstyle);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.deletequestion).
-     setMessage(mess).
+  //   setMessage(mess).
            setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
             if(mealptr[0]!=0)
@@ -564,13 +564,13 @@ void deletedialog(View v,int[] mealptr) {
                     int pos=Natives.hitremove(currentnum);
                     int last=numio.getlastnum(index);
                     if(!isWearable) {
-                        AllData alldata=((Applic) ((Activity) v.getContext()).getApplication()).numdata;
-                        alldata.deletelast(index,last,waslast);
-                        if(pos<last)
-                             alldata.changedback(index);
+                      //  AllData alldata=((Applic) ((Activity) v.getContext()).getApplication()).numdata;
+                      //  alldata.deletelast(index,last,waslast);
+                       // if(pos<last)
+                       //      alldata.changedback(index);
                              }
                         Natives.freehitptr(currentnum);
-                      ((Applic) ((Activity) v.getContext()).getApplication()). redraw();
+                  //    ((Applic) ((Activity) v.getContext()).getApplication()). redraw();
                       }
                 currentnum=0L;
                 }
@@ -662,8 +662,8 @@ private boolean saveamount(Activity activity,TextView timeview,TextView value,in
         Natives.hitchange(currentnum,dat/1000L,val,labelsel,mealptr);
         int index=Natives.gethitindex(currentnum);
         if(!isWearable) {
-            tk.glucodata.nums.AllData  alldata=Applic.app.numdata;
-            alldata.changedback(index);
+          //  tk.glucodata.nums.AllData  alldata=Applic.getContext().numdata;
+          //  alldata.changedback(index);
             }
         Natives.freehitptr(currentnum);
         }
@@ -683,8 +683,8 @@ private boolean saveamount(Activity activity,TextView timeview,TextView value,in
         final int index=1;
         Natives.saveNum(numio.numptrs[index],dat/1000,val,labelsel,mealptr);
         if(!isWearable) {
-           tk.glucodata.nums.AllData  alldata=Applic.app.numdata;
-            alldata.changedback(index);
+         //  tk.glucodata.nums.AllData  alldata=Applic.getContext().numdata;
+          //  alldata.changedback(index);
             }
         }
 
@@ -766,7 +766,7 @@ public Layout getdateviewal(MainActivity activity, long date, Dater erdate) {
         laypar= WRAP_CONTENT;
         }
 
-    datepicker.setBackgroundColor( Applic.app.backgroundcolor);
+    //datepicker.setBackgroundColor( Applic.getContext().backgroundcolor);
        activity.addContentView(datepicker, new ViewGroup.LayoutParams(laypar,laypar));
     }
     else {

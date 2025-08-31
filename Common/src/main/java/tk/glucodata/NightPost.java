@@ -78,7 +78,7 @@ public class NightPost  {
 
 private static void patch() {
       try {
-          ProviderInstaller.installIfNeeded(Applic.app);
+          ProviderInstaller.installIfNeeded(Applic.getContext());
       }
     catch(Throwable th) {
         uploadstatus= "ProviderInstaller.installIfNeeded: \n"+stackline(th);

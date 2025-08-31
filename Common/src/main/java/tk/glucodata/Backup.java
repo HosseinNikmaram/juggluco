@@ -857,12 +857,12 @@ static public String changehostError(MainActivity act,int pos) {
       act.showui=true;
       if(!isWearable&&!Natives.getsystemUI()) {
          act.showSystemUI();
-         Applic.app.getHandler().postDelayed( ()->{
-         realmkbackupview(act,true); },1);
+        // Applic.getContext().getHandler().postDelayed( ()->{
+        // realmkbackupview(act,true); },1);
          }
        else
          realmkbackupview(act,true);
-   //    Applic.app.getHandler().postDelayed( ()-> realmkbackupview(act),1); //for what was it needed?
+   //    Applic.getContext().getHandler().postDelayed( ()-> realmkbackupview(act),1); //for what was it needed?
       }
    public  void realmkbackupview(MainActivity act,boolean lightback) {
    configchanged=false;
@@ -1016,7 +1016,7 @@ static public String changehostError(MainActivity act,int pos) {
          Applic.updateservice(act,Natives.getusebluetooth());
          act.showui=false;
          if(!isWearable)
-            Applic.app.getHandler().postDelayed(act::hideSystemUI,1);
+       //     Applic.getContext().getHandler().postDelayed(act::hideSystemUI,1);
          if(Menus.on)
             Menus.show(act);
 

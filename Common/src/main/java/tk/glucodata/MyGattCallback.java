@@ -31,6 +31,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.os.Build;
+import android.os.Handler;
 import android.os.PowerManager;
 
 import java.util.UUID;
@@ -46,7 +47,7 @@ import static android.bluetooth.BluetoothGatt.CONNECTION_PRIORITY_HIGH;
 import static android.bluetooth.BluetoothGatt.GATT_SUCCESS;
 import static android.content.Context.POWER_SERVICE;
 import static java.util.Objects.nonNull;
-import static tk.glucodata.Applic.app;
+import static tk.glucodata.Applic.getContext;
 import static tk.glucodata.Applic.isWearable;
 import static tk.glucodata.Gen2.errorP1;
 import static tk.glucodata.Gen2.v1check;
@@ -384,9 +385,9 @@ private   boolean failedbefore=false;
 
 
 
-private static PowerManager.WakeLock getwakelock() {
+/*private static PowerManager.WakeLock getwakelock() {
 		return ((PowerManager) app.getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::processTooth");
-		}
+		}*/
 	/*
 private static PowerManager.WakeLock wakeLock=null; 
 private static PowerManager.WakeLock getwakelock() {
@@ -421,9 +422,9 @@ private	void oldonCharacteristicChanged(byte[] value) {
 			break;
 			case 8: {
 				if (pack1 && pack2) {
-					final var wakeLock=Natives.hasRootcheck()?getwakelock():null;
-					if(wakeLock!=null)
-						wakeLock.acquire();
+					//final var wakeLock=Natives.hasRootcheck()?getwakelock():null;
+				/*	if(wakeLock!=null)
+						wakeLock.acquire();*/
 
 					pack1 = false;
 					pack2 = false;
@@ -436,8 +437,8 @@ private	void oldonCharacteristicChanged(byte[] value) {
 							handleGlucoseResult(res,timmsec);
 							}
 						}
-					if(wakeLock!=null)
-						wakeLock.release();
+		//		if(wakeLock!=null)
+				//		wakeLock.release();
 				}
 			}
 			;
@@ -577,7 +578,7 @@ private	void oldonCharacteristicChanged(byte[] value) {
 			    wrotepass[1] = System.currentTimeMillis();
 			    if(BLELoginposted < 5) {
                     ++BLELoginposted;
-                    Applic.app.getHandler().postDelayed(mBLELoginHandler, 100);
+                    Applic.getHandler().postDelayed(mBLELoginHandler, 100);
                     return;
                     }
 			  //  var gatt = mBluetoothGatt;
@@ -652,7 +653,7 @@ private final boolean enableNotification(BluetoothGattCharacteristic bluetoothGa
                     wrotepass[1] = System.currentTimeMillis();
                     if (BLELoginposted < 5) {
                         ++BLELoginposted;
-                        Applic.app.getHandler().postDelayed(mBLELoginHandler, 100);
+                        Applic.getHandler().postDelayed(mBLELoginHandler, 100);
                         return;
                     }
                     conphase = 0;
@@ -722,7 +723,7 @@ private Runnable		mBLELoginHandler=null;
 private void endBLEHandler() {
         BLELoginposted = 0;
         if (mBLELoginHandler != null) {
-            Applic.app.getHandler().removeCallbacks(mBLELoginHandler);
+            Applic.getHandler().removeCallbacks(mBLELoginHandler);
             mBLELoginHandler = null;
         }
     }

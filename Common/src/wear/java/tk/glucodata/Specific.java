@@ -109,7 +109,7 @@ static public class TextViewAdapter extends WearableRecyclerView.Adapter<TextVie
 	@Override
 	public void onBindViewHolder(final TextViewHolder holder, int pos) {
 		TextView text=(TextView)holder.itemView;
-        text.setText(fromHtml(Applic.app.getString(R.string.staticnum),TO_HTML_PARAGRAPH_LINES_CONSECUTIVE));
+        text.setText(fromHtml(Applic.getContext().getString(R.string.staticnum),TO_HTML_PARAGRAPH_LINES_CONSECUTIVE));
 
 		}
         @Override
@@ -130,7 +130,7 @@ static void   blockedNum(MainActivity  act) {
 		}    static boolean useclose=true;
 static void   blockedNum(MainActivity  act) {
       var text=new TextView(act);
-        text.setText(fromHtml(Applic.app.getString(R.string.staticnum),TO_HTML_PARAGRAPH_LINES_CONSECUTIVE));
+        text.setText(fromHtml(Applic.getContext().getString(R.string.staticnum),TO_HTML_PARAGRAPH_LINES_CONSECUTIVE));
         text.setMovementMethod(new ScrollingMovementMethod());
        View view=null;
        if(useclose) {
@@ -153,7 +153,7 @@ static void   blockedNum(MainActivity  act) {
       */
 /*static void   blockedNum(MainActivity  act) {
     var width=GlucoseCurve.getwidth();
-    help.basehelp(Applic.app.getString(R.string.staticnum),act,xzy->{ }, (l,w,h)-> {
+    help.basehelp(Applic.getContext().getString(R.string.staticnum),act,xzy->{ }, (l,w,h)-> {
          var height=GlucoseCurve.getheight();
 //			if(height>h) l.setY((height-h)/2);
          if(width>w)

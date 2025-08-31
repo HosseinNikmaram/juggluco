@@ -43,6 +43,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static tk.glucodata.Applic.backgroundcolor;
+import static tk.glucodata.Applic.getContext;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.help.sethelpbutton;
 
@@ -134,9 +135,8 @@ static	boolean	reinstall=false;
 		    Uri uri = intent.getData();
 		    if (uri == null)//Nodig?
 			return;
-		Applic app= (Applic) context.getApplication();
 		try {
-		     FileInputStream inpu =(FileInputStream)app.getContentResolver().openInputStream(uri);
+		     FileInputStream inpu =(FileInputStream)getContext().getContentResolver().openInputStream(uri);
 		  if(!getlibrary.unzipper(inpu, libfile, cali)) {
 //			mess="Can't extract "+libfile+", try a different apk";
 			   mess=String.format(context.getString(R.string.cantextract),libfile);

@@ -57,7 +57,7 @@ static void broadcastglucose(String SerialNumber, int mgdl, float gl, float rate
 	if(names==null)
 		return;
 	{if(doLog) {Log.i(LOG_ID,"broadcastglucose "+gl+" rate="+rate);};};
-        final Context context=Applic.app;
+        final Context context=Applic.getContext();
         Intent intent = new Intent(ACTION);
 	intent.putExtras(mkGlucosebundle(SerialNumber, mgdl, gl, rate, alarm,timmsec));
 	intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
@@ -72,7 +72,7 @@ static void broadcastglucose(String SerialNumber, int mgdl, float gl, float rate
 	/*
 static void broadcastglucose(String SerialNumber, int mgdl, float gl, float rate, int alarm, long timmsec) {
 	{if(doLog) {Log.i(LOG_ID,"broadcastglucose "+gl+" rate="+rate);};};
-        final Context context=Applic.app;
+        final Context context=Applic.getContext();
         Intent intent = new Intent(ACTION);
 	intent.putExtras(mkGlucosebundle(SerialNumber, mgdl, gl, rate, alarm,timmsec));
 	intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);

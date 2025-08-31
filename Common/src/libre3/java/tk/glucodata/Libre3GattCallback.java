@@ -42,7 +42,7 @@ import static android.bluetooth.BluetoothProfile.STATE_DISCONNECTED;
 import static android.content.Context.POWER_SERVICE;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
-import static tk.glucodata.Applic.app;
+import static tk.glucodata.Applic.getContext;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Natives.endcrypt;
 import static tk.glucodata.Natives.initcrypt;
@@ -433,7 +433,7 @@ private  void logcharacter(UUID uuid,String str,byte[] value) {
             showbytes(LOG_ID+ " "+SerialNumber +" onCharacteristicChanged  "+uuid.toString()+" "+str, value);
 	    }
 private void onCharacteristicChanged33(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] value) {
-	   var wakelock=	Applic.usewakelock?(((PowerManager) app.getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Libre3")):null;
+	   var wakelock=	Applic.usewakelock?(((PowerManager) getContext().getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Libre3")):null;
 	   if(wakelock!=null)
 		   wakelock.acquire();
             UUID uuid = characteristic.getUuid();

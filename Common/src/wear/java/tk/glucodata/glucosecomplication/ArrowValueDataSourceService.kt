@@ -145,7 +145,7 @@ fun getview(type: ComplicationType):GlucoseValue {
 
     companion object {
         private const val LOG_ID = "ArrowValueDataSourceService"
-   private val complicationDataSourceUpdateRequester = ComplicationDataSourceUpdateRequester.create( context=tk.glucodata.Applic.app, complicationDataSourceComponent = ComponentName(tk.glucodata.Applic.app,
+   private val complicationDataSourceUpdateRequester = ComplicationDataSourceUpdateRequester.create( context=tk.glucodata.Applic.getContext(), complicationDataSourceComponent = ComponentName(tk.glucodata.Applic.getContext(),
        ArrowValueDataSourceService::class.java
    ))
 

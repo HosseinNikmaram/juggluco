@@ -95,10 +95,10 @@ static void sethtml(TextView view,int res) {
 	}
 static  Locale getReslocale() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            return Applic.app.getResources().getConfiguration().getLocales().get(0);
+            return Applic.getContext().getResources().getConfiguration().getLocales().get(0);
         } else{
             //noinspection deprecation
-            return Applic.app.getResources().getConfiguration().locale;
+            return Applic.getContext().getResources().getConfiguration().locale;
         }
     }
 static public Locale getlocale() {

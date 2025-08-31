@@ -444,7 +444,7 @@ static boolean postmeasurements(boolean libre3,byte[] measurementdata) {
  }
  /*TODO: where:
         try {
-           ProviderInstaller.installIfNeeded(Applic.app);
+           ProviderInstaller.installIfNeeded(Applic.getContext());
         }
       catch(Throwable th) {
          librestatus= "ProviderInstaller.installIfNeeded: \n"+stackline(th);
@@ -500,7 +500,7 @@ public static boolean libreconfig(boolean libre3,boolean restart){
       librestatus=datestr(System.currentTimeMillis())+" libreconfig";
    {if(doLog) {Log.i(LOG_ID,librestatus);};};
      try {
-        ProviderInstaller.installIfNeeded(Applic.app);
+        ProviderInstaller.installIfNeeded(Applic.getContext());
      }
    catch(Throwable th) {
       librestatus= "ProviderInstaller.installIfNeeded: \n"+stackline(th);

@@ -114,7 +114,6 @@ static View[] reopen=new View[5];
 static int reopennr=0;
     //    SearchLayout search;
     Layout search;
-    public Dialogs dialogs;
     private static final String LOG_ID = "GlucoseCurve";
 static   public float smallfontsize;
     Calendar cal = Calendar.getInstance();
@@ -329,7 +328,7 @@ void getnumcontrol(MainActivity activity) {
 static public DisplayMetrics metrics;
 static public float getDensity() {
     if(metrics==null||metrics.density<=0.0f) {
-        metrics= Applic.app.getResources().getDisplayMetrics();
+        metrics= Applic.getContext().getResources().getDisplayMetrics();
         }
     return metrics.density;
     }
@@ -344,7 +343,6 @@ public GlucoseCurve(MainActivity context) {
     setRenderer(render);
     setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     metrics= getResources().getDisplayMetrics();
-    dialogs=new Dialogs(metrics.density);
     }
     public static int dpToPx(float dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
@@ -505,7 +503,6 @@ void startlibrelink(String lang) {
                             break;
              case 1: {
             switch(item&0xF) {
-                                case 0: dialogs.showexport(( MainActivity)getContext(),getWidth(),getHeight(),null); break;
 
 
                    case 1: (new Backup()).mkbackupview(( MainActivity)getContext());break;
@@ -1195,18 +1192,11 @@ if(!smallScreen) {
 public void onResume() {
     {if(doLog) {Log.i(LOG_ID,"onResume()");};};
     super.onResume();
-    Applic app = Applic.app;
-
-    app.setcurve(this);
-    app.setmintime();
     }
 
 @Override
 public void onPause() {
     {if(doLog) {Log.i(LOG_ID,"onPause()");};};
-     Applic app = Applic.app;
-     app.cancelmintime();
-     app.setcurve(null);
      super.onPause();
     }
 @Override

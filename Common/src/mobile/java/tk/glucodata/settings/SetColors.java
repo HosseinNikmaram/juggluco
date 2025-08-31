@@ -68,7 +68,7 @@ static void show(MainActivity act) {
     AmbilWarnaDialog dialog = new AmbilWarnaDialog(act, initialColor,c-> {
         {if(doLog) {Log.i(LOG_ID,String.format(usedlocale,"col=%x",c));};};
             Natives.setlastcolor(c);
-            tk.glucodata.Applic.app.redraw();
+          //  tk.glucodata.Applic.getContext().redraw();
         }, v-> {
     int afx,afy;
     if(Natives.getsystemUI()) {

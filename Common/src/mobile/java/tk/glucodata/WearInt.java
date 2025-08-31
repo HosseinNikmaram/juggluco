@@ -47,7 +47,7 @@ static final Map<String, Settings> mapsettings=new HashMap<>();
 /*
 private static int getBatteryLevel() { //From xDrip
 
-        final Intent batteryIntent = Applic.app.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        final Intent batteryIntent = Applic.getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         try {
             int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
@@ -77,12 +77,12 @@ static void alarm(String value ) {
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
     for(final var el:mapsettings.keySet()) {
         intent.setPackage(el);
-        Applic.app.sendBroadcast(intent);
+        Applic.getContext().sendBroadcast(intent);
     }
     /*
     mapsettings.forEach((pack, settings) -> {
     	intent.setPackage(pack);
-    	Applic.app.sendBroadcast(intent);
+    	Applic.getContext().sendBroadcast(intent);
     	}); */
 
     }
@@ -99,12 +99,12 @@ static void missingalarm(long timmsec)  {
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
     for(final var el:mapsettings.keySet()) {
         intent.setPackage(el);
-        Applic.app.sendBroadcast(intent);
+        Applic.getContext().sendBroadcast(intent);
     }
     /*
     mapsettings.forEach((pack, settings) -> {
     	intent.setPackage(pack);
-    	Applic.app.sendBroadcast(intent);
+    	Applic.getContext().sendBroadcast(intent);
     	}); */
 
         }
@@ -192,7 +192,7 @@ static void sendglucose(int mgdl,float rate, int alarm, long timmsec)  {
     	var intent=mksendglucoseintent(el.getValue(),mgdl,rate,alarm, timmsec);
     	intent.putExtra( "FUNCTION","update_bg");
     	intent.setPackage(el.getKey());
-    	Applic.app.sendBroadcast(intent);
+    	Applic.getContext().sendBroadcast(intent);
     	};
     }
 }

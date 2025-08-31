@@ -42,7 +42,7 @@ private static final String EXTRA_SENSOR_STARTED_AT = "com.eveningoutpost.dexdri
 private static final String LOG_ID="SendLikexDrip";
 /*
 private static int getBatteryLevel() { 
-        final Intent batteryIntent = Applic.app.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        final Intent batteryIntent = Applic.getContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         try {
             int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
@@ -90,7 +90,7 @@ static void broadcastglucose(double glucose,float rate,long timmsec,long sensorS
         return;
     {
     if(doLog) {Log.i(LOG_ID,"broadcastglucose "+glucose);};};
-    final Context context=Applic.app;
+    final Context context=Applic.getContext();
     Intent intent = new Intent(ACTION);
     intent.putExtras(mkGlucosebundle(glucose,rate,timmsec,sensorStartmsec,sensorgen));
     intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);

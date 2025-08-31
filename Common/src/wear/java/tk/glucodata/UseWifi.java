@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 class UseWifi {
 private static UseWifi thisone=null;
 	final static private String LOG_ID="UseWifi";
-private	final ConnectivityManager connectivityManager = (ConnectivityManager) Applic.app.getSystemService(Context.CONNECTIVITY_SERVICE);
+private	final ConnectivityManager connectivityManager = (ConnectivityManager) Applic.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 private ScheduledFuture<?> wifinotused=null;
 private void disusewifi() {
 	{if(doLog) {Log.i(LOG_ID,"disusewifi");};};

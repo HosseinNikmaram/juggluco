@@ -29,7 +29,7 @@ import static android.bluetooth.BluetoothGatt.GATT_SUCCESS;
 import static android.content.Context.ALARM_SERVICE;
 import static android.content.Context.POWER_SERVICE;
 import static java.util.Objects.nonNull;
-import static tk.glucodata.Applic.app;
+import static tk.glucodata.Applic.getContext;
 import static tk.glucodata.Applic.isWearable;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.MyGattCallback.showCharacter;
@@ -156,7 +156,7 @@ private void docmd0(BluetoothGatt bluetoothGatt) {
 //private ArrayList<String> triedsensors=new ArrayList<>();
 
 private static PowerManager.WakeLock getwakelock() {
-      return ((PowerManager) Applic.app.getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Dexcom");
+      return ((PowerManager) Applic.getContext().getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Dexcom");
       }
 private PowerManager.WakeLock wakelock=null;
 
@@ -731,7 +731,7 @@ private    void getdata(byte[] value) {
                 if(savename) saveDeviceName();
             };break;
            case 0x59:{
-              Applic.app.redraw();
+              //Applic.getContext().redraw();
               Natives.dexEndBackfill(dataptr);
               break;
               }
@@ -866,15 +866,7 @@ private    void getdata(byte[] value) {
                         }
                      } */
                     try {
-                        if(Build.VERSION.SDK_INT >=26) {
-                                var uristr = "android.resource://" + app.getPackageName() + "/" + R.raw.bonded;
-                                Uri uri = Uri.parse(uristr);
-                                Ringtone ring = RingtoneManager.getRingtone(app, uri);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                    ring.setLooping(false);
-                                }
-                                ring.play();
-                                }
+
                        // Applic.scheduler.schedule(ring::stop, 5, TimeUnit.SECONDS);
                        disablenotification(mBluetoothGatt,charact[1]); charact[1]=null;
                        disablenotification(mBluetoothGatt,charact[3]); charact[3]=null;
@@ -1001,7 +993,7 @@ private PendingIntent onalarm=null;
 static private int alarmrequest=14;
 private void setalarm(long alarmtime) {
     try {
-            Context context=Applic.app;
+            Context context=Applic.getContext();
             if(onalarm==null)
                onalarm= mkintents(context,SerialNumber,alarmrequest++);
             {if(doLog) {Log.i(LOG_ID,"setalarm "+alarmtime);};};
@@ -1018,7 +1010,7 @@ private void setalarm(long alarmtime) {
 private void cancelalarm() {
     if(onalarm!=null) {
         {if(doLog) {Log.i(LOG_ID,"cancelalarm");};};
-        AlarmManager manager= (AlarmManager) Applic.app.getSystemService(ALARM_SERVICE);
+        AlarmManager manager= (AlarmManager) Applic.getContext().getSystemService(ALARM_SERVICE);
         manager.cancel(onalarm);
         onalarm=null;//TODO: ?????
         }

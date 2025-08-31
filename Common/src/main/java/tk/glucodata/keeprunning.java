@@ -38,7 +38,7 @@ static keeprunning theservice=null;
 static final String LOG_ID="keeprunning";
 /*
 static void turnonwakelock() {
-   PowerManager powerManager = (PowerManager) Applic.app.getSystemService(POWER_SERVICE);
+   PowerManager powerManager = (PowerManager) Applic.getContext().getSystemService(POWER_SERVICE);
    wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::keeprunning");
    wakeLock.acquire();
    } 
@@ -69,8 +69,8 @@ static PowerManager.WakeLock wakeLock =null;
                 return Service.START_STICKY;//NODIG?
                 }
        started=true;
-       Applic app=(Applic) getApplicationContext();
-       app.initproc();
+       //Applic app=(Applic) getApplicationContext();
+       //app.initproc();
        if(Natives.getfloatglucose()&&!Natives.gethidefloatinJuggluco()) 
                 Floating.makefloat();
         try {

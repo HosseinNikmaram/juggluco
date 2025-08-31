@@ -440,7 +440,7 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                             serialNumber = "";
                         }
                         
-                        if(newdevice!=null&& Arrays.equals(newdevice,uid)&& Applic.app.canusebluetooth() ) {
+                        if(newdevice!=null&& Arrays.equals(newdevice,uid)&& Applic.canusebluetooth() ) {
                             if(value!=0|| (ret&0xFF)==5||(ret&0xFF)==7) {
                                 if(SensorBluetooth.resetDevice(serialNumber))
                                     askpermission=true;

@@ -44,7 +44,7 @@ static public void show(MainActivity context) {
 	
 	notify.setOnCheckedChangeListener(
 		(buttonView,  isChecked) ->  {
-			Applic.app.setnotify(isChecked);
+		//	Applic.getContext().setnotify(isChecked);
 			});
 
        var separate=getcheckbox(context,context.getString(R.string.separate), Notify.alertseparate);
@@ -108,7 +108,7 @@ static public void show(MainActivity context) {
 	kerfstok.setOnCheckedChangeListener(
 			 (buttonView,  isChecked) -> {
 			 if(isChecked&&!usegarmin)
-				Applic.app.numdata.reinit(context);
+			//	Applic.getContext().numdata.reinit(context);
 			status.setVisibility(isChecked?VISIBLE:INVISIBLE);
 			 });
 	var useWearos=Applic.useWearos();
@@ -123,10 +123,10 @@ static public void show(MainActivity context) {
 	wearossettings.setVisibility(useWearos?VISIBLE:INVISIBLE);
 	wearbox.setOnCheckedChangeListener(
 			 (buttonView,  isChecked) -> {
-			Wearos.setuseWearos(isChecked);
+	//Wearos.setuseWearos(isChecked);
 			 if(isChecked) {
 			 	if(!useWearos) {
-					initwearos(Applic.app);
+					initwearos(Applic.getContext());
 					}
 				else  {
 					var sender=tk.glucodata.MessageSender.getMessageSender();
@@ -159,10 +159,10 @@ static public void show(MainActivity context) {
 	layout.setBackgroundColor( Applic.backgroundcolor);
 	context.addContentView(layout, new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
 	status.setOnClickListener(v->{
-			new GarminStatus(context,Applic.app.numdata,layout);
+		//	new GarminStatus(context,Applic.getContext().numdata,layout);
 			});
 	wearossettings.setOnClickListener(v->{
-			Wearos.show(context,layout);
+	//		Wearos.show(context,layout);
 			});
 	Ok.setOnClickListener(
 		v -> {
@@ -170,7 +170,7 @@ static public void show(MainActivity context) {
 		   	Natives.setusegarmin(!usegarmin);
 			if(usegarmin) {
 				Natives.sethasgarmin(false);
-				Applic.app.numdata.stop();
+			//	Applic.getContext().numdata.stop();
 				}
 		   	}
 		context.poponback();

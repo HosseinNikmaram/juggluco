@@ -25,7 +25,6 @@ import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.DEFAULT_BOLD;
 import static android.view.View.INVISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static tk.glucodata.Dialogs.fdatename;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Natives.novopentype;
 import static tk.glucodata.Natives.savenovopen;
@@ -128,8 +127,8 @@ static void setInsulin(MainActivity context, OpContext op) {
 		type=(int)(typetime>>32);
 		long sectime=(typetime&0xFFFFFFFFL);
 		lasttime=sectime*1000L;
-		final String datestr=fdatename.format(lasttime)      ;
-		{if(doLog) {Log.i(LOG_ID,"type= "+type+" Last time: "+String.format("typetime=%X seconds=%X %d",typetime,sectime,sectime)+ " "+datestr);};};
+		//final String datestr=fdatename.format(lasttime)      ;
+		//{if(doLog) {Log.i(LOG_ID,"type= "+type+" Last time: "+String.format("typetime=%X seconds=%X %d",typetime,sectime,sectime)+ " "+datestr);};};
 		}
 	else {
 		type=-1;

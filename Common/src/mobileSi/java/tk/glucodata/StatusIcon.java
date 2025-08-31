@@ -61,7 +61,7 @@ StatusIcon() {
 //      Typeface normaltype=Typeface.create("Arial",Typeface.NORMAL);
     Typeface basistype=
     (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)?
- Applic.app.getResources().getFont(R.font.opensans): SANS_SERIF;
+ Applic.getContext().getResources().getFont(R.font.opensans): SANS_SERIF;
 //      ontFace=Typeface.createFromAsset(getAssets(),"font/comic.TTF"); Typeface face = Typeface.create(fontFace, Typeface.BOLD);
 Typeface     normaltype;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

@@ -26,7 +26,6 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCA
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 import static android.content.pm.PackageManager.DONT_KILL_APP;
-import static android.graphics.Color.BLACK;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -41,7 +40,6 @@ import static tk.glucodata.Backup.getnumedit;
 import static tk.glucodata.Layout.getMargins;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Natives.getInvertColors;
-import static tk.glucodata.Natives.getRTL;
 import static tk.glucodata.Natives.getScheduleProfile;
 import static tk.glucodata.Natives.getshowhistories;
 import static tk.glucodata.Natives.getshownumbers;
@@ -56,19 +54,16 @@ import static tk.glucodata.help.help;
 import static tk.glucodata.util.getbutton;
 import static tk.glucodata.util.getcheckbox;
 import static tk.glucodata.util.getlabel;
-import static tk.glucodata.util.getlocale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
-import android.text.Html;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -80,10 +75,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -92,7 +85,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -115,10 +107,8 @@ import tk.glucodata.Layout;
 import tk.glucodata.Libreview;
 import tk.glucodata.Log;
 import tk.glucodata.MainActivity;
-import tk.glucodata.Menus;
 import tk.glucodata.Natives;
 import tk.glucodata.Notify;
-import tk.glucodata.NumAlarm;
 import tk.glucodata.R;
 import tk.glucodata.Specific;
 import tk.glucodata.SuperGattCallback;
@@ -200,7 +190,7 @@ private void makesettingsin(MainActivity act) {
         });
 }
 private void makesettings(MainActivity act) {
-    Applic.app.getHandler().postDelayed( ()->{ makesettingsin(act);},1);
+    Applic.getHandler().postDelayed( ()->{ makesettingsin(act);},1);
         
 }
 
@@ -245,7 +235,7 @@ void finish() {
 //   activity.hideSystemUI();
 
     if(!Natives.getsystemUI()) {
-        Applic.app.getHandler().postDelayed( ()->{
+        Applic.getHandler().postDelayed( ()->{
                     activity.hideSystemUI();
                     },1);
         }
@@ -540,7 +530,7 @@ static private void changeProfile(MainActivity act,int wasindex, ProfileSchedule
         delete.setOnClickListener(v->{
             removeScheduleProfile(index);
             adapt.notifyItemRemoved(index);
-    	    NumAlarm.handlealarm(Applic.app);
+    	//    NumAlarm.handlealarm(Applic.getContext());
             MainActivity.doonback();
             });
          }
@@ -559,7 +549,7 @@ static private void changeProfile(MainActivity act,int wasindex, ProfileSchedule
                 }
             else
                 adapt.notifyDataSetChanged();
-    	    NumAlarm.handlealarm(Applic.app);
+    	//    NumAlarm.handlealarm(Applic.getContext());
             return;
             }
         else {
@@ -801,7 +791,7 @@ new View[]{isvalue},new View[]{ringisvalue},new View[]{usealarm},new View[]{adva
                      short wa = Short.parseShort(str);
                      Natives.writealarmsuspension(4, wa);
                     }
-                tk.glucodata.SuperGattCallback.glucosealarms.setLossAlarm();
+                //tk.glucodata.SuperGattCallback.glucosealarms.setLossAlarm();
                 } catch(Throwable e) {
                 Log.stack(LOG_ID,"parseShort",e);
                         Applic.argToaster(context,context.getString(R.string.cantsetminutes)+str,Toast.LENGTH_SHORT);
@@ -1125,7 +1115,7 @@ private    void mksettings(MainActivity context) {
         mmolL = new RadioButton(context);
 
         mmolL.setOnClickListener(v-> {
-         ((Applic) context.getApplication()).setunit(1);
+        // ((Applic) context.getApplication()).setunit(1);
                   mgdl.setChecked(false);
                  recreate();
                 });
@@ -1133,7 +1123,7 @@ private    void mksettings(MainActivity context) {
             mmolL.setText(R.string.mmolL);
          mgdl = new RadioButton(context);
         mgdl.setOnClickListener(v-> {
-            ((Applic) context.getApplication()).setunit(2);
+           // ((Applic) context.getApplication()).setunit(2);
             mmolL.setChecked(false);
               recreate();
            });
@@ -1556,10 +1546,10 @@ static private void exchanges(MainActivity context, View parent) {
     final   int pad=(int)(tk.glucodata.GlucoseCurve.metrics.density*10.0);
         lay.setPadding(MainActivity.systembarLeft,MainActivity.systembarTop*3/4,MainActivity.systembarRight+pad,MainActivity.systembarBottom*7/8+(int)(tk.glucodata.GlucoseCurve.metrics.density*5.0));
         exportview.setOnClickListener(v ->{
-            var c=Applic.app.curve;
-            if(c!=null) {
-                c.dialogs.showexport(context,c.getWidth(),c.getHeight(),lay);
-            }
+         //   var c=Applic.getContext().curve;
+           // if(c!=null) {
+              //  c.dialogs.showexport(context,c.getWidth(),c.getHeight(),lay);
+           // }
         });
       }
 

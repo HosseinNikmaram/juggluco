@@ -62,7 +62,7 @@ public    void handlealarm() {
                     }
             }
             }
-        LossOfSensorAlarm.setalarm(Applic.app, nexttime);
+        LossOfSensorAlarm.setalarm(Applic.getContext(), nexttime);
         MessageSender.sendwakestream();
         Natives.wakestreamsender();
     }

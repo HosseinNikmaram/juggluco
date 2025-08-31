@@ -79,7 +79,7 @@ static void sendglucose(String glstr,int mgdl,float gl,float rate,long timmsec) 
             intent.setPackage("nodomain.freeyourgadget.gadgetbridge");
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             intent.setAction(WEATHER_ACTION);
-           Applic.app.sendBroadcast(intent);
+           Applic.getContext().sendBroadcast(intent);
         }
 
 private static final int Undetermined=0;

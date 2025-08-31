@@ -32,7 +32,6 @@ import static android.media.AudioAttributes.USAGE_ASSISTANCE_SONIFICATION;
 import static java.lang.String.format;
 import static tk.glucodata.Applic.DontTalk;
 import static tk.glucodata.Applic.TargetSDK;
-import static tk.glucodata.Applic.app;
 import static tk.glucodata.Applic.isWearable;
 import static tk.glucodata.Applic.usedlocale;
 import static tk.glucodata.Log.doLog;
@@ -109,15 +108,15 @@ static void mkunitstr(Context cont,int unit) {
 @SuppressLint("NewApi")
 Ringtone setring(String uristr, int res) {
     if(uristr==null||uristr.length()==0) {
-        uristr= "android.resource://" + Applic.app.getPackageName() + "/" + res;
+        uristr= "android.resource://" + Applic.getContext().getPackageName() + "/" + res;
         }
     Uri uri=Uri.parse(uristr);
-    Ringtone ring = RingtoneManager.getRingtone(Applic.app, uri);
+    Ringtone ring = RingtoneManager.getRingtone(Applic.getContext(), uri);
     if(ring==null) {
         {if(doLog) {Log.i(LOG_ID,"ring==null default");};};
-        uristr= "android.resource://" + Applic.app.getPackageName() + "/" + res;
+        uristr= "android.resource://" + Applic.getContext().getPackageName() + "/" + res;
         uri=Uri.parse(uristr);
-        ring = RingtoneManager.getRingtone(Applic.app, uri);
+        ring = RingtoneManager.getRingtone(Applic.getContext(), uri);
         }
     try {
         if(Build.VERSION.SDK_INT >=23) ring.setLooping(true);
@@ -238,7 +237,7 @@ static RemoteGlucose arrowNotify;
 
     static void mkpaint() {
         if(!isWearable) {
-            DisplayMetrics metrics= Applic.app.getResources().getDisplayMetrics();
+            DisplayMetrics metrics= Applic.getContext().getResources().getDisplayMetrics();
             {if(doLog) {Log.i(LOG_ID,"metrics.density="+ metrics.density+ " width="+metrics.widthPixels+" height="+metrics.heightPixels);};};
             var notwidth=Math.min(metrics.widthPixels,metrics.heightPixels);
             arrowNotify=new RemoteGlucose(glucosesize,notwidth,0.12f,whiteonblack?1:0,false);
@@ -250,8 +249,8 @@ static RemoteGlucose arrowNotify;
         {if(doLog) {Log.i(LOG_ID,"showalways="+showalways);};};
         alertseparate=Natives.getSeparate( );
         mkunitstr(cont,Natives.getunit());
-        notificationManager =(NotificationManager) Applic.app.getSystemService(NOTIFICATION_SERVICE);
-        createNotificationChannel(Applic.app);
+        notificationManager =(NotificationManager) Applic.getContext().getSystemService(NOTIFICATION_SERVICE);
+        createNotificationChannel(Applic.getContext());
         mkpaint();
     }
 
@@ -433,8 +432,8 @@ private static void showoldglucose() {
         var runner=runstopalarm;
         if(runner!=null) {
             if(!isWearable) {
-                if(send)
-                    Applic.app.numdata.stopalarm();
+              //  if(send)
+                  //  Applic.getContext().numdata.stopalarm();
                 }
             runner.run();
         }
@@ -450,7 +449,7 @@ private static void showoldglucose() {
 
     Vibrator vibrator = null;
 private    void vibratealarm(int kind) {
-        var context= Applic.app;
+        var context= Applic.getContext();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
             vibrator =  ((VibratorManager)(context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE))).getDefaultVibrator();
         }
@@ -521,14 +520,14 @@ static    void stoplossalarm(){
                     }
                 }
             if(doLog) {
-                {if(doLog) {Log.d(LOG_ID,"play "+ring.getTitle(app));};};
+            //    {if(doLog) {Log.d(LOG_ID,"play "+ring.getTitle(app));};};
             }
             if(doplaysound[0]) {
                 ring.play();
                 }
         }
         if(!isWearable) {
-            if(flash) Flash.start(app);
+          //  if(flash) Flash.start(app);
         }
         if(vibrate) {
             vibratealarm(kind);
@@ -542,7 +541,7 @@ static    void stoplossalarm(){
                     if(doplaysound[0])  {
                         try {
                             if(doLog) {
-                                {if(doLog) {Log.d(LOG_ID,"stop sound "+ring.getTitle(app));};};
+                               // {if(doLog) {Log.d(LOG_ID,"stop sound "+ring.getTitle(app));};};
                                 }
                             ring.stop();
                             }
@@ -581,7 +580,7 @@ static    void stoplossalarm(){
                 }
             else  {
                 if(doLog) {
-                    {if(doLog) {Log.d(LOG_ID,"runstopalarm not isalarm "+ring.getTitle(app));};};
+                //    {if(doLog) {Log.d(LOG_ID,"runstopalarm not isalarm "+ring.getTitle(app));};};
                 }
             }
         };
@@ -867,21 +866,21 @@ static public boolean alertseparate=false;
 
 static public PendingIntent mkpending() {
    {if(doLog) {Log.i(LOG_ID,"mkpending");};};
-    Intent notifyIntent = new Intent(Applic.app,MainActivity.class);
+    Intent notifyIntent = new Intent(Applic.getContext(),MainActivity.class);
     notifyIntent.putExtra(fromnotification,true);
     notifyIntent.addCategory(Intent. CATEGORY_LAUNCHER ) ;
     notifyIntent.setAction(Intent. ACTION_MAIN ) ;
     notifyIntent.setFlags(Intent. FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP );
-    return   PendingIntent.getActivity(Applic.app, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT|penmutable);
+    return   PendingIntent.getActivity(Applic.getContext(), 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT|penmutable);
     }
 private Notification.Builder   mkbuilderintent(String type,PendingIntent notifyPendingIntent) {
     Notification.Builder  GluNotBuilder;
      if(true) {
          if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-             GluNotBuilder = new Notification.Builder(Applic.app, type);
+             GluNotBuilder = new Notification.Builder(Applic.getContext(), type);
          }
          else {
-                     GluNotBuilder = new Notification.Builder(Applic.app);
+                     GluNotBuilder = new Notification.Builder(Applic.getContext());
          }
         }
     else {
@@ -930,7 +929,7 @@ void fornotify(Notification notif) {
     /*
     @SuppressWarnings("deprecation")
 void oldnotification(long time) {
-    String message= Applic.app.getString(R.string.nonewvalue)+ timef.format(time);
+    String message= Applic.getContext().getString(R.string.nonewvalue)+ timef.format(time);
     {if(doLog) {Log.i(LOG_ID,"oldnotification "+message);};};
     var GluNotBuilder=mkbuilder(GLUCOSENOTIFICATION);
     if (Build.VERSION.SDK_INT < 31) {
@@ -943,7 +942,7 @@ void oldnotification(long time) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         GluNotBuilder.setTimeoutAfter(glucosetimeout);
         }
-//    RemoteViews remoteViews= new RemoteViews(Applic.app.getPackageName(),R.layout.smallnotification);
+//    RemoteViews remoteViews= new RemoteViews(Applic.getContext().getPackageName(),R.layout.smallnotification);
 //    GluNotBuilder.setContent(remoteViews);
     Notification notif= GluNotBuilder.build();
     fornotify(notif);
@@ -969,7 +968,7 @@ private Notification  makenotification(int draw,String message,String type,boole
         GluNotBuilder.setSmallIcon(draw).setOnlyAlertOnce(once).setContentTitle(message).setShowWhen(true);
 
     if(!isWearable) {
-        RemoteViews remoteViews = new RemoteViews(app.getPackageName(), R.layout.text);
+        RemoteViews remoteViews = new RemoteViews(Applic.getContext().getPackageName(), R.layout.text);
         remoteViews.setTextColor(R.id.content, foregroundcolor);
         remoteViews.setTextViewText(R.id.content, message);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -1008,14 +1007,14 @@ private Notification  makenotification(int draw,String message,String type,boole
 
 
 Notification getforgroundnotification() {
-    final String mess= app.getString(SensorBluetooth.blueone!=null?R.string.connectwithsensor:R.string.exchangedata);
+    final String mess= Applic.getContext().getString(SensorBluetooth.blueone!=null?R.string.connectwithsensor:R.string.exchangedata);
     Notification not=makenotification(R.drawable.novalue,mess,GLUCOSENOTIFICATION,true);
     not.flags|= FLAG_ONGOING_EVENT;
     return not;
     }
 
 static public void shownovalue() {
-    init(Applic.app);
+    init(Applic.getContext());
     onenot.novalue();
     }
 private void novalue() {
@@ -1082,10 +1081,10 @@ Notification.Builder  NumNotBuilder=null;
     @SuppressWarnings("deprecation")
 public void  notifyer(int draw,String message,String type,int notid) {
      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-         NumNotBuilder = new Notification.Builder(Applic.app, type);
+         NumNotBuilder = new Notification.Builder(Applic.getContext(), type);
      }
      else
-         NumNotBuilder = new Notification.Builder(Applic.app);
+         NumNotBuilder = new Notification.Builder(Applic.getContext());
 
 //    notificationManager.cancel(glucosenotificationid);
 
@@ -1099,7 +1098,7 @@ setDeleteIntent(DeleteReceiver.getDeleteIntent()) .setContentTitle(message);
     var timemess=            timef.format(System.currentTimeMillis()) + ": " + message;
     showpopupalarm(timemess,false);
     if(!isWearable) {
-        RemoteViews NumRemoteViewss = new RemoteViews(Applic.app.getPackageName(), R.layout.numalarm);
+        RemoteViews NumRemoteViewss = new RemoteViews(Applic.getContext().getPackageName(), R.layout.numalarm);
         NumRemoteViewss.setInt(R.id.text, "setBackgroundColor", WHITE);
         NumRemoteViewss.setTextColor(R.id.text, BLACK);
         NumRemoteViewss.setTextViewText(R.id.text, timemess);

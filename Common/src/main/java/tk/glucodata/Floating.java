@@ -78,7 +78,7 @@ static private final int oldage=glucosetimeoutSEC;
 static void init() {
     {if(doLog) {Log.i(LOG_ID,"init()");};};
     var pos=Natives.getfloatingPos( );
-    final var metrics = Applic.app.getResources().getDisplayMetrics();
+    final var metrics = Applic.getContext().getResources().getDisplayMetrics();
     density=metrics.density;
 //   movethreshold=density*2.0f;
    movethreshold=density*2.0f;
@@ -158,7 +158,7 @@ public static void rewritefloating(Activity context) {
             {if(doLog) {Log.i(LOG_ID,"now ask overlay permission");};};
         }).create();
         dialog.setCanceledOnTouchOutside(false);
-        final var metrics = Applic.app.getResources().getDisplayMetrics();
+        final var metrics = Applic.getContext().getResources().getDisplayMetrics();
         /*
         dialog.setOnShowListener(a ->  {
             final var colres= android.R.color.holo_orange_light;
@@ -231,8 +231,8 @@ public static void rewritefloating(Activity context) {
         Log.i(LOG_ID,"hidefloating() density="+density); 
         hide=true;
         removeFloating();    
-        windowMana = (WindowManager) Applic.app.getSystemService(Context.WINDOW_SERVICE);
-        floatview=new Floating(Applic.app);
+        windowMana = (WindowManager) Applic.getContext().getSystemService(Context.WINDOW_SERVICE);
+        floatview=new Floating(Applic.getContext());
         floatPaint = new Paint();
         floatPaint.setTextAlign(Paint.Align.LEFT);
         floatPaint.setColor(floatingforeground);
@@ -260,7 +260,7 @@ private void untouchable() {
       Context context= MainActivity.thisone;
         if(context==null)
             context=keeprunning.theservice; */
-      final Context context= Applic.app;
+      final Context context= Applic.getContext();
        var ok=getbutton(context,R.string.ok);
        var cancel=getbutton(context,R.string.cancel);
        var untouch=getlabel(context, R.string.untouchablequestion);
@@ -308,7 +308,7 @@ private void untouchable() {
 static private void translate(float dx,float dy) {
         xview += dx ;
         yview += dy ;
-        final var metrics = Applic.app.getResources().getDisplayMetrics();
+        final var metrics = Applic.getContext().getResources().getDisplayMetrics();
         var screenwidth = metrics.widthPixels;
         var screenheight = metrics.heightPixels;
         var maxx=screenwidth;
@@ -342,7 +342,7 @@ private static WindowManager.LayoutParams makeparams(int screenwidth, int screen
         return     new WindowManager.LayoutParams( floatingwidth,(int)(floatingheight),(int) xpos, (int)ypos, type, flags, PixelFormat.TRANSLUCENT);
     }
 static boolean cannotoverlay()  {
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(Applic.app)) {
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(Applic.getContext())) {
             return true;
         }
 
@@ -373,9 +373,9 @@ private static float valueWidth;
 
 
         try {
-            windowMana = (WindowManager) Applic.app.getSystemService(Context.WINDOW_SERVICE);
-            floatview = new Floating(Applic.app);
-            var metrics = Applic.app.getResources().getDisplayMetrics();
+            windowMana = (WindowManager) Applic.getContext().getSystemService(Context.WINDOW_SERVICE);
+            floatview = new Floating(Applic.getContext());
+            var metrics = Applic.getContext().getResources().getDisplayMetrics();
             int screenwidth = metrics.widthPixels;
             int screenheight = metrics.heightPixels;
             floatPaint = new Paint();

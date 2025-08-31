@@ -107,7 +107,7 @@ fun getview(type: ComplicationType):GlucoseValue {
 
     companion object {
         private const val LOG_ID = "IconArrowDataSourceService"
-   private val complicationDataSourceUpdateRequester = ComplicationDataSourceUpdateRequester.create( context=tk.glucodata.Applic.app, complicationDataSourceComponent = ComponentName(tk.glucodata.Applic.app, IconArrowDataSourceService::class.java))
+   private val complicationDataSourceUpdateRequester = ComplicationDataSourceUpdateRequester.create( context=tk.glucodata.Applic.getContext(), complicationDataSourceComponent = ComponentName(tk.glucodata.Applic.getContext(), IconArrowDataSourceService::class.java))
 
         public fun update() {
             complicationDataSourceUpdateRequester.requestUpdateAll()

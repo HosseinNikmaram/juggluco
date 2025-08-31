@@ -49,7 +49,7 @@ class MessageReceiver: WearableListenerService() {
                 val source=  sender.localnode
                  if(doLog) {Log.i(LOG_ID,"path==MessageSender.DEFAULTS_PATH "+source );}
                   setWearosdefaults(source,true);
-                   val context=if(MainActivity.thisone==null)Applic.app;else MainActivity.thisone;
+                   val context=if(MainActivity.thisone==null)Applic.getContext();else MainActivity.thisone;
                    Applic.setbluetooth(context,false)
                  }
             MessageSender.WAKE_PATH -> {
@@ -108,7 +108,7 @@ class MessageReceiver: WearableListenerService() {
             }
              MessageSender.SETTINGS_PATH   -> { //Never used
                  Natives.ontbytesettings(data)
-                    Notify.mkunitstr(Applic.app,Natives.getunit())
+                    Notify.mkunitstr(Applic.getContext(),Natives.getunit())
                 }
              MessageSender.MESSAGES_PATH -> {
                  val sender=tk.glucodata.MessageSender.getMessageSender()
@@ -122,7 +122,7 @@ class MessageReceiver: WearableListenerService() {
                 Natives.setBlueMessage(name,on)
                 }
              MessageSender.BLUETOOTH_PATH -> {
-                val context=if(MainActivity.thisone==null)Applic.app;else MainActivity.thisone;
+                val context=if(MainActivity.thisone==null)Applic.getContext();else MainActivity.thisone;
                 val on=booldata(data)
                 if(tk.glucodata.Log.doLog) {Log.i(LOG_ID,"set bluetooth $on  ${data[0]}");}
                 Applic.setbluetooth(context,on )
@@ -149,7 +149,7 @@ class MessageReceiver: WearableListenerService() {
                          return;
                      }
                      val node: Node = nodes.elementAt(it)
-                     Wearos.sendinitwatchapp(node);
+                     //Wearos.sendinitwatchapp(node);
                  }
                }
         }

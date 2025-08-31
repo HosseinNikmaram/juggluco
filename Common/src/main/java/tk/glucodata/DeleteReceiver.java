@@ -36,8 +36,8 @@ public class DeleteReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Applic app=(Applic) context.getApplicationContext();
-        app.initproc();
+      //  Applic app=(Applic) context.getApplicationContext();
+       // app.initproc();
         final String action = intent.getAction();
         try {
             if (action != null && action.equals(clearnotification)) {
@@ -51,10 +51,10 @@ public class DeleteReceiver extends BroadcastReceiver {
     }
 
     static PendingIntent getDeleteIntent() {
-        Intent intent = new Intent(Applic.app, DeleteReceiver.class);
+        Intent intent = new Intent(Applic.getContext(), DeleteReceiver.class);
         intent.setAction(clearnotification);
 	final int deleterequest = 2;
-        return PendingIntent.getBroadcast(Applic.app, deleterequest, intent, PendingIntent.FLAG_UPDATE_CURRENT|penmutable);
+        return PendingIntent.getBroadcast(Applic.getContext(), deleterequest, intent, PendingIntent.FLAG_UPDATE_CURRENT|penmutable);
     }
 
 }

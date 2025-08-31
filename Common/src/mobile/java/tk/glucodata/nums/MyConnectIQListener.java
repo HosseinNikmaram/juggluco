@@ -85,8 +85,8 @@ public class MyConnectIQListener implements ConnectIQ.ConnectIQListener {
 		if (!mSdkReady) {
 			return;
 		}
-		tk.glucodata.Applic app=(tk.glucodata.Applic)context.getApplicationContext();
-		app.numdata.loadDevices(context); 
+	//	tk.glucodata.Applic app=(tk.glucodata.Applic)context.getApplicationContext();
+	//	app.numdata.loadDevices(context);
 //	    if(context instanceof DeviceActivity) ((DeviceActivity)context).usedev();
 	}
         @Override

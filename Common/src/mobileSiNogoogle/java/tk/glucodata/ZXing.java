@@ -22,7 +22,7 @@ class ZXing {
     static void scanZXingAlg(Activity act,int type,long dataptr) {
          if(!isWearable&&useZXing) {
              IntentIntegrator intentIntegrator = new IntentIntegrator(act);
-             intentIntegrator.setPrompt(Applic.app.getString(R.string.photomessage));
+             intentIntegrator.setPrompt(Applic.getContext().getString(R.string.photomessage));
              intentIntegrator.setOrientationLocked(true); 
              intentIntegrator.setDesiredBarcodeFormats( DATA_MATRIX, QR_CODE);
              intentIntegrator.setRequestCode(type);

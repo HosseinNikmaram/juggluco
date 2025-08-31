@@ -37,7 +37,7 @@ static void      rmlayout() {}
 
 static void   blockedNum(MainActivity  act) {
 			var width=GlucoseCurve.getwidth();
-		help.basehelp(Applic.app.getString(R.string.staticnum),act,xzy->{ }, (l,w,h)-> {
+		help.basehelp(Applic.getContext().getString(R.string.staticnum),act,xzy->{ }, (l,w,h)-> {
 			var height=GlucoseCurve.getheight();
 			if(height>h)
 				l.setY((height-h)/2);

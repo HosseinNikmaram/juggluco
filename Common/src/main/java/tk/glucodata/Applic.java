@@ -81,7 +81,7 @@ import tk.glucodata.nums.numio;
 import tk.glucodata.settings.Broadcasts;
 //import static tk.glucodata.MessageSender.messagesender;
 
-public class Applic extends Application {
+public class Applic {
 static final boolean ALLGALAXY=true;
 static final boolean hasNotChinese=true;
 public static final  boolean scrollbar=true;
@@ -132,15 +132,12 @@ static public android.app.Activity getActivity(android.app.Activity activity) {
     }
 static public Context getContext() {
       Context cont=getActivity();
-      if(cont!=null)
-        return cont;
-      return app;
-      }
+        return cont;}
 static public void Toaster(String mess) {
-    RunOnUiThread(()-> { Applic.argToaster(app,mess, Toast.LENGTH_SHORT);}) ;
+   // RunOnUiThread(()-> { Applic.argToaster(getContext() ,mess, Toast.LENGTH_SHORT);}) ;
     }
     static public void Toaster(int res) {
-        RunOnUiThread(()-> { Applic.argToaster(app,res, Toast.LENGTH_SHORT);}) ;
+      //  RunOnUiThread(()-> { Applic.argToaster(getContext() ,res, Toast.LENGTH_SHORT);}) ;
     }
 
 static public    void argToaster(Context context,int res,int duration) {
@@ -190,7 +187,7 @@ public void setunit(int unit)  {
      if(Applic.unit!=unit)
         SuperGattCallback.previousglucosevalue=0.0f;
     Natives.setunit(unit);
-    Notify.mkunitstr(app,unit);
+   // Notify.mkunitstr(app,unit);
     }
 public void sendlabels() {
     if(!isWearable) {
@@ -227,7 +224,7 @@ private static void setlanguage() {
         Natives.setlocale(lang);
      }
 
-@Override
+/*@Override
 public void onConfigurationChanged(Configuration newConfig) {
    super.onConfigurationChanged(newConfig);
    if(Nativesloaded)  {
@@ -240,10 +237,10 @@ public void onConfigurationChanged(Configuration newConfig) {
  //       was24=new24;
         setlanguage();
         }
-    }     
+    } */
 
 static private void setjavahour24(boolean val) {
-    Applic.hour24=val;
+    /*Applic.hour24=val;
     Notify.timef = java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT);
     hasSystemtimeformat=DateFormat.is24HourFormat(app)==hour24;
       if(!isWearable) {
@@ -255,14 +252,14 @@ static private void setjavahour24(boolean val) {
                   tmpcurve.clearsearch(null);
                }
               }
-            }
+            }*/
        }
 
 static public void sethour24(boolean val) {
      Natives.sethour24(val);
     setjavahour24(val);
     }
-@Override
+/*@Override
 public void onTerminate () {
     super.onTerminate();
     if(!isWearable) {
@@ -270,7 +267,7 @@ public void onTerminate () {
             numdata.onCleared();
         }
     }
-}
+}*/
 
 static final String[] scanpermissions=( (Build.VERSION.SDK_INT >= 31)? (new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT}):((Build.VERSION.SDK_INT >= 29)?new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_BACKGROUND_LOCATION}:new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION}));
 
@@ -304,17 +301,17 @@ static String[] noPermissions(Context context) {
     }
 static boolean mayscan() {
      if(Build.VERSION.SDK_INT >= 23) {
-       return Applic.hasPermissions(app, scanpermissions).length==0 ;
+       return Applic.hasPermissions(getContext(), scanpermissions).length==0 ;
        }
     return true;
     }
 static boolean canBluetooth() {
     if(Build.VERSION.SDK_INT > 30) {
-       return Applic.hasPermissions(app, scanpermissions).length==0 ;
+       return Applic.hasPermissions(getContext(), scanpermissions).length==0 ;
        }
     return true;
     }
-@Keep
+/*@Keep
 static int bluePermission() {
     if(Build.VERSION.SDK_INT > 23) {
         if(Applic.hasPermissions(app, scanpermissions).length==0)
@@ -325,7 +322,7 @@ static int bluePermission() {
         return 1;
         }
     return 2;
-    }
+    }*/
 public static void updateservice(Context context,boolean usebluetooth) {
         if(usebluetooth||Natives.backuphostNr( )>0) {
             if(keeprunning.start(context))
@@ -346,8 +343,8 @@ private static void dontusebluetooth() {
     }
 
 
-boolean usingbluetooth=false;
-boolean canusebluetooth() {
+static boolean usingbluetooth=false;
+static boolean  canusebluetooth() {
     return usingbluetooth&&Natives.getusebluetooth();
     }
 
@@ -366,13 +363,8 @@ static     void explicit(Context context) {
             }
         }
     }
-void initbluetooth(boolean usebluetooth,Context context,boolean frommain) {
-    usingbluetooth=usebluetooth;
+static void initbluetooth(boolean usebluetooth, Context context, boolean frommain) {
     if(doLog) {Log.i(LOG_ID,"initbluetooth "+usebluetooth);};
-    if(!isWearable) {
-         if(Natives.getusegarmin()&&numdata.devices==null)
-              numdata.initIQ(context);
-        }
     SensorBluetooth.start(usebluetooth);
     
     if(!keeprunning.started) {
@@ -390,7 +382,7 @@ static boolean possiblybluetooth(Context context) {
     {if(doLog) {Log.i(LOG_ID,"possiblybluetooth");};};
 //    boolean useblue=Natives.getusebluetooth()&& hasPermissions(context, Applic.scanpermissions).length==0;
     final boolean useblue=Natives.getusebluetooth();
-    ((Applic)context.getApplicationContext()).initbluetooth(useblue,context,false);
+    new Applic().initbluetooth(useblue,context,false);
     return useblue;
     }
 public static boolean hasip() {
@@ -413,11 +405,9 @@ public static void sendsettings() {
         } */
 
 static public boolean useWearos() {
-    if(isWearable)
-        return true;
-    else
-        return tk.glucodata.Wearos.MessageReceiverEnabled();
+   return  false;
     }
+/*
 private void initialize() {
         if (android.os.Build.VERSION.SDK_INT >=  android.os.Build.VERSION_CODES.LOLLIPOP) {
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -478,19 +468,20 @@ private void initialize() {
     else
         Natives.networkpresent();
 }
+*/
 
 
 
 public static int initscreenwidth=-1;
 
-static private final BroadcastReceiver minTimeReceiver = new BroadcastReceiver() {
+/*static private final BroadcastReceiver minTimeReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
         Applic app=(Applic) context.getApplicationContext();
         app.initproc();
         app.domintime();
         }
-};
+};*/
 void domintime() {
     {if(doLog) {Log.i(LOG_ID,"TICK");};};
     if (curve != null) {
@@ -507,7 +498,7 @@ void domintime() {
 
 void setmintime() {
     try {
-         registerReceiver(minTimeReceiver, mintimefilter);   
+       //  registerReceiver(minTimeReceiver, mintimefilter);
          }
      catch(Throwable th) {
         Log.stack(LOG_ID,"registerReceiver",th);
@@ -515,7 +506,7 @@ void setmintime() {
   }
 void cancelmintime() {
     try {
-          unregisterReceiver(minTimeReceiver);
+         // unregisterReceiver(minTimeReceiver);
           }
      catch(Throwable th) {
         Log.stack(LOG_ID,"cancelmintime",th);
@@ -540,22 +531,22 @@ public static void initwearos(Context app) {
 static boolean dataAtStart=false;
 boolean initproc() {
     if(!initproccalled) {
-        if(!numio.setlibrary(this))
+        if(!numio.setlibrary())
             return false;
         if(isWearable) {
             if(Natives.getWifi())
                 UseWifi.usewifi();
             }
         if(tk.glucodata.Applic.useWearos()) {
-            initwearos(this);
+          //  initwearos(this);
             }
         needsnatives();
         {if(doLog) {Log.i("Applic","initproc width="+initscreenwidth);};};
         libre3init.init();
         SuperGattCallback.initAlarmTalk();
-        initialize();
-        NumAlarm.handlealarm(this);
-        Maintenance.setMaintenancealarm(this);
+      //  initialize();
+     //   NumAlarm.handlealarm(this);
+      //  Maintenance.setMaintenancealarm(this);
         initbroadcasts();
         initproccalled=true;
         if(isWearable&&!(dataAtStart=hasData())) {
@@ -572,7 +563,7 @@ boolean initproc() {
           }
         else 
            MessageSender.sendnetinfo();
-        Specific.start(this);
+       // Specific.start(this);
         if(isWearable) {
              tk.glucodata.glucosecomplication.GlucoseValue.updateall();
              }
@@ -584,7 +575,7 @@ public static void setbluetooth(Context activity,boolean on) {
     {if(doLog) {Log.i(LOG_ID,"setbluetooth(Context activity,"+on+")");};};
     Natives.setusebluetooth(on);
     if(on)  {
-        Applic.app.initbluetooth(on,activity,activity instanceof MainActivity);
+         Applic.initbluetooth(on,activity,activity instanceof MainActivity);
         }
     else {
         Applic.dontusebluetooth();
@@ -592,7 +583,7 @@ public static void setbluetooth(Context activity,boolean on) {
     app.redraw();
     }
 public static    int stopprogram=0;
-    @Override
+/*    @Override
     public void onCreate() {
         super.onCreate();
     if(DiskSpace.check(this)) {
@@ -602,7 +593,7 @@ public static    int stopprogram=0;
         android.util.Log.e(LOG_ID,"Stop program");
         stopprogram=1;
         }
-    }
+    }*/
 
 //static public int backgroundcolor= BLACK;
 static public int backgroundcolor= isWearable?BLACK:RED;
@@ -639,14 +630,14 @@ static float mediumfontsize;
 static float menufontsize ;
 boolean needsnatives() {
   {if(doLog) {Log.i(LOG_ID,"needsnatives");};};
-  final var res=getResources();
-  var metrics=GlucoseCurve.metrics= res.getDisplayMetrics();
-  MainActivity.screenheight= metrics.heightPixels; 
-  MainActivity.screenwidth= metrics.widthPixels;
+ // final var res=getResources();
+ // var metrics=GlucoseCurve.metrics= res.getDisplayMetrics();
+ // MainActivity.screenheight= metrics.heightPixels;
+ // MainActivity.screenwidth= metrics.widthPixels;
   {if(doLog) {Log.i(LOG_ID,"heightPixels="+GlucoseCurve.metrics.heightPixels+" widthPixels="+GlucoseCurve.metrics.widthPixels);};};
   var newinitscreenwidth= Math.max(GlucoseCurve.metrics.heightPixels,GlucoseCurve.metrics.widthPixels);
   boolean ret;
-  menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
+ // menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
     final double screensize=(newinitscreenwidth/menufontsize);
   final boolean smallsize=screensize<34.0;
     if(newinitscreenwidth!=initscreenwidth)  {
@@ -663,11 +654,11 @@ boolean needsnatives() {
      {if(doLog) {Log.i(LOG_ID,"initscreenwidth="+newinitscreenwidth);};};
      {if(doLog) {Log.i(LOG_ID,"menufontsize="+menufontsize);};};
      {if(doLog) {Log.i(LOG_ID,"screensize="+screensize);};};
-     headfontsize = res.getDimension(R.dimen.abc_text_size_display_4_material);
+    // headfontsize = res.getDimension(R.dimen.abc_text_size_display_4_material);
      Notify.glucosesize= headfontsize*.35f;
-     smallfontsize = res.getDimension(R.dimen.abc_text_size_small_material);
-     largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
-     mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
+     //smallfontsize = res.getDimension(R.dimen.abc_text_size_small_material);
+    // largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
+    // mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
 //     Natives.setfontsize(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
       Notify.mkpaint();
      return ret;
@@ -684,6 +675,7 @@ static boolean bluetoothEnabled() {
     }
 static final boolean usewakelock=true;
 @Keep
+/*
 static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int alarm, long timmsec,boolean wasblueoff,long sensorstartmsec, long sensorptr,int sensorgen) {
    if(doLog) {Log.i(LOG_ID,"doglucose "+SerialNumber+" "+ mgdl+" "+ gl+" "+rate+" "+ alarm+" "+timmsec+" "+ wasblueoff+ " "+ sensorstartmsec +" sensorptr="+format("%x",sensorptr)+" "+ sensorgen);};
 
@@ -705,7 +697,8 @@ static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int a
     if(wakelock!=null)
         wakelock.release();
     }
-@Keep
+*/
+
 static boolean updateDevices() { //Rename to reset
      final var blue=  tk.glucodata.SensorBluetooth.blueone;
      if(blue!=null) {
@@ -752,7 +745,7 @@ static public void resetWearOS() {
     wakemirrors();
     }
 private static    void initbroadcasts() {
-if(isWearable) {
+/*if(isWearable) {
     Specific.setclose(!Natives.getdontuseclose());
     }
 
@@ -780,7 +773,7 @@ if(isWearable) {
     XInfuus.setlibrenames();
    EverSense.setreceivers();
     JugglucoSend.setreceivers();
-    SendLikexDrip.setreceivers();
+    SendLikexDrip.setreceivers();*/
         }
 
 static public  boolean    talkbackrunning=false;
@@ -791,7 +784,7 @@ static    void        talkbackon(Context cont) {
 
         Natives.settouchtalk(true);
         Natives.setspeakmessages(true);
-        Natives.setspeakalarms(true);
+        //Natives.setspeakalarms(true);
         }
 
     }
@@ -841,21 +834,21 @@ static void Garmindeletelast(int base,int pos,int end ) {
           }
         }
 static public void startMain() {
-    final var act=MainActivity.thisone;
-    final var intent=new Intent(Applic.app,MainActivity.class);
+/*    final var act=MainActivity.thisone;
+    final var intent=new Intent(Applic.getContext(),MainActivity.class);
     intent.putExtra(Notify.fromnotification,true);
     intent.addCategory(Intent. CATEGORY_LAUNCHER ) ;
     intent.setAction(Intent. ACTION_MAIN ) ;
     if(act!=null) {
        intent.setFlags(Intent. FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP );
-        {if(doLog) {Log.i(LOG_ID,"startActivityIfNeeded( new Intent(Applic.app,MainActivity)). ");};};
+        {if(doLog) {Log.i(LOG_ID,"startActivityIfNeeded( new Intent(Applic.getContext(),MainActivity)). ");};};
         act.startActivityIfNeeded( intent,0);
         }
     else {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         {if(doLog) {Log.i(LOG_ID,"startActivity MainActivity.thisone==null");};};
         keeprunning.theservice.startActivity( intent);
-        }
+        }*/
       }
 }
 

@@ -22,14 +22,12 @@
 package tk.glucodata;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 
 import java.util.UUID;
@@ -38,13 +36,8 @@ import static android.bluetooth.BluetoothGatt.CONNECTION_PRIORITY_BALANCED;
 import static android.bluetooth.BluetoothGatt.CONNECTION_PRIORITY_HIGH;
 import static android.bluetooth.BluetoothGattDescriptor.ENABLE_INDICATION_VALUE;
 import static android.bluetooth.BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE;
-import static android.bluetooth.BluetoothProfile.STATE_CONNECTED;
-import static android.bluetooth.BluetoothProfile.STATE_CONNECTING;
-import static android.bluetooth.BluetoothProfile.STATE_DISCONNECTED;
-import static android.bluetooth.BluetoothProfile.STATE_DISCONNECTING;
 import static java.util.Objects.isNull;
 import static tk.glucodata.Applic.DontTalk;
-import static tk.glucodata.Applic.app;
 import static tk.glucodata.Applic.getContext;
 import static tk.glucodata.Applic.isWearable;
 import static tk.glucodata.Applic.mgdLmult;
@@ -170,12 +163,10 @@ static long lastfound() {
 
 static final int mininterval=55;
 static long nexttime=0L; //secs
-public static tk.glucodata.GlucoseAlarms glucosealarms=null;
 static notGlucose previousglucose=null;
 static float previousglucosevalue=0.0f;
 
 static public void initAlarmTalk() {
-    if(glucosealarms==null) glucosealarms=new tk.glucodata.GlucoseAlarms(Applic.app);
     if(!DontTalk) {
         Talker.getvalues();
         if(Talker.shouldtalk())
@@ -254,10 +245,7 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
     static void dowithglucose(String SerialNumber, int mgdl, float gl, float rate, int alarm, long timmsec,long sensorstartmsec,long showtime,int sensorgen) {
         if(gl==0.0)
             return;
-        if(glucosealarms == null) {
-            Log.e(LOG_ID,"glucosealarms==null");
-            return;
-            }
+
         GlucoseSaver saver = new GlucoseSaver(getContext());
         saver.saveReading(
                 SerialNumber,
@@ -270,7 +258,6 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
                 showtime,
                 sensorgen
         );
-        glucosealarms.setagealarm(timmsec,showtime);
         final long tim = timmsec / 1000L;
         boolean waiting = false;
         var sglucose=new notGlucose(timmsec, String.format(Applic.usedlocale,Notify.pureglucoseformat, gl),  rate,sensorgen);
@@ -370,7 +357,7 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
         if(Natives.getJugglucobroadcast())
             JugglucoSend.broadcastglucose(SerialNumber,mgdl,gl,rate,alarm,timmsec);
         if(!isWearable) {
-            app.numdata.sendglucose(SerialNumber, tim, gl, thresholdchange(rate), alarm|0x10);
+            new Applic().numdata.sendglucose(SerialNumber, tim, gl, thresholdchange(rate), alarm|0x10);
           //  GlucoseWidget.update();
             }
         if(tim>nexttime) {
@@ -551,7 +538,7 @@ public void searchforDeviceAddress() {
             if (cb.mBluetoothGatt != null) {
                 {if(doLog) {Log.d(LOG_ID, SerialNumber + " cb.mBluetoothGatt!=null");};};
                 return;
-                } 
+                }
             var devname=device.getName();
             if(devname!=null)
                 mDeviceName=devname;
@@ -560,14 +547,14 @@ public void searchforDeviceAddress() {
                     }
                 try {
                     if(isWearable)  {
-                        cb.mBluetoothGatt = device.connectGatt(Applic.app, autoconnect, cb, BluetoothDevice.TRANSPORT_LE);
+                        cb.mBluetoothGatt = device.connectGatt(Applic.getContext(), autoconnect, cb, BluetoothDevice.TRANSPORT_LE);
                        cb.setGattOptions(cb.mBluetoothGatt);
                         }
                     else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            cb.mBluetoothGatt = device.connectGatt(Applic.app, autoconnect, cb, BluetoothDevice.TRANSPORT_LE);
+                            cb.mBluetoothGatt = device.connectGatt(Applic.getContext(), autoconnect, cb, BluetoothDevice.TRANSPORT_LE);
                         } else {
-                            cb.mBluetoothGatt = device.connectGatt(Applic.app, autoconnect, cb);
+                            cb.mBluetoothGatt = device.connectGatt(Applic.getContext(), autoconnect, cb);
                             }
                         }
 
@@ -594,9 +581,9 @@ public void searchforDeviceAddress() {
     if(connect==null) 
         return false;
     if(delayMillis>0)
-        Applic.app.getHandler().postDelayed(connect, delayMillis);
+        Applic.getHandler().postDelayed(connect, delayMillis);
     else
-        Applic.app.getHandler().post(connect);
+        Applic.getHandler().post(connect);
     return true;
     }
 

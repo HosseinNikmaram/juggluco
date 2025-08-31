@@ -201,7 +201,7 @@ act.setonback( () -> {
     		removeContentView(itemlayout);
     		}
     	removeContentView(genlayout);
-    	NumAlarm.handlealarm(act.getApplication());
+    	//NumAlarm.handlealarm(act.getApplication());
        act.lightBars(false);
     	});
 }
