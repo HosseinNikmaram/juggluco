@@ -305,7 +305,6 @@ public static native String getreceiveport( );
 public static native void networkpresent( );
 public static native void networkabsent();
 public static native void resetnetwork();
-public static native void setpaused(GlucoseCurve val);
 
 //public static native boolean usemeal();
 public static native boolean staticnum();

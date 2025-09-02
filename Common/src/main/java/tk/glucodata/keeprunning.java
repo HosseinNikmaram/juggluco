@@ -71,8 +71,7 @@ static PowerManager.WakeLock wakeLock =null;
        started=true;
        //Applic app=(Applic) getApplicationContext();
        //app.initproc();
-       if(Natives.getfloatglucose()&&!Natives.gethidefloatinJuggluco()) 
-                Floating.makefloat();
+
         try {
           if(intent==null) {
              if(!Applic.possiblybluetooth(this)) {
@@ -84,7 +83,6 @@ static PowerManager.WakeLock wakeLock =null;
                 }
              }
              theservice=this;
-             Notify.foregroundnot(this);
              return Service.START_STICKY;
             } 
         catch(Throwable e) {
@@ -108,7 +106,6 @@ static boolean start(Context context) {
            return true;
           }
          
-         Notify.foregroundnot(theservice);
       } catch (Throwable e) {
          stack(LOG_ID, e);
       }
@@ -122,7 +119,6 @@ void stopper() {
    }
 static void stop() {
 //   context.stopService(new Intent(context, keeprunning.class));
-   LossOfSensorAlarm.cancelalarm();
    if(theservice!=null) {
       theservice.stopper();
       theservice=null;

@@ -44,7 +44,6 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import tk.glucodata.headless.ScanResult;
-import tk.glucodata.settings.Settings;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 import static android.view.View.GONE;
@@ -55,12 +54,9 @@ import static tk.glucodata.BuildConfig.libreVersion;
 import static tk.glucodata.Gen2.getversion;
 import static tk.glucodata.Libre3.libre3NFC;
 import static tk.glucodata.Log.doLog;
-import static tk.glucodata.Log.showbytes;
 import static tk.glucodata.MainActivity.systembarBottom;
 import static tk.glucodata.MainActivity.systembarLeft;
 import static tk.glucodata.MainActivity.systembarRight;
-import static tk.glucodata.MainActivity.systembarTop;
-import static tk.glucodata.settings.Settings.removeContentView;
 import static tk.glucodata.util.getbutton;
 import static tk.glucodata.util.getlabel;
 
@@ -134,76 +130,8 @@ public static void startvibration(Vibrator vibrator) {
         vibrates(vibrator,vibrationPatternstart,amplitude); 
             }
     }
-static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator vibrator,Tag tag) {
-    int value=0;
-    int ret = 0x100000;
-    if(android.os.Build.VERSION.SDK_INT >= 26) {
-        long streamptr;
-        streamptr=libre3NFC(tag);
-        vibrator.cancel();
-        if(streamptr==2L) {
-            {if(doLog) {Log.i(LOG_ID,"streamptr==2");};};
-            ret= 0xFD;
-            }
-        else {
-           if(libreVersion == 3) {
-                if(streamptr>=0L&&streamptr<7L) {
-                switch((int)(streamptr&0xFFFFFFF)) {
-                    case 1: {
-                        {if(doLog) {Log.i(LOG_ID,"streamptr==1");};};
-                        ret=0xFB;
-                        };break;
-                    case 5: {
-                        {if(doLog) {Log.i(LOG_ID,"terminated");};};
-                        ret=13;
-                        break;
-                        }
-                    case 6: {
-                        {if(doLog) {Log.i(LOG_ID,"ended");};};
-                        ret=4;
-                        break;
-                        }
-                    default: {
-                         if(streamptr>=0L&&streamptr<4L) {
-                            {if(doLog) {Log.i(LOG_ID,"p<streamptr<4");};};
-                              ret=0xFA;
-                              }
-                        }
-                    }
-                }
-             else {
-                 var name = Natives.getSensorName(streamptr);
-                 if(name==null){
-                    {if(doLog) {Log.i(LOG_ID,"name==null");};};
-                    ret=0xFA;
-                    Natives.freedataptr(streamptr);
-                    }
-                 else{
-                    {if(doLog) {Log.i(LOG_ID,"scanned "+name);};};
-                    if(SensorBluetooth.resetDeviceOrFree(streamptr, name))
-                        askpermission = true;
-                    ret = 0xFC;
-                    value=1;
-                    askcalendar=true;
-                    curve.render.badscan =calendar(main, ret, name);
-                    }
-                }
-                }
-            else {
-                {if(doLog) {Log.i(LOG_ID,"libreVersion!=3");};};
-                ret = 0xFE;
-                }
-        }
-        if(ret!=0xFC)
-            failure(vibrator);
-           }
-       else  {
-              {if(doLog) {Log.i(LOG_ID,"No Libre 3 Android <8");};};
-              ret=0xF9;
-              }
-    return new int[]{ret,value};
-    }
- static private int[] libre3scan(Vibrator vibrator,Tag tag) {
+
+    static private int[] libre3scan(Vibrator vibrator,Tag tag) {
         int value=0;
         int ret = 0x100000;
         if(android.os.Build.VERSION.SDK_INT >= 26) {
@@ -354,12 +282,7 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
         askpermission=false;
         MainActivity main= activity;
         if(!isWearable) {
-            if (Menus.on) {
-                Applic.RunOnUiThread(() -> {
-                    main.doonback();
-                    Menus.on = true;
-                });
-            }
+
         }
         var vibrator=getvibrator(main);
         startvibration(vibrator);
@@ -367,8 +290,6 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
             if(!Natives.gethaslibrary()) {
                 vibrator.cancel();
                 failure(vibrator);
-                if(main.openfile!=null)
-                    Applic.RunOnUiThread(() -> {   main.openfile.showchoice(main,true); });
                 return;
             }
             int value=0;
@@ -536,7 +457,6 @@ static private int[] libre3scan(GlucoseCurve curve,MainActivity main, Vibrator v
                     }
                     
                     if(getversion(info)==2&&!Natives.switchgen2()) {
-                            Openfile.reinstall=true;
                             Natives.closedynlib();
                             Applic.RunOnUiThread(() -> { getlibrary.openlibrary(main);    });
                            }
@@ -590,30 +510,6 @@ static private void newsensor(Activity act,String text,String name) {
         if(!stillused)
             calBox.setVisibility(GONE);
 
-        Button ok=getbutton(act,R.string.ok);
-
-        Layout lay=new Layout(act, (l, w, h) -> {
-           int wid=GlucoseCurve.getwidth()- systembarRight-systembarLeft;
-            if(wid>w)
-                l.setX((wid-w)*.5f+systembarLeft);
-            var hei=metrics.heightPixels-systembarBottom;
-            if(hei>h) {
-                l.setY((hei-h)*.5f);
-                }
-
-                return new int[] {w,h};
-            },new View[]{tv},new View[]{calBox},new View[]{ok});
-            ok.setOnClickListener(v->{
-               removeContentView(lay); 
-               if(stillused&&calBox.isChecked()) {
-                    insertcalendar(act,name,endtime) ;
-                    }
-               else
-                   askcalendar=false;
-                });
-        lay.setPadding(pad,pad,pad,pad);
-        lay.setBackgroundColor(Applic.backgroundcolor);
-        act.addContentView(lay, new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
     });
     }
 static boolean askcalendar=true;

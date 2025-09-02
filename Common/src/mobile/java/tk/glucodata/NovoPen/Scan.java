@@ -30,11 +30,9 @@ import static tk.glucodata.Natives.novopentype;
 import static tk.glucodata.Natives.savenovopen;
 import static tk.glucodata.Natives.setnovopenttimeandtype;
 import static tk.glucodata.Log.showbytes;
-import static tk.glucodata.NumberView.avoidSpinnerDropdownFocus;
 import static tk.glucodata.ScanNfcV.failure;
 import static tk.glucodata.ScanNfcV.getvibrator;
 import static tk.glucodata.ScanNfcV.startvibration;
-import static tk.glucodata.settings.Settings.removeContentView;
 import static tk.glucodata.util.getbutton;
 import static tk.glucodata.util.getlabel;
 
@@ -56,9 +54,7 @@ import tk.glucodata.NovoPen.opennov.OpContext;
 import tk.glucodata.NovoPen.opennov.OpenNov;
 
 import tk.glucodata.Applic;
-import tk.glucodata.GlucoseCurve;
 import tk.glucodata.LabelAdapter;
-import tk.glucodata.Layout;
 import tk.glucodata.Log;
 import tk.glucodata.MainActivity;
 import tk.glucodata.Natives;
@@ -136,9 +132,6 @@ static void setInsulin(MainActivity context, OpContext op) {
 		}
 
         Spinner spinner=new Spinner(context);
-	final int minheight= GlucoseCurve.dpToPx(48);
-	spinner.setMinimumHeight(minheight);
-	avoidSpinnerDropdownFocus(spinner);
 	int[] selected={type<0?0:type};
 	final var labels=Natives.getLabels();
 	LabelAdapter<String> numspinadapt=new LabelAdapter<String>(context,labels,1);
@@ -158,36 +151,21 @@ static void setInsulin(MainActivity context, OpContext op) {
 
 		} });
 	 spinner.setSelection(selected[0]);
-	float density=GlucoseCurve.metrics.density;
-	int laypad=(int)(density*4.0);
 
 //	var message=getlabel(context,context.getString(R.string.receiveddoses));
 //	message.setPadding(laypad,0,laypad*2,0);
 
 	var after=getlabel(context,context.getString(R.string.dosesprior));
-	after.setPadding((int)(density*5.0f),laypad*2,laypad*3,0);
 	var label=getlabel(context,"PEN"+serial);
 	label.setTypeface(DEFAULT_BOLD,BOLD);
 //	label.setPadding(laypad,0,laypad,0);
         var cancel=getbutton(context,R.string.cancel);
 		var typestr=getlabel(context,context.getString(R.string.type));
-	typestr.setPadding(laypad*2,0,0,laypad*5);
 	var ok=getbutton(context, R.string.save);
 	long[] newtime={lasttime};
 	final	var datebutton=getbutton(context, DateFormat.getDateInstance(DateFormat.DEFAULT).format(lasttime));
 	var cal = Calendar.getInstance();
-        datebutton.setOnClickListener(
-                v -> { 
-			context.getnumberview().getdateviewal(context,newtime[0], (year,month,day)-> {
-		     cal.set(Calendar.YEAR,year);
-		     cal.set(Calendar.MONTH,month);
-		     cal.set(Calendar.DAY_OF_MONTH,day);
-		     long newmsec= cal.getTimeInMillis();
-		     newtime[0]=newmsec;
-			datebutton.setText(DateFormat.getDateInstance(DateFormat.DEFAULT).format(newmsec));
-			});
 
-		});	
 
           cal.setTimeInMillis(newtime[0]);
 	  int[] hour={cal.get(Calendar.HOUR_OF_DAY)};
@@ -195,28 +173,8 @@ static void setInsulin(MainActivity context, OpContext op) {
 	var timebutton=getbutton(context,  String.format(Locale.US,"%02d:%02d",hour[0],min[0] ));
 
 //	var date= main.getnumberview().
-    	var  layout=new Layout(context,(x,w,h)->{
-//			var height=GlucoseCurve.getheight();
-			var width=GlucoseCurve.getwidth();
-			x.setX((width-w)/2);
-			x.setY(0);
-			return new int[] {w,h};
-	},new View[]{label},new View[]{after},new View[]{datebutton,timebutton},new View[]{typestr,spinner},new View[]{ok,cancel});
-	timebutton.setOnClickListener(v-> {
-		layout.setVisibility(INVISIBLE);
-			context.getnumberview().gettimepicker(context,hour[0], min[0], (h,m) -> {
-				hour[0]=h;
-				min[0]=m;
-				cal.set(Calendar.HOUR_OF_DAY,h);
-				cal.set(Calendar.MINUTE,m);
-			         newtime[0]= cal.getTimeInMillis();
-				timebutton.setText(String.format(Locale.US,"%02d:%02d",h,m));
-			   },()-> layout.setVisibility(View.VISIBLE));});
-        layout.setBackgroundColor(Applic.backgroundcolor);
-	int pad=(int)(10.0*density);
-	layout.setPadding(pad,pad,pad,(int)(density*14.0));
 
-	context.setonback(() -> removeContentView(layout) );
+
 	ok.setOnClickListener(v -> {
 			var doses=op.doses;
 			int ty=selected[0];
@@ -262,7 +220,5 @@ static void setInsulin(MainActivity context, OpContext op) {
 			}
 			);
 	cancel.setOnClickListener(v -> context.doonback());
-        context.addContentView(layout, new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-
 	}
 }

@@ -115,7 +115,6 @@ static int runonce(String[] args,String[] env) {
 				Log.stack(LOG_ID,"setReadonly",e);
 				}
 				
-			help.sethelpbutton(VISIBLE);
 
 			Natives.setnodebug(ret==208);
 			return ret;

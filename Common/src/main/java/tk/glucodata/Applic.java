@@ -22,65 +22,48 @@
 
 package tk.glucodata;
 
-// import static android.graphics.Color.BLACK;
-// import static android.graphics.Color.RED;
-// import static android.graphics.Color.BLUE;
-// import static android.graphics.Color.WHITE;
-// import static android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH;
-// import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
-// import static android.net.NetworkCapabilities.TRANSPORT_WIFI_AWARE;
-// import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
-// import static android.view.View.INVISIBLE;
-//import java.text.DateFormat;
-// import static java.lang.String.format;
-// import static java.util.Locale.US;
-// import static tk.glucodata.GlucoseCurve.STEPBACK;
-// import static tk.glucodata.GlucoseCurve.smallfontsize;
-// import static tk.glucodata.Log.doLog;
-// import static tk.glucodata.MessageSender.initwearos;
-// import static tk.glucodata.Natives.hasData;
-// import static tk.glucodata.SuperGattCallback.endtalk;
-// import static tk.glucodata.util.getlocale;
+ import static android.graphics.Color.BLACK;
+ import static android.graphics.Color.RED;
+ import static android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH;
+ import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
+ import static android.net.NetworkCapabilities.TRANSPORT_WIFI_AWARE;
+ import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
+ import static java.lang.String.format;
+ import static java.util.Locale.US;
+ import static tk.glucodata.Log.doLog;
+ import static tk.glucodata.Natives.hasData;
+ import static tk.glucodata.util.getlocale;
+ import android.Manifest;
+ import android.app.Activity;
+ import android.content.ActivityNotFoundException;
+ import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+ import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.PowerManager;
+ import android.util.TypedValue;
 
-// import android.Manifest;
-// import android.app.Activity;
-// import android.app.Application;
-// import android.content.ActivityNotFoundException;
-// import android.content.BroadcastReceiver;
-import android.content.Context;
-// import android.content.Intent;
-// import android.content.IntentFilter;
-// import android.content.pm.PackageManager;
-// import android.content.res.Configuration;
-// import android.net.ConnectivityManager;
-// import android.net.LinkProperties;
-// import android.net.Network;
-// import android.net.NetworkCapabilities;
-// import android.net.NetworkRequest;
-// import android.net.Uri;
-// import android.os.Build;
-// import android.os.Handler;
-// import android.os.Looper;
-// import android.os.PowerManager;
-// import android.text.format.DateFormat;
-// import android.util.DisplayMetrics;
-// import android.util.TypedValue;
-// import android.widget.Toast;
+import androidx.annotation.Keep;
+import androidx.annotation.MainThread;
+import androidx.core.content.ContextCompat;
 
-// import androidx.annotation.Keep;
-// import androidx.annotation.MainThread;
-// import androidx.core.content.ContextCompat;
+import java.util.ArrayList;
+import java.util.Locale;
+ import java.util.concurrent.Executors;
+ import java.util.concurrent.ScheduledExecutorService;
+ import java.util.concurrent.ScheduledFuture;
+ import java.util.concurrent.TimeUnit;
 
-// import java.util.ArrayList;
-// import java.util.Locale;
-// import java.util.concurrent.ScheduledExecutorService;
-// import java.util.concurrent.ScheduledExecutorService;
-// import java.util.concurrent.ScheduledFuture;
-// import java.util.concurrent.TimeUnit;
-
-// import tk.glucodata.nums.AllData;
-// import tk.glucodata.nums.numio;
-// import tk.glucodata.settings.Broadcasts;
+ import tk.glucodata.nums.numio;
 //import static tk.glucodata.MessageSender.messagesender;
 
 public class Applic {
@@ -123,7 +106,20 @@ final private static String LOG_ID="Applic";
 
 static private Handler mHandler;
 private static  long uiThreadId;
-public static Handler getHandler() {
+    private boolean curve;
+
+    private static final ScheduledExecutorService scheduler =
+            Executors.newSingleThreadScheduledExecutor();
+
+    private ScheduledFuture<?> retryTimer;
+
+    public void scheduleRetry() {
+        retryTimer = scheduler.schedule(() -> {
+            retryTimer = null;
+
+        }, 5, TimeUnit.SECONDS);
+    }
+    public static Handler getHandler() {
     return mHandler;
     }
 static public MainActivity getActivity() {
@@ -146,7 +142,6 @@ static public    void argToaster(Context context,int res,int duration) {
      argToaster(context,context.getString(res), duration);
 }
 static public    void argToaster(Context context,String message,int duration) {
-    Toast.makeText(context,message, duration).show();
     if(!DontTalk) {
         if(initproccalled&&Natives.speakmessages()) 
             speak(message);
@@ -178,13 +173,9 @@ public Applic() {
     mHandler = new Handler(Looper.getMainLooper());
     uiThreadId=Thread.currentThread().getId();
     if(!isWearable) {
-        numdata=new AllData();
         }
     }
-void setnotify(boolean on) {
-    Notify.alertwatch=on;
-    {if(doLog) {Log.i(LOG_ID,"setnotify="+on);};};
-    }
+
 public void setunit(int unit)  {
      if(Applic.unit!=unit)
         SuperGattCallback.previousglucosevalue=0.0f;
@@ -193,8 +184,6 @@ public void setunit(int unit)  {
     }
 public void sendlabels() {
     if(!isWearable) {
-        if(Natives.gethasgarmin())
-            numdata.sendlabels();
         }
     }
 // void setcurve(GlucoseCurve curve) { // Commented out for headless mode - no UI needed
@@ -216,8 +205,7 @@ private static void setlanguage() {
         if(!lang.equals(curlang)) {
             curlang=lang;
             if(!DontTalk) {
-                if(Talker.istalking())    
-                        SuperGattCallback.newtalker(null);
+
                 }
             }
         else  {
@@ -428,8 +416,7 @@ static boolean possiblybluetooth(Context context) {
     return useblue;
     }
 public static boolean hasip() {
-    String[] ips=Backup.gethostnames();
-    return ips.length>0&&ips[ips.length-1]!=null;
+    return true;
     }
 //@RequiresApi(api = Build.VERSION_CODES.M)
 private static boolean hasonAvailable=false;
@@ -469,8 +456,7 @@ private void initialize() {
              MessageSender.reinit();
             if(useWearos()) {
                MessageSender.sendnetinfo();
-               Applic.scheduler.schedule(()-> { resetWearOS(); }, 20, TimeUnit.SECONDS);
-               }    
+               }
               Applic.wakemirrors();
             }
         }
@@ -506,7 +492,6 @@ private void initialize() {
 //           if(hasonAvailable) 
                if(useWearos()) {
                 Applic.wakemirrors();
-                Applic.scheduler.schedule(()-> { resetWearOS(); }, 20, TimeUnit.SECONDS);
             }
         }
         });
@@ -522,19 +507,6 @@ private void initialize() {
 public static int initscreenwidth=-1;
 
 
-void domintime() {
-    {if(doLog) {Log.i(LOG_ID,"TICK");};};
-    if (curve != null) {
-        if((curve.render.stepresult & STEPBACK) == 0) {
-            {if(doLog) {Log.i(LOG_ID,"requestRender()");};};
-            curve.requestRender();
-            if (!isWearable) {
-                numdata.sendmessages();
-            }
-        }
-    }
-}
-    static final ScheduledExecutorService scheduler =Executors.newScheduledThreadPool(1);
 
 void setmintime() {
     try {
@@ -590,16 +562,6 @@ boolean initproc() {
         initbroadcasts();
         initproccalled=true;
         if(isWearable&&!(dataAtStart=hasData())) {
-          final ScheduledFuture<?>[] askstarthandle={null};
-            askstarthandle[0] = scheduler.scheduleWithFixedDelay(()->{
-             if(initStarted) {
-                 if(askstarthandle[0]!=null)
-                       askstarthandle[0].cancel(false);
-               return;
-               }
-             else
-                MessageSender.sendaskforstart();
-              }, 4, 30,TimeUnit.SECONDS);
           }
         else 
            MessageSender.sendnetinfo();
@@ -620,7 +582,6 @@ public static void setbluetooth(Context activity,boolean on) {
     else {
         Applic.dontusebluetooth();
         }
-    app.redraw();
     }
 public static    int stopprogram=0;
 /*    @Override
@@ -658,8 +619,6 @@ public static void  removescreenupdater(Runnable up) {
 //    updater=up;
     }
 static void updatescreen() {
-    if(app.curve != null)
-        app.curve.requestRender();
     for(var el:updaters)
         el.run();
     updaters.clear();
@@ -737,7 +696,7 @@ boolean needsnatives() {
          // This ensures the core functionality works without UI dependencies
          
      } catch(Exception e) {
-         Log.e(LOG_ID, "Error in headless initialization", e);
+         Log.e(LOG_ID, "Error in headless initialization");
          return false;
      }
      
@@ -764,7 +723,6 @@ static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int a
     if(!wasblueoff) {
         Applic.dontusebluetooth();
         }
-    SuperGattCallback.dowithglucose( SerialNumber,  mgdl,  gl, rate,  alarm,  timmsec,sensorstartmsec,Notify.glucosetimeout,sensorgen);
     if(!isWearable) {
             if(sensorptr!=0L) {
                 {if(doLog) {Log.i(LOG_ID,"sensorptr="+format("%x",sensorptr));};};
@@ -893,14 +851,7 @@ static    void        talkbackoff() {
 @Keep
 static public void speak(String message) {
     if(!DontTalk) {
-        var talker=SuperGattCallback.talker;
-        if(talker==null) {
-            SuperGattCallback.newtalker(null);
-            talker=SuperGattCallback.talker;
-            }
-        if(talker != null) {
-            talker.speak(message);
-        }
+
         }
     }
 static public boolean getHeartRate() {
@@ -962,29 +913,5 @@ static void Garmindeletelast(int base,int pos,int end ) {
             }
           }
         }
-@Keep
-static public void startMain() {
-    final var act=MainActivity.thisone;
-    final var intent=new Intent(Applic.getContext(),MainActivity.class);
-    intent.putExtra(Notify.fromnotification,true);
-    intent.addCategory(Intent. CATEGORY_LAUNCHER ) ;
-    intent.setAction(Intent. ACTION_MAIN ) ;
-    if(act!=null) {
-       intent.setFlags(Intent. FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP );
-        {if(doLog) {Log.i(LOG_ID,"startActivityIfNeeded( new Intent(Applic.getContext(),MainActivity)). ");};};
-        act.startActivityIfNeeded( intent,0);
-        }
-    else {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        {if(doLog) {Log.i(LOG_ID,"startActivity MainActivity.thisone==null");};};
-        try {
-            if(Class.forName("tk.glucodata.keeprunning") != null && keeprunning.theservice != null) {
-                keeprunning.theservice.startActivity( intent);
-            }
-        } catch(ClassNotFoundException e) {
-            // keeprunning class not available in this build variant
-        }
-        }
-      }
 }
 

@@ -59,7 +59,6 @@ import tk.glucodata.Applic;
 import tk.glucodata.BuildConfig;
 import tk.glucodata.Log;
 import tk.glucodata.Natives;
-import tk.glucodata.Notify;
 
 import static consts.consts.DELETE;
 import static consts.consts.DELETED;
@@ -364,7 +363,6 @@ public void onMessageReceived(IQDevice device, IQApp app, List<Object> message, 
               case STOP: stopglucose();break;
               case STRING: infostr = (String) li.get(1); break;
               case SENDERROR:senderror((Integer) li.get(1));break;
-              case STOPALARM: Notify.stopalarmnotsend(false);break;
 //              case ASKLOWEST: givebase0nums();break;
               };
 
@@ -381,15 +379,13 @@ public void onMessageReceived(IQDevice device, IQApp app, List<Object> message, 
           case DELETE: {
              log("DELETE "+base+" "+num);
              numio.delete(base,num);
-              new Applic().redraw();
-             realsendmessage(Arrays.asList(DELETED,base, num)); 
+             realsendmessage(Arrays.asList(DELETED,base, num));
              return;
              }
           case NOMORENUMS: {
              int last=(Integer)li.get(2);
              log("NOMORENUMS "+base+ " "+last);
              numio.updated(base,last);
-              new Applic().redraw();
 
              }
              ;break;
