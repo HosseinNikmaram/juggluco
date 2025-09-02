@@ -682,7 +682,7 @@ void showSystemBarsAppearance() {
         super.onDestroy();
     }
 
-    @Override
+/*    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         {
@@ -697,9 +697,9 @@ void showSystemBarsAppearance() {
             hideSystemUI();
             requestRender();
         }
-    }
+    }*/
 
-    @UiThread
+/*    @UiThread
     @SuppressWarnings("deprecation")
     void setSystemUI(boolean val) {
         try {
@@ -716,7 +716,7 @@ void showSystemBarsAppearance() {
             Log.stack(LOG_ID, "setSystemUI", e);
         }
 
-    }
+    }*/
 /*
 void switchSystemUI() {
     View decorView = getWindow().getDecorView();
@@ -726,7 +726,7 @@ void switchSystemUI() {
     public boolean showui = false;
 
     void selectionSystemUI() {
-        setSystemUI(showui || Natives.getsystemUI());
+      ///  setSystemUI(showui || Natives.getsystemUI());
     }
 
     // Enables regular immersive mode.
@@ -740,15 +740,15 @@ void switchSystemUI() {
             ;
         }
         ;
-        if (!(Natives.getsystemUI() || showui))
-            setSystemUI(false);
+       // if (!(Natives.getsystemUI() || showui))
+          //  setSystemUI(false);
     }
 
     //    int: Bitwise-or of flags SYSTEM_UI_FLAG_LOW_PROFILE, SYSTEM_UI_FLAG_HIDE_NAVIGATION, SYSTEM_UI_FLAG_FULLSCREEN, SYSTEM_UI_FLAG_LAYOUT_STABLE, SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION, SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, SYSTEM_UI_FLAG_IMMERSIVE, and SYSTEM_UI_FLAG_IMMERSIVE_STICKY.
     // Shows the system bars by removing all the flags
 // except for the ones that make the content appear under the system bars.
     public void showSystemUI() {
-        setSystemUI(true);
+       // setSystemUI(true);
     }
 
     /*private void openBluetoothSettings() {
