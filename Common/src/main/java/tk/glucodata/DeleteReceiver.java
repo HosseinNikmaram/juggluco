@@ -23,9 +23,7 @@ package tk.glucodata;
 
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.Log.stack;
-import static tk.glucodata.Notify.penmutable;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -42,19 +40,11 @@ public class DeleteReceiver extends BroadcastReceiver {
         try {
             if (action != null && action.equals(clearnotification)) {
                 {if(doLog) {Log.i(LOG_ID, clearnotification + " Stop Alarm");};};
-                Notify.stopalarm();
             } else
                 {if(doLog) {Log.i(LOG_ID, clearnotification);};};
         } catch(Throwable th) {
                 stack(LOG_ID,"onReceive",th);
         }
-    }
-
-    static PendingIntent getDeleteIntent() {
-        Intent intent = new Intent(Applic.getContext(), DeleteReceiver.class);
-        intent.setAction(clearnotification);
-	final int deleterequest = 2;
-        return PendingIntent.getBroadcast(Applic.getContext(), deleterequest, intent, PendingIntent.FLAG_UPDATE_CURRENT|penmutable);
     }
 
 }

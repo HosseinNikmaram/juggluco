@@ -103,12 +103,10 @@ class MessageReceiver: WearableListenerService() {
                val context=Applic.getContext()
                Applic.setinittext(context.getString(R.string.connected));
                Applic.initStarted=Natives.ontbytesettings(data)
-               Notify.mkunitstr(context,Natives.getunit())
                sendnetinfo(messageEvent.getSourceNodeId())
             }
              MessageSender.SETTINGS_PATH   -> { //Never used
                  Natives.ontbytesettings(data)
-                    Notify.mkunitstr(Applic.getContext(),Natives.getunit())
                 }
              MessageSender.MESSAGES_PATH -> {
                  val sender=tk.glucodata.MessageSender.getMessageSender()

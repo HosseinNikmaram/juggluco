@@ -112,16 +112,13 @@ public void run() {
 
 
  static void openlibrary(MainActivity context,String libfile,File cali) {
-      context.openfile=new Openfile(libfile,cali);
-      Applic.RunOnUiThread(() -> {   context.openfile.showchoice(context,true); });
+
        }
 
 public static void openlibrary(MainActivity context) {
     File files = context.getFilesDir();
     File cali = new File(files, "libcalibrate.so");
      String libfile=Natives.getLibraryName();
-      context.openfile=new Openfile(libfile,cali);
-      Applic.RunOnUiThread(() -> {   context.openfile.showchoice(context,false); });
        }
 
 static boolean showintro=false;
@@ -145,9 +142,6 @@ public static boolean getlibrary(MainActivity context) {
 		}
 
 
- // showintro=true;
-   help.help(R.string.introhelp,context);
-   help.sethelpbutton(GONE); 
     if (!files.exists())
         files.mkdirs();
   new librarythread(context,cali).start();

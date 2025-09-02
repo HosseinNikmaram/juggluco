@@ -67,7 +67,6 @@ private static String  LOG_ID="watchdrip";
 					Log.e(LOG_ID,"settings==null");
 					return;
 				}
-			WearInt.mapsettings.put(key,settings);
 			var gl=Natives.getlastGlucose();
 			if(gl==null)
 					return;
@@ -77,10 +76,7 @@ private static String  LOG_ID="watchdrip";
 				int alarm = (int) ((res >> 48) & 0xFFL);
 				short ratein = (short) ((res >> 32) & 0xFFFFL);
 				float rate = ratein / 1000.0f;
-				var newintent=WearInt.mksendglucoseintent(settings,glumgdl,rate,alarm,  gl[0]*1000L);
-				newintent.putExtra( "FUNCTION","update_bg_force");
-				newintent.setPackage(key);
-				Applic.getContext().sendBroadcast(newintent);
+
 				}
 			}
 

@@ -27,7 +27,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static tk.glucodata.Applic.mgdLmult;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.MessageSender.initwearos;
-import static tk.glucodata.settings.Settings.removeContentView;
 import static tk.glucodata.util.getbutton;
 import static tk.glucodata.util.getcheckbox;
 
@@ -40,19 +39,6 @@ static private float glucose=80f;
 static private float trend=-5.2f;
 static private final  String LOG_ID="Watch";
 static public void show(MainActivity context) {
-       var notify=getcheckbox(context,context.getString(R.string.notify), Notify.alertwatch);
-	
-	notify.setOnCheckedChangeListener(
-		(buttonView,  isChecked) ->  {
-		//	Applic.getContext().setnotify(isChecked);
-			});
-
-       var separate=getcheckbox(context,context.getString(R.string.separate), Notify.alertseparate);
-	separate.setOnCheckedChangeListener(
-		(buttonView,  isChecked) ->  {
-			Notify.alertseparate=isChecked;
-			Natives.setSeparate(isChecked);
-			});
 
 	       var watchdrip=getcheckbox(context,"Watchdrip", SuperGattCallback.doWearInt);
 		watchdrip.setOnCheckedChangeListener(
@@ -138,57 +124,6 @@ static public void show(MainActivity context) {
 			 });
 
 
-	var Ok=getbutton(context,R.string.ok);
-	var Help=getbutton(context,R.string.helpname);
-	Help.setOnClickListener(v-> {
-        context.lightBars(false);
-        help.help(R.string.watchinfo,context,l->context.lightBars(!Natives.getInvertColors( ))); 
-        });
-
-	var layout=new Layout(context,(l,w,h)-> {
-		var width= GlucoseCurve.getwidth();
-		if(width>w)
-			l.setX((width-w)/2);
-      l.setY(MainActivity.systembarTop);
-		return new int[] {w,h};
-		},mibandrow,new View[] {notify,separate},new View[]{wearbox,wearossettings},new View[]{server,serverconfig},new View[]{kerfstok,status},new View[]{Help,Ok} );
-	float density=GlucoseCurve.metrics.density;
-	int laypad=(int)(density*4.0);
-	layout.setPadding(laypad*2,laypad*2,laypad*2,laypad);
-
-	layout.setBackgroundColor( Applic.backgroundcolor);
-	context.addContentView(layout, new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-	status.setOnClickListener(v->{
-		//	new GarminStatus(context,Applic.getContext().numdata,layout);
-			});
-	wearossettings.setOnClickListener(v->{
-	//		Wearos.show(context,layout);
-			});
-	Ok.setOnClickListener(
-		v -> {
-		   if(usegarmin!=kerfstok.isChecked()) {
-		   	Natives.setusegarmin(!usegarmin);
-			if(usegarmin) {
-				Natives.sethasgarmin(false);
-			//	Applic.getContext().numdata.stop();
-				}
-		   	}
-		context.poponback();
-		removeContentView(layout);
-		context.hideSystemUI(); 
-		if(Menus.on) {
-			Menus.show(context);
-			}
-		});
-
-
-
-	context.setonback(()-> { removeContentView(layout);
-		context.hideSystemUI(); });
-
-	serverconfig.setOnClickListener(v->{
-			Nightscout.show(context,layout);
-			});
 	}
 	
 

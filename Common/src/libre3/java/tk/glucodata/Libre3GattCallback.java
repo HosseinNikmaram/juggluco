@@ -31,6 +31,8 @@ import android.os.PowerManager;
 
 //import java.security.SecureRandom;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledFuture;
@@ -950,11 +952,16 @@ private ScheduledFuture<?> retrytimer=null;
 private void setretrytimer() {
     if(retrytimer==null) {
     	{if(doLog) {Log.i(LOG_ID, SerialNumber + ": "+"set timer");};};
-	retrytimer=Applic.scheduler.schedule(()-> { 
-		retrytimer=null;
-		{if(doLog) {Log.i(LOG_ID, SerialNumber + ": "+"timer went off");};};
-		fromqueue(); 
-		}, 5, TimeUnit.SECONDS);
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if (doLog) {
+					Log.i(LOG_ID, SerialNumber + ": " + "timer went off");
+				}
+				fromqueue();
+			}
+		}, 5000);
 		}
 	else
 		{if(doLog) {Log.i(LOG_ID, SerialNumber + ": "+"already timer");};};

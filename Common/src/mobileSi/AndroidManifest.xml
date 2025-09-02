@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"  >
 <!--   <uses-sdk android:minSdkVersion="${minSDK}" android:targetSdkVersion="${targetSDK}"
        tools:ignore="GradleOverrides" /> -->
-    <application android:name="tk.glucodata.Applic"
+    <application
         android:icon="@mipmap/ic_launcher"
         >
    <meta-data

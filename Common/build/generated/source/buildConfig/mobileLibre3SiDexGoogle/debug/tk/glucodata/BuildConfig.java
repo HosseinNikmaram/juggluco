@@ -16,7 +16,7 @@ public final class BuildConfig {
   public static final int VERSION_CODE = 733;
   public static final String VERSION_NAME = "9.7.7-phone-li3-si-x-gDEBUG";
   // Field from default config.
-  public static final String BUILD_TIME = new java.text.SimpleDateFormat("HH:mm:ss dd-MMM-yyyy").format(new java.util.Date(1756638806729L));
+  public static final String BUILD_TIME = new java.text.SimpleDateFormat("HH:mm:ss dd-MMM-yyyy").format(new java.util.Date(1756794876855L));
   // Field from product flavor: dex
   public static final int DexCom = 1;
   // Field from product flavor: google

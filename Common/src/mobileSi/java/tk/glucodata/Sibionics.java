@@ -25,17 +25,12 @@ package tk.glucodata;
 import static tk.glucodata.Applic.Toaster;
 import static tk.glucodata.Applic.isWearable;
 import static tk.glucodata.Applic.useZXing;
-import static tk.glucodata.InsulinTypeHolder.getradiobutton;
 import static tk.glucodata.Log.doLog;
 import static tk.glucodata.MainActivity.REQUEST_BARCODE;
 import static tk.glucodata.MainActivity.REQUEST_BARCODE_SIB2;
 import static tk.glucodata.ZXing.scanZXingAlg;
-import static tk.glucodata.settings.Settings.removeContentView;
 import static tk.glucodata.util.getbutton;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -99,25 +94,12 @@ private static void selectType(String name,long dataptr,MainActivity act) {
 
     var group=new RadioGroup(act);
     int id=0;
-    group.addView(getradiobutton(act,R.string.eusibionics,id++));
-    group.addView(getradiobutton(act,R.string.hematonix,id++));
-    group.addView(getradiobutton(act,R.string.chsibionics,id++));
-    group.addView(getradiobutton(act,R.string.sibionics2,id));
+
     group.check(subtype);
    var ok=getbutton(act, R.string.ok);
-    int height = GlucoseCurve.getheight();
-    int width = GlucoseCurve.getwidth();
-   final int rand=(int)tk.glucodata.GlucoseCurve.metrics.density*15;
-   group.setPadding(rand,rand,(int)tk.glucodata.GlucoseCurve.metrics.density*25,(int)tk.glucodata.GlucoseCurve.metrics.density*20);
-   var layout=new Layout(act,(l,w,h)->{
-         l.setX((width-w)*.5f);
-         l.setY((height-h)*.3f);
-         return new int[] {w,h};
-           },new View[]{group},new View[]{ok});
-   layout.setBackgroundColor(Applic.backgroundcolor);
-   layout.setPadding(0,0,0,rand);
+
+
    MainActivity.setonback(() -> {
-      removeContentView(layout);
       int type=group.getCheckedRadioButtonId();
       Log.i(LOG_ID,"getCheckedRadioButtonId()="+type);
       if(type>=0) {
@@ -145,7 +127,6 @@ private static void selectType(String name,long dataptr,MainActivity act) {
         MainActivity.doonback();
         });
 
-    act.addContentView(layout, new ViewGroup.LayoutParams(WRAP_CONTENT,WRAP_CONTENT));
     }
 
 static long wasdataptr=0L;

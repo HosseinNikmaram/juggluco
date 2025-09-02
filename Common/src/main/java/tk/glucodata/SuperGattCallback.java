@@ -145,7 +145,7 @@ void shouldreconnect(long now) {
     static final long thefuture = 0x7FFFFFFFFFFFFFFFL;
     //static  long oldtime = thefuture;
 
- long showtime = Notify.glucosetimeout;
+ long showtime = 330000L;
  static long lastfoundL=0L;
 static long lastfound() {
         return lastfoundL;
@@ -167,50 +167,31 @@ static notGlucose previousglucose=null;
 static float previousglucosevalue=0.0f;
 
 static public void initAlarmTalk() {
-    if(!DontTalk) {
-        Talker.getvalues();
-        if(Talker.shouldtalk())
-            newtalker(null);
-        }
+
     }
-static Talker talker;
 static boolean dotalk=false;
 static void newtalker(Context context) {
-    if(!DontTalk) {
-        if (talker != null)
-            talker.destruct();
-        talker = new Talker(context);
-    }
+
     }
 static void endtalk() {
-    if(!DontTalk) {
-        dotalk = false;
-        if (talker != null) {
-            talker.destruct();
-            talker = null;
-        } 
-        }
+
     }
 static private int veryhigh(long tim,notGlucose sglucose,float gl,float rate,int alarm,boolean[] alarmspeak) {
              final boolean alarmtime = tim > nextalarm[6];
-             Notify.onenot.veryhighglucose(sglucose,gl, rate,alarmtime);
              if(alarmtime) {
                     nextalarm[8]=nextalarm[6] = nextalarm[1] = tim + Natives.readalarmsuspension(6) * 60;
                     alarm |= 8;
                     if(!DontTalk) {
-                        if((alarmspeak[0]=Natives.speakalarms())) Talker.nexttime = 0L;
                     }
                    }
               return alarm;
              }
 static private int high(long tim,notGlucose    sglucose,float gl,float rate,int alarm,boolean[] alarmspeak) {
         final boolean alarmtime = tim > nextalarm[1];
-        Notify.onenot.highglucose(sglucose,gl, rate,alarmtime);
         if (alarmtime) {
             nextalarm[8] = nextalarm[1] = tim + Natives.readalarmsuspension(1) * 60;
             alarm |= 8;
             if(!DontTalk) {
-                if((alarmspeak[0]=Natives.speakalarms())) Talker.nexttime = 0L;
             }
         }
         return alarm;
@@ -218,26 +199,20 @@ static private int high(long tim,notGlucose    sglucose,float gl,float rate,int 
 
 static private int verylow(long tim,notGlucose    sglucose,float gl,float rate,int alarm,boolean[] alarmspeak) {
         final boolean alarmtime = tim > nextalarm[5];
-        Notify.onenot.verylowglucose(sglucose,gl, rate,alarmtime);
         if(alarmtime) {
             nextalarm[7] =nextalarm[5] =nextalarm[0]= tim + Natives.readalarmsuspension(5) * 60;
-            {if(doLog) {Log.i(LOG_ID,"next alarm at "+ nextalarm[5] +" "+bluediag.datestr( nextalarm[5]*1000L ));};};
             alarm |= 8;
             if(!DontTalk) {
-                if((alarmspeak[0]=Natives.speakalarms())) Talker.nexttime = 0L;
             }
         }
        return alarm;
       }
 static private int low(long tim,notGlucose    sglucose,float gl,float rate,int alarm,boolean[] alarmspeak) {
         final boolean alarmtime = tim > nextalarm[0];
-        Notify.onenot.lowglucose(sglucose,gl, rate,alarmtime);
         if(alarmtime) {
             nextalarm[7] =nextalarm[0] = tim + Natives.readalarmsuspension(0) * 60;
-            {if(doLog) {Log.i(LOG_ID,"next alarm at "+ nextalarm[0] +" "+bluediag.datestr( nextalarm[0]*1000L ));};};
             alarm |= 8;
             if(!DontTalk) {
-                if((alarmspeak[0]=Natives.speakalarms())) Talker.nexttime = 0L;
             }
         }
        return alarm;
@@ -260,74 +235,41 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
         );
         final long tim = timmsec / 1000L;
         boolean waiting = false;
-        var sglucose=new notGlucose(timmsec, String.format(Applic.usedlocale,Notify.pureglucoseformat, gl),  rate,sensorgen);
-        previousglucose=sglucose;
         previousglucosevalue=gl;
-        final var fview=Floating.floatview;
+        // final var fview=Floating.floatview; // Commented out for headless mode - no UI needed
 //        MainActivity.showmessage=null;
         boolean[] alarmspeak={false};
-        if(fview!=null) 
-            fview.postInvalidate();
+        // if(fview!=null) // Commented out for headless mode - no UI needed
+            // fview.postInvalidate(); // Commented out for headless mode - no UI needed
 
         try {
 
             switch (alarm) {
                 case 4: {
-                    if(Natives.hasalarmveryhigh())
-                        alarm=veryhigh(tim,sglucose, gl, rate,alarm,alarmspeak) ;
-                    else {
-                        if(Natives.hasalarmhigh())
-                            alarm=high(tim,sglucose, gl, rate,alarm,alarmspeak) ;
-                         else
-                            Notify.onenot.normalglucose(sglucose,gl, rate,false);
-                        }
+
                     break;
                         }
                 case 18:  {
                  final boolean alarmtime = tim > nextalarm[8];
-                 Notify.onenot.prehighglucose(sglucose,gl, rate,alarmtime);
                  if(alarmtime) {
                         nextalarm[8]= tim + Natives.readalarmsuspension(8) * 60;
                         alarm |= 8;
                         if(!DontTalk) {
-                            if((alarmspeak[0]=Natives.speakalarms())) Talker.nexttime = 0L;
                         }
                        }
                     break;
                     }
-                case 16: 
-                      alarm=veryhigh(tim,sglucose, gl, rate,alarm,alarmspeak) ;
-                      break;
-                case 6: 
-                      alarm=high(tim,sglucose, gl, rate,alarm,alarmspeak) ;
-                      break;
-                case 5: {
-                    if(Natives.hasalarmverylow()) {
-                       alarm=verylow(tim,sglucose, gl, rate,alarm,alarmspeak) ;
-                       }
-                    else {
-                        if(Natives.hasalarmlow()) {
-                           alarm=low(tim,sglucose, gl, rate,alarm,alarmspeak) ;
-                           }
-                        else
-                            Notify.onenot.normalglucose(sglucose,gl, rate,false);
-                         }
-                     break;
-                    }
+
                 case 17: 
-                      alarm=verylow(tim,sglucose, gl, rate,alarm,alarmspeak) ;
                       break;
                 case 7: 
-                      alarm=low(tim,sglucose, gl, rate,alarm,alarmspeak) ;
                       break;
                 case 19:  {
                  final boolean alarmtime = tim > nextalarm[7];
-                 Notify.onenot.prelowglucose(sglucose,gl, rate,alarmtime);
                  if(alarmtime) {
                         nextalarm[7]= tim + Natives.readalarmsuspension(7) * 60;
                         alarm |= 8;
                         if(!DontTalk) {
-                            if((alarmspeak[0]=Natives.speakalarms())) Talker.nexttime = 0L;
                         }
                        }
                     break;
@@ -335,7 +277,6 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
                 case 3:
                     waiting = true;
                 default:
-                    Notify.onenot.normalglucose(sglucose,gl, rate,waiting);
             }
             ;
         } catch (Throwable e) {
@@ -346,7 +287,6 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
 
         if(!DontTalk) {
             if(dotalk&&!alarmspeak[0])  {
-                talker.selspeak(sglucose.value);
                 }
             }
         if(isWearable) {
@@ -357,7 +297,6 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
         if(Natives.getJugglucobroadcast())
             JugglucoSend.broadcastglucose(SerialNumber,mgdl,gl,rate,alarm,timmsec);
         if(!isWearable) {
-            new Applic().numdata.sendglucose(SerialNumber, tim, gl, thresholdchange(rate), alarm|0x10);
           //  GlucoseWidget.update();
             }
         if(tim>nexttime) {
@@ -370,12 +309,9 @@ static private int low(long tim,notGlucose    sglucose,float gl,float rate,int a
             if(Natives.getxbroadcast())
                 SendLikexDrip.broadcastglucose(mgdl,rate,timmsec,sensorstartmsec,sensorgen);
             if(!isWearable) {
-                if(doWearInt)
-                    tk.glucodata.WearInt.sendglucose(mgdl, rate, alarm, timmsec);
 
-                if(doGadgetbridge)
-                    Gadgetbridge.sendglucose(sglucose.value,mgdl,gl,rate,timmsec);
-                } 
+
+                }
             }
 
     }

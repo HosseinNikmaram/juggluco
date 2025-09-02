@@ -238,8 +238,6 @@ static private synchronized void dostop() {
 	}
 	}
 
-static  void stop() {
-     Applic.scheduler.schedule(Flash::dostop, 0, TimeUnit.MILLISECONDS);
-     }
+
 }
 

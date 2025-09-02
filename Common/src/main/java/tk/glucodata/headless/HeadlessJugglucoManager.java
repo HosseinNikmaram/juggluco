@@ -3,6 +3,7 @@ package tk.glucodata.headless;
 import android.content.Context;
 import android.util.Log;
 
+import tk.glucodata.Applic;
 import tk.glucodata.Natives;
 import tk.glucodata.SensorBluetooth;
 
@@ -34,6 +35,7 @@ public class HeadlessJugglucoManager {
     public boolean init(Context ctx) {
         try {
             if (!nativesInitialized) {
+                Applic.Toaster("HeadlessJugglucoManager");
                 Natives.setfilesdir(ctx.getFilesDir().getAbsolutePath(), "IR", ctx.getApplicationInfo().nativeLibraryDir);
                 Natives.initjuggluco(ctx.getFilesDir().getAbsolutePath());
                 Natives.onCreate();

@@ -139,7 +139,6 @@
        tools:ignore="GradleOverrides" />
     -->
     <application
-        android:name="tk.glucodata.Applic"
         android:allowBackup="false"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"

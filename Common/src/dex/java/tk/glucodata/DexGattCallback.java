@@ -69,7 +69,6 @@ private boolean known=false;
         known=dexKnownSensor(dataptr);
 //        ownDeviceName=Natives.dexGetDeviceName(dataptr);
         {if(doLog) {Log.d(LOG_ID, SerialNumber + " DexGattCallback(..)");};};
-        showtime=6*60*1000L;
     }
 
     static private byte[] lencode(int which, int code) {
@@ -359,7 +358,6 @@ private boolean connected=false;
 
 
 private void sendcerts() {
-    Applic.scheduler.schedule(this::sendcertthread, 0, TimeUnit.MILLISECONDS);
    }
 
 private static void sleep(long mmsec) {
@@ -626,15 +624,6 @@ private boolean removedBond=false;
 private void tryer(Supplier<Boolean> worked) {
             if(worked.get())
                 return;
-            Applic.scheduler.schedule(() -> { 
-                 for(int i=0;i<16;i++) {
-                      if(!connected) {
-                           {if(doLog) {Log.i(LOG_ID,"tryer stops not connected");};};
-                          return;
-                          }
-                      if(worked.get()) return; 
-                      sleep(20) ;
-                     } }, 20, TimeUnit.MILLISECONDS);
             }
 private    void getdatacmd() {
     {if(doLog) {Log.i(LOG_ID,"getdatacmd");};};
@@ -724,8 +713,6 @@ private    void getdata(byte[] value) {
                 final int glumgdl = (int) (res & 0xFFFFFFFFL);
                 Log.i(LOG_ID, "dexcomProcessData newtime="+newtime+" res="+res+" "+glumgdl+" mg/dL "+(glumgdl/18.0)+ " mmol/L");                  
                 handleGlucoseResult(res, newtime);
-                Applic.scheduler.schedule(()->{
-                  if(connected) askbackfill();}, 10, TimeUnit.MILLISECONDS);
 //                datatime=timmsec;
                 datatime=newtime;
                 if(savename) saveDeviceName();

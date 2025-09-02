@@ -47,7 +47,6 @@ public class editUIfocus implements View.OnFocusChangeListener {
 //		{if(doLog) {Log.i(LOG_ID,"nofucos1 width="+metrics.  widthPixels+" "+width);};};
 		act.showui=false;
 	       act.hideSystemUI();
-	      help.hidekeyboard(act);
 //		{if(doLog) {Log.i(LOG_ID,"nofucos2 width="+ metrics.  widthPixels+" "+width);};};
 	   }
     }

@@ -1,6 +1,5 @@
 package tk.glucodata;
 
-import static tk.glucodata.Backup.changehostError;
 
 import android.widget.Toast;
 
@@ -70,9 +69,6 @@ static String makestring(String[] names,int nr,boolean detect,String port,boolea
             Runnable save=()-> {
                int pos=Natives.changebackuphost(-1,names,nr,detect,port, nums,stream,scans,false,receive,activeonly,passiveonly,pass,starttime,label,testip,hasname);
                if(pos<0) {
-                      String mess=changehostError(act,pos);
-                      Log.i(LOG_ID,mess);
-                      Applic.argToaster(Applic.getContext(),mess, Toast.LENGTH_SHORT);
                       }
                else   {
                   Applic.argToaster(Applic.getContext(),R.string.mirrorscansucces, Toast.LENGTH_SHORT);

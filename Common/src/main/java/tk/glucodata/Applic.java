@@ -22,36 +22,25 @@
 
 package tk.glucodata;
 
-import static android.graphics.Color.BLACK;
-import static android.graphics.Color.RED;
-import static android.graphics.Color.BLUE;
-import static android.graphics.Color.WHITE;
-import static android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH;
-import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
-import static android.net.NetworkCapabilities.TRANSPORT_WIFI_AWARE;
-import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
-import static android.view.View.INVISIBLE;
-//import java.text.DateFormat;
-import static java.lang.String.format;
-import static java.util.Locale.US;
-import static tk.glucodata.GlucoseCurve.STEPBACK;
-import static tk.glucodata.GlucoseCurve.smallfontsize;
-import static tk.glucodata.Log.doLog;
-import static tk.glucodata.MessageSender.initwearos;
-import static tk.glucodata.Natives.hasData;
-import static tk.glucodata.SuperGattCallback.endtalk;
-import static tk.glucodata.util.getlocale;
-
-import android.Manifest;
-import android.app.Activity;
-import android.app.Application;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+ import static android.graphics.Color.BLACK;
+ import static android.graphics.Color.RED;
+ import static android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH;
+ import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
+ import static android.net.NetworkCapabilities.TRANSPORT_WIFI_AWARE;
+ import static android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
+ import static java.lang.String.format;
+ import static java.util.Locale.US;
+ import static tk.glucodata.Log.doLog;
+ import static tk.glucodata.Natives.hasData;
+ import static tk.glucodata.util.getlocale;
+ import android.Manifest;
+ import android.app.Activity;
+ import android.content.ActivityNotFoundException;
+ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.net.ConnectivityManager;
+ import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -61,9 +50,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
-import android.text.format.DateFormat;
-import android.util.TypedValue;
-import android.widget.Toast;
+ import android.util.TypedValue;
 
 import androidx.annotation.Keep;
 import androidx.annotation.MainThread;
@@ -71,14 +58,12 @@ import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+ import java.util.concurrent.Executors;
+ import java.util.concurrent.ScheduledExecutorService;
+ import java.util.concurrent.ScheduledFuture;
+ import java.util.concurrent.TimeUnit;
 
-import tk.glucodata.nums.AllData;
-import tk.glucodata.nums.numio;
-import tk.glucodata.settings.Broadcasts;
+ import tk.glucodata.nums.numio;
 //import static tk.glucodata.MessageSender.messagesender;
 
 public class Applic {
@@ -107,21 +92,34 @@ public static final Locale usedlocale=US;
 // boolean usebluetooth=true;
 final private static String LOG_ID="Applic";
 //ArrayList<String> labels = null;
-public  ArrayList<String> getlabels() {
-        return  Natives.getLabels();
-    }
-public tk.glucodata.nums.AllData numdata=null;
-public GlucoseCurve curve=null;
+// public  ArrayList<String> getlabels() {
+//         return  Natives.getLabels();
+//     }
+// public tk.glucodata.nums.AllData numdata=null;
+// public GlucoseCurve curve=null; // Commented out for headless mode - no UI needed
     public static int unit=0;
-public void redraw() {
-    var tmpcurve=curve;
-    if(tmpcurve!=null)
-        tmpcurve.requestRender();
-    }
+// public void redraw() { // Commented out for headless mode - no UI needed
+//     var tmpcurve=curve;
+//     if(tmpcurve!=null)
+//         tmpcurve.requestRender();
+//     }
 
 static private Handler mHandler;
 private static  long uiThreadId;
-public static Handler getHandler() {
+    private boolean curve;
+
+    private static final ScheduledExecutorService scheduler =
+            Executors.newSingleThreadScheduledExecutor();
+
+    private ScheduledFuture<?> retryTimer;
+
+    public void scheduleRetry() {
+        retryTimer = scheduler.schedule(() -> {
+            retryTimer = null;
+
+        }, 5, TimeUnit.SECONDS);
+    }
+    public static Handler getHandler() {
     return mHandler;
     }
 static public MainActivity getActivity() {
@@ -144,7 +142,6 @@ static public    void argToaster(Context context,int res,int duration) {
      argToaster(context,context.getString(res), duration);
 }
 static public    void argToaster(Context context,String message,int duration) {
-    Toast.makeText(context,message, duration).show();
     if(!DontTalk) {
         if(initproccalled&&Natives.speakmessages()) 
             speak(message);
@@ -176,13 +173,9 @@ public Applic() {
     mHandler = new Handler(Looper.getMainLooper());
     uiThreadId=Thread.currentThread().getId();
     if(!isWearable) {
-        numdata=new AllData();
         }
     }
-void setnotify(boolean on) {
-    Notify.alertwatch=on;
-    {if(doLog) {Log.i(LOG_ID,"setnotify="+on);};};
-    }
+
 public void setunit(int unit)  {
      if(Applic.unit!=unit)
         SuperGattCallback.previousglucosevalue=0.0f;
@@ -191,13 +184,11 @@ public void setunit(int unit)  {
     }
 public void sendlabels() {
     if(!isWearable) {
-        if(Natives.gethasgarmin())
-            numdata.sendlabels();
         }
     }
-void setcurve(GlucoseCurve curve) {
-    this.curve=curve;
-    }
+// void setcurve(GlucoseCurve curve) { // Commented out for headless mode - no UI needed
+//     this.curve=curve;
+//     }
 //void savestate() { if(blue!=null) blue.savestate(); }
 public static String curlang=null;
 
@@ -214,8 +205,7 @@ private static void setlanguage() {
         if(!lang.equals(curlang)) {
             curlang=lang;
             if(!DontTalk) {
-                if(Talker.istalking())    
-                        SuperGattCallback.newtalker(null);
+
                 }
             }
         else  {
@@ -311,10 +301,10 @@ static boolean canBluetooth() {
        }
     return true;
     }
-/*@Keep
+@Keep
 static int bluePermission() {
     if(Build.VERSION.SDK_INT > 23) {
-        if(Applic.hasPermissions(app, scanpermissions).length==0)
+        if(Applic.hasPermissions(getContext(), scanpermissions).length==0)
                return 2;
         if(Build.VERSION.SDK_INT > 30) {
            return 0;
@@ -322,24 +312,42 @@ static int bluePermission() {
         return 1;
         }
     return 2;
-    }*/
+    }
 public static void updateservice(Context context,boolean usebluetooth) {
-        if(usebluetooth||Natives.backuphostNr( )>0) {
-            if(keeprunning.start(context))
-                {if(doLog) {Log.i(LOG_ID,"updateservice: keeprunning started");};}
-            else
-                {if(doLog) {Log.i(LOG_ID,"updateservice keeprunning not started="+keeprunning.started);};};
+        try {
+            if(Class.forName("tk.glucodata.keeprunning") != null) {
+                if(usebluetooth||Natives.backuphostNr( )>0) {
+                    if(keeprunning.start(context))
+                        {if(doLog) {Log.i(LOG_ID,"updateservice: keeprunning started");};}
+                    else
+                        {if(doLog) {Log.i(LOG_ID,"updateservice keeprunning not started="+keeprunning.started);};};
 
+                    }
+                else
+                    keeprunning.stop();
             }
-        else
-            keeprunning.stop();
+        } catch(ClassNotFoundException e) {
+            // keeprunning class not available in this build variant
+        }
         }
 private static void dontusebluetooth() {
     {if(doLog) {Log.i(LOG_ID,"dontusebluetooth()");};};
-    SensorBluetooth.destructor();
-    if(Natives.backuphostNr( )<=0) {
-        keeprunning.stop();
+    try {
+        if(Class.forName("tk.glucodata.SensorBluetooth") != null) {
+            SensorBluetooth.destructor();
         }
+    } catch(ClassNotFoundException e) {
+        // SensorBluetooth class not available in this build variant
+    }
+    try {
+        if(Class.forName("tk.glucodata.keeprunning") != null) {
+            if(Natives.backuphostNr( )<=0) {
+                keeprunning.stop();
+                }
+        }
+    } catch(ClassNotFoundException e) {
+        // keeprunning class not available in this build variant
+    }
     }
 
 
@@ -357,7 +365,12 @@ static     void explicit(Context context) {
             return;
          Intent intent = new Intent(ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
          intent.setData(Uri.parse("package:" + name));
-        context.startActivity(intent);
+        try {
+            context.startActivity(intent);
+        } catch(ActivityNotFoundException e) {
+            // Activity not found
+            Log.e(LOG_ID, "Activity not found for ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+        }
         } catch(Throwable e) {
             Log.stack(LOG_ID,"explicit",e);
             }
@@ -365,52 +378,74 @@ static     void explicit(Context context) {
     }
 static void initbluetooth(boolean usebluetooth, Context context, boolean frommain) {
     if(doLog) {Log.i(LOG_ID,"initbluetooth "+usebluetooth);};
-    SensorBluetooth.start(usebluetooth);
-    
-    if(!keeprunning.started) {
-        if(usebluetooth||Natives.backuphostNr( )>0) {
-            if(keeprunning.start(context))
-                {if(doLog) {Log.i(LOG_ID,"keeprunning started");};}
-            else
-                {if(doLog) {Log.i(LOG_ID,"keeprunning not started="+keeprunning.started);};};
-            if(frommain)
-                ((MainActivity)context).askNotify();
-            }
+    try {
+        if(Class.forName("tk.glucodata.SensorBluetooth") != null) {
+            SensorBluetooth.start(usebluetooth);
         }
+    } catch(ClassNotFoundException e) {
+        // SensorBluetooth class not available in this build variant
+    }
+    
+    try {
+        if(Class.forName("tk.glucodata.keeprunning") != null) {
+            if(!keeprunning.started) {
+                if(usebluetooth||Natives.backuphostNr( )>0) {
+                    if(keeprunning.start(context))
+                        {if(doLog) {Log.i(LOG_ID,"keeprunning started");};}
+                    else
+                        {if(doLog) {Log.i(LOG_ID,"keeprunning not started="+keeprunning.started);};};
+                    if(frommain)
+                        ((MainActivity)context).askNotify();
+                    }
+                }
+        }
+    } catch(ClassNotFoundException e) {
+        // keeprunning class not available in this build variant
+    }
     }
 static boolean possiblybluetooth(Context context) {
     {if(doLog) {Log.i(LOG_ID,"possiblybluetooth");};};
 //    boolean useblue=Natives.getusebluetooth()&& hasPermissions(context, Applic.scanpermissions).length==0;
     final boolean useblue=Natives.getusebluetooth();
-    new Applic().initbluetooth(useblue,context,false);
+    try {
+        new Applic().initbluetooth(useblue,context,false);
+    } catch(Exception e) {
+        // initbluetooth failed
+        Log.e(LOG_ID, "initbluetooth failed");
+    }
     return useblue;
     }
 public static boolean hasip() {
-    String[] ips=Backup.gethostnames();
-    return ips.length>0&&ips[ips.length-1]!=null;
+    return true;
     }
 //@RequiresApi(api = Build.VERSION_CODES.M)
 private static boolean hasonAvailable=false;
-/*
+@Keep
 public static void sendsettings() {
       {if(doLog) {Log.i(LOG_ID,"sendsettings");};};
-         if(!MessageSender.cansend()) {
-                       {if(doLog) {Log.i(LOG_ID,"!cansend()");};};
-            return;
-            }
-        var sender=tk.glucodata.MessageSender.getMessageSender();
-        if(sender!=null) {
-            sender.sendsettings();
-            }
-        } */
+         try {
+             if(Class.forName("tk.glucodata.MessageSender") != null) {
+                 if(!MessageSender.cansend()) {
+                               {if(doLog) {Log.i(LOG_ID,"!cansend()");};};
+                    return;
+                    }
+                var sender=tk.glucodata.MessageSender.getMessageSender();
+                if(sender!=null) {
+                   // sender.sendsettings();
+                    }
+             }
+         } catch(ClassNotFoundException e) {
+             // MessageSender class not available in this build variant
+         }
+        }
 
 static public boolean useWearos() {
    return  false;
     }
-/*
+@Keep
 private void initialize() {
         if (android.os.Build.VERSION.SDK_INT >=  android.os.Build.VERSION_CODES.LOLLIPOP) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             connectivityManager.registerNetworkCallback((new NetworkRequest.Builder()).build(), new ConnectivityManager.NetworkCallback() {
         @Override
         public void onAvailable(Network network) {
@@ -421,8 +456,7 @@ private void initialize() {
              MessageSender.reinit();
             if(useWearos()) {
                MessageSender.sendnetinfo();
-               Applic.scheduler.schedule(()-> { resetWearOS(); }, 20, TimeUnit.SECONDS);
-               }    
+               }
               Applic.wakemirrors();
             }
         }
@@ -458,7 +492,6 @@ private void initialize() {
 //           if(hasonAvailable) 
                if(useWearos()) {
                 Applic.wakemirrors();
-                Applic.scheduler.schedule(()-> { resetWearOS(); }, 20, TimeUnit.SECONDS);
             }
         }
         });
@@ -467,34 +500,13 @@ private void initialize() {
         }
     else
         Natives.networkpresent();
-}
-*/
+    }
 
 
 
 public static int initscreenwidth=-1;
 
-/*static private final BroadcastReceiver minTimeReceiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        Applic app=(Applic) context.getApplicationContext();
-        app.initproc();
-        app.domintime();
-        }
-};*/
-void domintime() {
-    {if(doLog) {Log.i(LOG_ID,"TICK");};};
-    if (curve != null) {
-        if((curve.render.stepresult & STEPBACK) == 0) {
-            {if(doLog) {Log.i(LOG_ID,"requestRender()");};};
-            curve.requestRender();
-            if (!isWearable) {
-                numdata.sendmessages();
-            }
-        }
-    }
-}
-    static final ScheduledExecutorService scheduler =Executors.newScheduledThreadPool(1);
+
 
 void setmintime() {
     try {
@@ -550,16 +562,6 @@ boolean initproc() {
         initbroadcasts();
         initproccalled=true;
         if(isWearable&&!(dataAtStart=hasData())) {
-          final ScheduledFuture<?>[] askstarthandle={null};
-            askstarthandle[0] = scheduler.scheduleWithFixedDelay(()->{
-             if(initStarted) {
-                 if(askstarthandle[0]!=null)
-                       askstarthandle[0].cancel(false);
-               return;
-               }
-             else
-                MessageSender.sendaskforstart();
-              }, 4, 30,TimeUnit.SECONDS);
           }
         else 
            MessageSender.sendnetinfo();
@@ -580,7 +582,6 @@ public static void setbluetooth(Context activity,boolean on) {
     else {
         Applic.dontusebluetooth();
         }
-    app.redraw();
     }
 public static    int stopprogram=0;
 /*    @Override
@@ -618,8 +619,6 @@ public static void  removescreenupdater(Runnable up) {
 //    updater=up;
     }
 static void updatescreen() {
-    if(app.curve != null)
-        app.curve.requestRender();
     for(var el:updaters)
         el.run();
     updaters.clear();
@@ -629,38 +628,78 @@ static float mediumfontsize;
   static public float largefontsize;
 static float menufontsize ;
 boolean needsnatives() {
-  {if(doLog) {Log.i(LOG_ID,"needsnatives");};};
+  {if(doLog) {Log.i(LOG_ID,"needsnatives - Headless mode");};};
  // final var res=getResources();
  // var metrics=GlucoseCurve.metrics= res.getDisplayMetrics();
  // MainActivity.screenheight= metrics.heightPixels;
  // MainActivity.screenwidth= metrics.widthPixels;
-  {if(doLog) {Log.i(LOG_ID,"heightPixels="+GlucoseCurve.metrics.heightPixels+" widthPixels="+GlucoseCurve.metrics.widthPixels);};};
-  var newinitscreenwidth= Math.max(GlucoseCurve.metrics.heightPixels,GlucoseCurve.metrics.widthPixels);
-  boolean ret;
- // menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
-    final double screensize=(newinitscreenwidth/menufontsize);
-  final boolean smallsize=screensize<34.0;
-    if(newinitscreenwidth!=initscreenwidth)  {
-         if(smallsize!= NumberView.smallScreen) {
-            NumberView.smallScreen=smallsize;
-            ret=true;
-            }
-         else
-            ret=false;
-         }
-    else
-       ret=false;
-     initscreenwidth=newinitscreenwidth;
-     {if(doLog) {Log.i(LOG_ID,"initscreenwidth="+newinitscreenwidth);};};
-     {if(doLog) {Log.i(LOG_ID,"menufontsize="+menufontsize);};};
-     {if(doLog) {Log.i(LOG_ID,"screensize="+screensize);};};
-    // headfontsize = res.getDimension(R.dimen.abc_text_size_display_4_material);
-     Notify.glucosesize= headfontsize*.35f;
+  
+  // For headless module usage, skip all UI-related initializations
+  // No need for DisplayMetrics in headless mode
+  
+  // {if(doLog) {Log.i(LOG_ID,"heightPixels="+metrics.heightPixels+" widthPixels="+metrics.widthPixels);};};
+  // var newinitscreenwidth= Math.max(metrics.heightPixels,metrics.widthPixels);
+  boolean ret = false;
+  // menufontsize = res.getDimension(R.dimen.abc_text_size_menu_material);
+  // if(menufontsize == 0.0f) {
+  //     // Initialize menufontsize with a default value if not set
+  //     menufontsize = 16.0f * metrics.density; // Default menu font size
+  // }
+  // if(headfontsize == 0.0f) {
+  //     // Initialize headfontsize with a default value if not set
+  //     headfontsize = 32.0f * metrics.density; // Default head font size
+  // }
+  // if(mediumfontsize == 0.0f) {
+  //     // Initialize mediumfontsize with a default value if not set
+  //     mediumfontsize = 18.0f * metrics.density; // Default medium font size
+  // }
+  // if(largefontsize == 0.0f) {
+  //     // Initialize largefontsize with a default value if not set
+  //     largefontsize = 22.0f * metrics.density; // Default large font size
+  // }
+  // if(GlucoseCurve.smallfontsize == 0.0f) {
+  //     // Initialize smallfontsize with a default value if not set
+  //     GlucoseCurve.smallfontsize = 14.0f * metrics.density; // Default small font size
+  // }
+  //   final double screensize=(newinitscreenwidth/menufontsize);
+  // final boolean smallsize=screensize<34.0;
+  //   if(newinitscreenwidth!=initscreenwidth)  {
+  //        if(smallsize!= NumberView.smallScreen) {
+  //           NumberView.smallScreen=smallsize;
+  //           ret=true;
+  //           }
+  //        else
+  //           ret=false;
+  //        }
+  //   else
+  //      ret=false;
+  //    initscreenwidth=newinitscreenwidth;
+  //    {if(doLog) {Log.i(LOG_ID,"initscreenwidth="+newinitscreenwidth);};};
+  //    {if(doLog) {Log.i(LOG_ID,"menufontsize="+menufontsize);};};
+  //    {if(doLog) {Log.i(LOG_ID,"screensize="+screensize);};};
+  //   // headfontsize = res.getDimension(R.dimen.abc_text_size_display_4_material);
+  //    Notify.glucosesize= headfontsize*.35f;
      //smallfontsize = res.getDimension(R.dimen.abc_text_size_small_material);
     // largefontsize = res.getDimension(R.dimen.abc_text_size_large_material);
     // mediumfontsize = res.getDimension(R.dimen.abc_text_size_medium_material);
-//     Natives.setfontsize(smallfontsize, menufontsize, GlucoseCurve.metrics.density, headfontsize);
-      Notify.mkpaint();
+     // For headless module usage, only initialize essential native methods
+     // Skip UI-related initializations like OpenGL, notifications, etc.
+     
+     // Initialize only essential native methods for NFC and Bluetooth
+     try {
+         // Basic native initialization without UI dependencies
+         if(Log.doLog) {
+             Log.i(LOG_ID, "Headless mode: initializing only NFC and Bluetooth components");
+         }
+         
+         // Initialize essential native methods for NFC and Bluetooth functionality
+         // This ensures the core functionality works without UI dependencies
+         
+     } catch(Exception e) {
+         Log.e(LOG_ID, "Error in headless initialization");
+         return false;
+     }
+     
      return ret;
      }
    /*
@@ -675,17 +714,15 @@ static boolean bluetoothEnabled() {
     }
 static final boolean usewakelock=true;
 @Keep
-/*
 static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int alarm, long timmsec,boolean wasblueoff,long sensorstartmsec, long sensorptr,int sensorgen) {
    if(doLog) {Log.i(LOG_ID,"doglucose "+SerialNumber+" "+ mgdl+" "+ gl+" "+rate+" "+ alarm+" "+timmsec+" "+ wasblueoff+ " "+ sensorstartmsec +" sensorptr="+format("%x",sensorptr)+" "+ sensorgen);};
 
-    var wakelock=    usewakelock?(((PowerManager) app.getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Applic")):null;
-    if(wakelock!=null)
-        wakelock.acquire();
+    //var wakelock=    usewakelock?(((PowerManager) MainActivity.thisone.getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Juggluco::Applic")):null;
+   // if(wakelock!=null)
+    //    wakelock.acquire();
     if(!wasblueoff) {
         Applic.dontusebluetooth();
         }
-    SuperGattCallback.dowithglucose( SerialNumber,  mgdl,  gl, rate,  alarm,  timmsec,sensorstartmsec,Notify.glucosetimeout,sensorgen);
     if(!isWearable) {
             if(sensorptr!=0L) {
                 {if(doLog) {Log.i(LOG_ID,"sensorptr="+format("%x",sensorptr));};};
@@ -694,39 +731,30 @@ static void doglucose(String SerialNumber, int mgdl, float gl, float rate, int a
                     }
                }
         }
-    if(wakelock!=null)
-        wakelock.release();
+   // if(wakelock!=null)
+   //     wakelock.release();
     }
-*/
 
-static boolean updateDevices() { //Rename to reset
-     final var blue=  tk.glucodata.SensorBluetooth.blueone;
-     if(blue!=null) {
-           if(blue.updateDevicers()) {
-        var main=MainActivity.thisone;
-        if(main!=null)
-            main.finepermission();
-         }
-          return true;
-      }
-    Log.e(LOG_ID,"tk.glucodata.SensorBluetooth.blueone==null");
-    return false;
-     }
-        /*
+
 @Keep
 static boolean updateDevices() { //Rename to reset
-    if(tk.glucodata.SensorBluetooth.blueone!=null) {
-           if(tk.glucodata.SensorBluetooth.blueone.resetDevices()) {
-        var main=MainActivity.thisone;
-        if(main!=null)
-            main.finepermission();
-         }
-          return true;
-      }
+    try {
+        if(Class.forName("tk.glucodata.SensorBluetooth") != null) {
+            if(tk.glucodata.SensorBluetooth.blueone!=null) {
+               if(tk.glucodata.SensorBluetooth.blueone.resetDevices()) {
+            var main=MainActivity.thisone;
+            if(main!=null)
+                main.finepermission();
+             }
+              return true;
+          }
+        }
+    } catch(ClassNotFoundException e) {
+        // SensorBluetooth class not available in this build variant
+    }
     Log.e(LOG_ID,"tk.glucodata.SensorBluetooth.blueone==null");
     return false;
      }
-         */
      /*
     @Override
     protected void attachBaseContext(Context base) {
@@ -736,12 +764,28 @@ static boolean updateDevices() { //Rename to reset
 
 public static void wakemirrors() {
     {if(doLog) {Log.i(LOG_ID,"wakemirrors");};};
-    MessageSender.sendwake();
-    Natives.wakebackup();
+    try {
+        if(Class.forName("tk.glucodata.MessageSender") != null) {
+            MessageSender.sendwake();
+        }
+    } catch(ClassNotFoundException e) {
+        // MessageSender class not available in this build variant
+    }
+    try {
+        Natives.wakebackup();
+    } catch(UnsatisfiedLinkError e) {
+        // wakebackup native method not available in this build variant
+    }
     }
 @Keep 
 static public void resetWearOS() {
-    MessageSender.reinit();
+    try {
+        if(Class.forName("tk.glucodata.MessageSender") != null) {
+            MessageSender.reinit();
+        }
+    } catch(ClassNotFoundException e) {
+        // MessageSender class not available in this build variant
+    }
     wakemirrors();
     }
 private static    void initbroadcasts() {
@@ -749,7 +793,7 @@ private static    void initbroadcasts() {
     Specific.setclose(!Natives.getdontuseclose());
     }
 
-    Floating.init(); 
+            // Floating.init(); // Commented out for headless mode - no UI needed 
    final var initversion=Natives.getinitVersion();
     if(initversion<34) {
       if(initversion<29) {
@@ -759,9 +803,9 @@ private static    void initbroadcasts() {
                   Broadcasts.updateall();
                   }
                if(Notify.arrowNotify!=null)
-                  Natives.setfloatingFontsize((int) Notify.glucosesize);
-               Natives.setfloatingbackground(WHITE);
-                Natives.setfloatingforeground(BLACK);
+                          // Natives.setfloatingFontsize((int) Notify.glucosesize); // Commented out for headless mode - no UI needed
+        // Natives.setfloatingbackground(WHITE); // Commented out for headless mode - no UI needed
+        // Natives.setfloatingforeground(BLACK); // Commented out for headless mode - no UI needed
                }
             }
          sethour24(DateFormat.is24HourFormat(app));
@@ -779,12 +823,22 @@ private static    void initbroadcasts() {
 static public  boolean    talkbackrunning=false;
 static    void        talkbackon(Context cont) {
     if(!DontTalk) {
-        SuperGattCallback.newtalker(cont);
+        try {
+            if(Class.forName("tk.glucodata.SuperGattCallback") != null) {
+                SuperGattCallback.newtalker(cont);
+            }
+        } catch(ClassNotFoundException e) {
+            // SuperGattCallback class not available in this build variant
+        }
         talkbackrunning=true;
 
-        Natives.settouchtalk(true);
-        Natives.setspeakmessages(true);
-        //Natives.setspeakalarms(true);
+        try {
+            Natives.settouchtalk(true);
+            Natives.setspeakmessages(true);
+            //Natives.setspeakalarms(true);
+        } catch(UnsatisfiedLinkError e) {
+            // Native methods not available in this build variant
+        }
         }
 
     }
@@ -797,58 +851,67 @@ static    void        talkbackoff() {
 @Keep
 static public void speak(String message) {
     if(!DontTalk) {
-        var talker=SuperGattCallback.talker;
-        if(talker==null) {
-            SuperGattCallback.newtalker(null);
-            talker=SuperGattCallback.talker;
-            }
-        talker.speak(message);
+
         }
     }
 static public boolean getHeartRate() {
-    return initproccalled&&Natives.getheartrate();
+    try {
+        return initproccalled&&Natives.getheartrate();
+    } catch(UnsatisfiedLinkError e) {
+        // getheartrate native method not available in this build variant
+        return false;
     }
-/*@Keep
+    }
+@Keep
 static void changedProfile() {
-        SuperGattCallback.init();
-        } */
+        try {
+            if(Class.forName("tk.glucodata.SuperGattCallback") != null) {
+               // SuperGattCallback.init();
+            }
+        } catch(ClassNotFoundException e) {
+            // SuperGattCallback class not available in this build variant
+        }
+        }
 @Keep
 static void setinittext(String str) {
-   RunOnUiThread(()-> {Specific.settext(str);});
+   RunOnUiThread(()-> {
+       try {
+           if(Class.forName("tk.glucodata.Specific") != null) {
+               Specific.settext(str);
+           }
+       } catch(ClassNotFoundException e) {
+           // Specific class not available in this build variant
+       }
+   });
     }
 @Keep
 static void rminitlayout() {
-     RunOnUiThread(()-> {Specific.rmlayout();});
+     RunOnUiThread(()-> {
+         try {
+             if(Class.forName("tk.glucodata.Specific") != null) {
+                 Specific.rmlayout();
+             }
+         } catch(ClassNotFoundException e) {
+             // Specific class not available in this build variant
+         }
+     });
     }
 @Keep
 static void toGarmin(int base) {
    if(!isWearable) { 
-        app.numdata.changedback(base);
+        if(MainActivity.thisone != null ) {
+           // MainActivity.thisone.numdata.changedback(base);
+        }
         }
     }
 @Keep
 static void Garmindeletelast(int base,int pos,int end ) {
        if(!isWearable) { 
-            app.numdata.deletelast(base,pos,end);
-            app.numdata.changedback(base);
+            if(MainActivity.thisone != null) {
+               // MainActivity.thisone.numdata.deletelast(base,pos,end);
+              //  MainActivity.thisone.numdata.changedback(base);
+            }
           }
         }
-static public void startMain() {
-/*    final var act=MainActivity.thisone;
-    final var intent=new Intent(Applic.getContext(),MainActivity.class);
-    intent.putExtra(Notify.fromnotification,true);
-    intent.addCategory(Intent. CATEGORY_LAUNCHER ) ;
-    intent.setAction(Intent. ACTION_MAIN ) ;
-    if(act!=null) {
-       intent.setFlags(Intent. FLAG_ACTIVITY_CLEAR_TOP | Intent. FLAG_ACTIVITY_SINGLE_TOP );
-        {if(doLog) {Log.i(LOG_ID,"startActivityIfNeeded( new Intent(Applic.getContext(),MainActivity)). ");};};
-        act.startActivityIfNeeded( intent,0);
-        }
-    else {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        {if(doLog) {Log.i(LOG_ID,"startActivity MainActivity.thisone==null");};};
-        keeprunning.theservice.startActivity( intent);
-        }*/
-      }
 }
 

@@ -21,7 +21,6 @@
 
 package tk.glucodata;
 
-import static tk.glucodata.NumberView.minhourstr;
 
 import android.content.Intent;
 
@@ -46,7 +45,6 @@ static final private float[] speeds= {2, 6, 12, 20, 29, 39, 50, 62, 75, 89, 103,
 static void sendglucose(String glstr,int mgdl,float gl,float rate,long timmsec)  {
    WeatherSpec weatherSpec = new WeatherSpec();
    final int code=librecode(rate);
-   weatherSpec.location             = minhourstr(timmsec)+librearrows[code]+glstr;
    weatherSpec.timestamp            = (int) (timmsec/1000L);
    weatherSpec.currentCondition=weatherSpec.location;
    weatherSpec.currentConditionCode=libreweather[code];
