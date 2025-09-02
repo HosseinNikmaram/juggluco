@@ -545,7 +545,6 @@ private static void insertcalendar(Activity act,String name,long endtime) {
             String mess=error.getMessage();
             if(mess==null) mess="Exception";
             Log.stack(LOG_ID,mess,error);
-            Toast.makeText(act,mess, Toast.LENGTH_LONG).show();
             }
     }
 }
