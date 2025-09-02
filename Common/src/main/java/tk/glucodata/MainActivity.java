@@ -1163,7 +1163,7 @@ void switchSystemUI() {
         }
     }
 
-    @Override
+/*    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         {
             if (doLog) {
@@ -1209,9 +1209,9 @@ void switchSystemUI() {
         }
         return super.onKeyDown(keyCode, event);
 
-    }
+    }*/
 
-    @Override
+/*    @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
         {
             if (doLog) {
@@ -1243,7 +1243,7 @@ void switchSystemUI() {
             }
         }
         return super.onKeyLongPress(keyCode, event);
-    }
+    }*/
 
     // Design method commented out for headless module usage
     // public NumberView getnumberview() {
@@ -1298,24 +1298,7 @@ void switchSystemUI() {
 
     @Override
     public void onBackPressed() {
-        {
-            if (doLog) {
-                Log.d(LOG_ID, "onBackPressed");
-            }
-            ;
-        }
-        ;
-        if (!backinapp()) {
-            {
-                if (doLog) {
-                    Log.d(LOG_ID, "moveTaskToBack");
-                }
-                ;
-            }
-            ;
-            //        moveTaskToBack(true);
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     void tonotaccesssettings() {
