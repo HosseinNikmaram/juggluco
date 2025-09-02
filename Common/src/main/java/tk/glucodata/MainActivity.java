@@ -321,6 +321,11 @@ void showSystemBarsAppearance() {
     private void initialJuggluco() {
         // Initialize Juggluco
         jugglucoExample = UsageExample.getInstance();
+        try {
+            jugglucoExample.init(this);
+        } catch (Throwable th) {
+            Log.stack(LOG_ID, "UsageExample.init", th);
+        }
         jugglucoExample.startBluetoothScanning();
     }
 
