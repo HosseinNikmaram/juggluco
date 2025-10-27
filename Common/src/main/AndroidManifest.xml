@@ -91,6 +91,13 @@
             <meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/nfc_tech_filter" />
         </activity>
 
+        <!-- Test activity for crash reporting (remove in production) -->
+        <activity
+            android:name=".CrashTestActivity"
+            android:exported="false"
+            android:label="Crash Test"
+            android:theme="@android:style/Theme.DeviceDefault" />
+
         <activity-alias
             android:name=".glucodata"
             android:enabled="true"

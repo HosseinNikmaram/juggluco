@@ -69,6 +69,9 @@ import androidx.annotation.Keep;
 import androidx.annotation.MainThread;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -595,12 +598,103 @@ public static    int stopprogram=0;
     @Override
     public void onCreate() {
         super.onCreate();
+        
+        // Initialize Firebase Crashlytics
+        try {
+            FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+            
+            // Enable crash reporting
+            crashlytics.setCrashlyticsCollectionEnabled(true);
+            
+            // Set custom keys for better crash analysis
+            crashlytics.setCustomKey("app_version", BuildConfig.VERSION_NAME);
+            crashlytics.setCustomKey("build_type", BuildConfig.BUILD_TYPE);
+            crashlytics.setCustomKey("target_sdk", String.valueOf(TargetSDK));
+            crashlytics.setCustomKey("is_wearable", String.valueOf(isWearable));
+            
+            // Set user identifier if available
+            // crashlytics.setUserId("user_id_here");
+            
+            // Set up global uncaught exception handler
+            defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                @Override
+                public void uncaughtException(Thread thread, Throwable throwable) {
+                    try {
+                        // Log the crash to Firebase Crashlytics
+                        FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+                        crashlytics.setCustomKey("crash_thread", thread.getName());
+                        crashlytics.setCustomKey("crash_thread_id", String.valueOf(thread.getId()));
+                        crashlytics.recordException(throwable);
+                        
+                        // Also log to local system
+                        Log.e(LOG_ID, "Uncaught exception in thread " + thread.getName() + ": " + throwable.getMessage());
+                        Log.stack(LOG_ID, "Uncaught exception", throwable);
+                        
+                        // Give Firebase time to send the crash report
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        Log.e(LOG_ID, "Failed to handle uncaught exception: " + e.getMessage());
+                    }
+                    
+                    // Call the default handler if it exists
+                    if (defaultUncaughtExceptionHandler != null) {
+                        defaultUncaughtExceptionHandler.uncaughtException(thread, throwable);
+                    }
+                }
+            });
+            
+            Log.i(LOG_ID, "Firebase Crashlytics initialized successfully");
+        } catch (Exception e) {
+            Log.e(LOG_ID, "Failed to initialize Firebase Crashlytics: " + e.getMessage());
+        }
+        
     if(DiskSpace.check(this)) {
         initproc();
         }
     else {    
         android.util.Log.e(LOG_ID,"Stop program");
         stopprogram=1;
+        }
+    }
+
+    /**
+     * Log a crash or error to Firebase Crashlytics
+     * @param throwable The exception or error to log
+     * @param message Optional message to include with the crash
+     */
+    public static void logCrash(Throwable throwable, String message) {
+        try {
+            FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+            if (message != null && !message.isEmpty()) {
+                crashlytics.setCustomKey("crash_message", message);
+            }
+            crashlytics.recordException(throwable);
+            Log.i(LOG_ID, "Crash logged to Firebase Crashlytics: " + message);
+        } catch (Exception e) {
+            Log.e(LOG_ID, "Failed to log crash to Firebase Crashlytics: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Log a crash or error to Firebase Crashlytics
+     * @param throwable The exception or error to log
+     */
+    public static void logCrash(Throwable throwable) {
+        logCrash(throwable, null);
+    }
+    
+    /**
+     * Log a non-fatal error to Firebase Crashlytics
+     * @param message The error message to log
+     */
+    public static void logError(String message) {
+        try {
+            FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+            crashlytics.log(message);
+            Log.i(LOG_ID, "Error logged to Firebase Crashlytics: " + message);
+        } catch (Exception e) {
+            Log.e(LOG_ID, "Failed to log error to Firebase Crashlytics: " + e.getMessage());
         }
     }
 
