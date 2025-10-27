@@ -1,1 +1,1 @@
-/home/hossein/AndroidStudioProjects/juggluco-test/Common/src/main/cpp/CMakeLists.txt
+/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/cpp/CMakeLists.txt

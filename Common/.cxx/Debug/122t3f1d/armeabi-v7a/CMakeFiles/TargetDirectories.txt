@@ -1,4 +1,4 @@
-/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/g.dir
-/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/libnative.so.dir
-/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/edit_cache.dir
-/home/hossein/AndroidStudioProjects/juggluco-test/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/g.dir
+/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/libnative.so.dir
+/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/hossein/AndroidStudioProjects/juggluco/Common/.cxx/Debug/122t3f1d/armeabi-v7a/CMakeFiles/rebuild_cache.dir

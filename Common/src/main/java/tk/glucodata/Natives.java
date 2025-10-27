@@ -656,7 +656,8 @@ public static native void wakeuploader( );
 public static native void resetuploader( );
 public static native void setAndroid13(boolean val);
 public static native boolean getAndroid13( );
-public static native long[] getlastGlucose( );
+	public static native long[] getlastGlucose( );
+	public static native long[] getAllGlucoseHistory( );
 public static native void setwatchdrip(boolean val);
 public static native boolean getwatchdrip( );
 

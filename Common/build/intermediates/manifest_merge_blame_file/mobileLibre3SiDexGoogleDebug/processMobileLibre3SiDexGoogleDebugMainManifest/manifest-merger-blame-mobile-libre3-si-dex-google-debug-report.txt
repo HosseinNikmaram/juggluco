@@ -282,457 +282,456 @@
 150-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:74:9-41
 151        android:persistent="true"
 151-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:72:9-34
-152        android:testOnly="true"
-153        android:theme="@style/AppTheme"
-153-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:50:9-40
-154        android:usesCleartextTraffic="true" >
-154-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:73:9-44
-155        <meta-data
-155-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:9:4-11:65
-156            android:name="com.google.android.gms.version"
-156-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:10:9-54
-157            android:value="@integer/google_play_services_version" />
-157-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:11:9-62
-158        <meta-data
-158-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:12:5-14:37
-159            android:name="com.google.mlkit.vision.DEPENDENCIES"
-159-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:13:9-60
-160            android:value="barcode_ui" />
-160-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:14:9-35
-161
-162        <receiver
-162-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:51:9-61:20
-163            android:name="tk.glucodata.GlucoseWidget"
-163-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:52:13-42
-164            android:exported="false" >
-164-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:53:13-37
-165            <intent-filter>
-165-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:54:13-56:29
-166                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-166-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:55:17-84
-166-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:55:25-81
-167            </intent-filter>
-168
-169            <meta-data
-169-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:58:13-60:63
-170                android:name="android.appwidget.provider"
-170-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:59:17-58
-171                android:resource="@xml/glucose_widget_info" />
-171-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:60:17-60
-172        </receiver>
-173
-174        <activity
-174-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:63:9-76:20
-175            android:name="tk.glucodata.MainActivity"
-175-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:64:13-41
-176            android:allowEmbedded="true"
-176-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:65:13-41
-177            android:autoRemoveFromRecents="false"
-177-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:80:13-50
-178            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|fontScale|locale"
-178-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:79:13-111
-179            android:excludeFromRecents="false"
-179-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:81:13-47
-180            android:exported="true"
-180-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:66:13-36
-181            android:label="@string/app_name"
-181-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:67:13-45
-182            android:launchMode="singleTask"
-182-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:68:13-44
-183            android:resizeableActivity="true"
-183-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:69:13-46
-184            android:screenOrientation="reverseLandscape"
-184-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:70:13-57
-185            android:stateNotNeeded="true"
-185-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:84:13-42
-186            android:windowSoftInputMode="stateHidden|adjustPan" >
-186-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:85:13-64
-187            <intent-filter>
-187-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:72:13-74:29
-188                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
-188-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:73:17-92
-188-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:73:25-89
-189            </intent-filter>
-190            <intent-filter>
-190-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:86:13-90:29
-191                <action android:name="android.intent.action.MAIN" />
-191-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:87:17-69
-191-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:87:25-66
-192
-193                <category android:name="android.intent.category.LAUNCHER" />
-193-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:88:17-77
-193-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:88:27-74
-194                <category android:name="android.intent.category.DEFAULT" />
-194-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:17-76
-194-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:27-73
-195            </intent-filter>
-196
-197            <meta-data
-197-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:13-116
-198                android:name="android.nfc.action.TECH_DISCOVERED"
-198-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:24-73
-199                android:resource="@xml/nfc_tech_filter" />
-199-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:74-113
-200        </activity>
-201
-202        <activity-alias
-202-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:94:9-109:26
-203            android:name="tk.glucodata.glucodata"
-203-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:95:13-38
-204            android:enabled="true"
-204-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:96:13-35
-205            android:exported="true"
-205-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:97:13-36
-206            android:label="@string/app_name"
-206-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:98:13-45
-207            android:targetActivity="tk.glucodata.MainActivity" >
-207-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:99:13-51
-208            <intent-filter>
-208-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:100:13-104:29
-209                <action android:name="android.nfc.action.TECH_DISCOVERED" />
-209-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:55:24-84
-209-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:55:32-81
-210
-211                <category android:name="android.intent.category.DEFAULT" />
-211-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:17-76
-211-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:27-73
-212            </intent-filter>
-213
-214            <meta-data
-214-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:13-116
-215                android:name="android.nfc.action.TECH_DISCOVERED"
-215-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:24-73
-216                android:resource="@xml/nfc_tech_filter" />
-216-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:74-113
-217        </activity-alias>
-218        <activity-alias
-218-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:77:3-86:20
-219            android:name="tk.glucodata.ViewPermissionUsageActivity"
-219-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:78:7-49
-220            android:exported="true"
-220-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:79:7-30
-221            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
-221-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:81:7-74
-222            android:targetActivity="tk.glucodata.MainActivity" >
-222-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:80:7-45
-223            <intent-filter>
-223-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:82:5-85:21
-224                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
-224-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:7-76
-224-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:15-73
-225
-226                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
-226-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:84:7-77
-226-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:84:17-74
-227            </intent-filter>
-228        </activity-alias>
-229
-230        <service
-230-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:88:9-100:19
-231            android:name="tk.glucodata.MessageReceiver"
-231-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:89:13-44
-232            android:exported="true" >
-232-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:90:13-36
-233            <intent-filter>
-233-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:91:13-99:29
-234                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-234-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:17-91
-234-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:25-88
-235
-236                <data
-236-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
-237                    android:host="*"
-237-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
-238                    android:pathPrefix="/data"
-238-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
-239                    android:scheme="wear" />
-239-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
-240                <data
-240-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
-241                    android:host="*"
-241-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
-242                    android:pathPrefix="/messages"
-242-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
-243                    android:scheme="wear" />
-243-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
-244                <data
-244-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
-245                    android:host="*"
-245-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
-246                    android:pathPrefix="/netinfo"
-246-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
-247                    android:scheme="wear" />
-247-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
-248                <data
-248-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
-249                    android:host="*"
-249-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
-250                    android:pathPrefix="/wake"
-250-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
-251                    android:scheme="wear" />
-251-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
-252                <data
-252-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
-253                    android:host="*"
-253-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
-254                    android:pathPrefix="/wakestream"
-254-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
-255                    android:scheme="wear" />
-255-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
-256                <data
-256-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
-257                    android:host="*"
-257-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
-258                    android:pathPrefix="/askforstart"
-258-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
-259                    android:scheme="wear" />
-259-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
-260            </intent-filter>
-261        </service>
-262
-263        <receiver
-263-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:110:9-119:20
-264            android:name="tk.glucodata.NumAlarm"
-264-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:111:13-37
-265            android:enabled="true"
-265-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:112:13-35
-266            android:exported="true" >
-266-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:113:13-36
-267            <intent-filter>
-267-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:114:13-118:29
-268                <action android:name="android.intent.action.BOOT_COMPLETED" />
-268-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:115:17-79
-268-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:115:25-76
-269                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-269-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:116:17-82
-269-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:116:25-79
-270
-271                <category android:name="android.intent.category.DEFAULT" />
-271-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:17-76
-271-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:27-73
-272            </intent-filter>
-273        </receiver>
-274        <receiver
-274-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:120:9-123:38
-275            android:name="tk.glucodata.DeleteReceiver"
-275-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:121:13-43
-276            android:enabled="true"
-276-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:122:13-35
-277            android:exported="true" />
-277-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:123:13-36
-278        <receiver
-278-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:124:9-127:38
-279            android:name="tk.glucodata.LossOfSensorAlarm"
-279-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:125:13-46
-280            android:enabled="true"
-280-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:126:13-35
-281            android:exported="true" />
-281-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:127:13-36
-282        <receiver
-282-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:128:9-131:38
-283            android:name="tk.glucodata.ConnectReceiver"
-283-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:129:13-44
-284            android:enabled="true"
-284-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:130:13-35
-285            android:exported="true" />
-285-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:131:13-36
-286        <receiver
-286-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:132:9-135:38
-287            android:name="tk.glucodata.Maintenance"
-287-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:133:13-40
-288            android:enabled="true"
-288-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:134:13-35
-289            android:exported="true" />
-289-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:135:13-36
-290
-291        <service
-291-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:137:9-141:63
-292            android:name="tk.glucodata.keeprunning"
-292-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:138:13-40
-293            android:enabled="true"
-293-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:139:13-35
-294            android:exported="true"
-294-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:140:13-36
-295            android:foregroundServiceType="connectedDevice" />
-295-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:141:13-60
-296        <service
-296-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:148:9-155:19
-297            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
-297-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:149:13-82
-298            android:enabled="false"
-298-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:150:13-36
-299            android:exported="false" >
-299-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:151:13-37
-300            <meta-data
-300-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:152:13-154:40
-301                android:name="autoStoreLocales"
-301-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:153:17-48
-302                android:value="true" />
-302-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:154:17-37
-303        </service>
-304        <service
-304-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:24:9-32:19
-305            android:name="androidx.health.platform.client.impl.sdkservice.HealthDataSdkService"
-305-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:25:13-96
-306            android:enabled="true"
-306-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:26:13-35
-307            android:exported="true" >
-307-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:27:13-36
-308            <intent-filter>
-308-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:29:13-31:29
-309                <action android:name="androidx.health.platform.client.ACTION_BIND_SDK_SERVICE" />
-309-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:30:17-98
-309-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:30:25-95
-310            </intent-filter>
-311        </service>
-312        <!--
-313        This activity is an invisible delegate activity to start scanner activity
-314        and receive result, so it's unnecessary to support screen orientation and
-315        we can avoid any side effect from activity recreation in any case.
-316        -->
-317        <activity
-317-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:15:9-20:20
-318            android:name="com.google.mlkit.vision.codescanner.internal.GmsBarcodeScanningDelegateActivity"
-318-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:16:13-107
-319            android:exported="false"
-319-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:17:13-37
-320            android:screenOrientation="portrait" >
-320-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:18:13-49
-321        </activity>
-322
-323        <service
-323-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:9:9-15:19
-324            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
-324-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:10:13-91
-325            android:directBootAware="true"
-325-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:17:13-43
-326            android:exported="false" >
-326-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:11:13-37
-327            <meta-data
-327-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:12:13-14:85
-328                android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar"
-328-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:13:17-124
-329                android:value="com.google.firebase.components.ComponentRegistrar" />
-329-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:14:17-82
-330            <meta-data
-330-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:20:13-22:85
-331                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
-331-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:21:17-120
-332                android:value="com.google.firebase.components.ComponentRegistrar" />
-332-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:22:17-82
-333        </service>
-334
-335        <provider
-335-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:9:9-13:38
-336            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
-336-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:10:13-78
-337            android:authorities="tk.glucodata.debug.mlkitinitprovider"
-337-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:11:13-69
-338            android:exported="false"
-338-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:12:13-37
-339            android:initOrder="99" />
-339-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:13:13-35
-340
-341        <activity
-341-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:20:9-22:45
-342            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-342-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:20:19-85
-343            android:exported="false"
-343-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:22:19-43
-344            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-344-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:21:19-78
-345
-346        <service
-346-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:24:9-28:63
-347            android:name="androidx.room.MultiInstanceInvalidationService"
-347-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:25:13-74
-348            android:directBootAware="true"
-348-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:26:13-43
-349            android:exported="false" />
-349-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:27:13-37
-350
-351        <receiver
-351-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:34:9-52:20
-352            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-352-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:35:13-76
-353            android:directBootAware="false"
-353-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:36:13-44
-354            android:enabled="true"
-354-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:37:13-35
-355            android:exported="true"
-355-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:38:13-36
-356            android:permission="android.permission.DUMP" >
-356-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:39:13-57
-357            <intent-filter>
-357-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:40:13-42:29
-358                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-358-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:41:17-91
-358-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:41:25-88
-359            </intent-filter>
-360            <intent-filter>
-360-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:43:13-45:29
-361                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-361-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:44:17-85
-361-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:44:25-82
-362            </intent-filter>
-363            <intent-filter>
-363-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:46:13-48:29
-364                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-364-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:47:17-88
-364-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:47:25-85
-365            </intent-filter>
-366            <intent-filter>
-366-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:49:13-51:29
-367                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-367-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:50:17-95
-367-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:50:25-92
-368            </intent-filter>
-369        </receiver>
-370
-371        <service
-371-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:29:9-35:19
-372            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
-372-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:30:13-103
-373            android:exported="false" >
-373-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:31:13-37
-374            <meta-data
-374-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:32:13-34:39
-375                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
-375-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:33:17-94
-376                android:value="cct" />
-376-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:34:17-36
-377        </service>
-378        <service
-378-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:26:9-30:19
-379            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
-379-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:27:13-117
-380            android:exported="false"
-380-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:28:13-37
-381            android:permission="android.permission.BIND_JOB_SERVICE" >
-381-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:29:13-69
-382        </service>
-383
-384        <receiver
-384-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:32:9-34:40
-385            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
-385-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:33:13-132
-386            android:exported="false" />
-386-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:34:13-37
-387
-388        <activity
-388-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:47:9-53:63
-389            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-389-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:48:13-74
-390            android:clearTaskOnLaunch="true"
-390-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:49:13-45
-391            android:screenOrientation="sensorLandscape"
-391-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:50:13-56
-392            android:stateNotNeeded="true"
-392-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:51:13-42
-393            android:theme="@style/zxing_CaptureTheme"
-393-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:52:13-54
-394            android:windowSoftInputMode="stateAlwaysHidden" />
-394-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:53:13-60
-395    </application>
-396
-397</manifest>
+152        android:theme="@style/AppTheme"
+152-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:50:9-40
+153        android:usesCleartextTraffic="true" >
+153-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:73:9-44
+154        <meta-data
+154-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:9:4-11:65
+155            android:name="com.google.android.gms.version"
+155-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:10:9-54
+156            android:value="@integer/google_play_services_version" />
+156-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:11:9-62
+157        <meta-data
+157-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:12:5-14:37
+158            android:name="com.google.mlkit.vision.DEPENDENCIES"
+158-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:13:9-60
+159            android:value="barcode_ui" />
+159-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobileSi/AndroidManifest.xml:14:9-35
+160
+161        <receiver
+161-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:51:9-61:20
+162            android:name="tk.glucodata.GlucoseWidget"
+162-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:52:13-42
+163            android:exported="false" >
+163-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:53:13-37
+164            <intent-filter>
+164-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:54:13-56:29
+165                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+165-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:55:17-84
+165-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:55:25-81
+166            </intent-filter>
+167
+168            <meta-data
+168-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:58:13-60:63
+169                android:name="android.appwidget.provider"
+169-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:59:17-58
+170                android:resource="@xml/glucose_widget_info" />
+170-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:60:17-60
+171        </receiver>
+172
+173        <activity
+173-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:63:9-76:20
+174            android:name="tk.glucodata.MainActivity"
+174-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:64:13-41
+175            android:allowEmbedded="true"
+175-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:65:13-41
+176            android:autoRemoveFromRecents="false"
+176-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:80:13-50
+177            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|fontScale|locale"
+177-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:79:13-111
+178            android:excludeFromRecents="false"
+178-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:81:13-47
+179            android:exported="true"
+179-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:66:13-36
+180            android:label="@string/app_name"
+180-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:67:13-45
+181            android:launchMode="singleTask"
+181-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:68:13-44
+182            android:resizeableActivity="true"
+182-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:69:13-46
+183            android:screenOrientation="reverseLandscape"
+183-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:70:13-57
+184            android:stateNotNeeded="true"
+184-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:84:13-42
+185            android:windowSoftInputMode="stateHidden|adjustPan" >
+185-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:85:13-64
+186            <intent-filter>
+186-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:72:13-74:29
+187                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+187-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:73:17-92
+187-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:73:25-89
+188            </intent-filter>
+189            <intent-filter>
+189-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:86:13-90:29
+190                <action android:name="android.intent.action.MAIN" />
+190-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:87:17-69
+190-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:87:25-66
+191
+192                <category android:name="android.intent.category.LAUNCHER" />
+192-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:88:17-77
+192-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:88:27-74
+193                <category android:name="android.intent.category.DEFAULT" />
+193-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:17-76
+193-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:27-73
+194            </intent-filter>
+195
+196            <meta-data
+196-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:13-116
+197                android:name="android.nfc.action.TECH_DISCOVERED"
+197-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:24-73
+198                android:resource="@xml/nfc_tech_filter" />
+198-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:74-113
+199        </activity>
+200
+201        <activity-alias
+201-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:94:9-109:26
+202            android:name="tk.glucodata.glucodata"
+202-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:95:13-38
+203            android:enabled="true"
+203-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:96:13-35
+204            android:exported="true"
+204-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:97:13-36
+205            android:label="@string/app_name"
+205-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:98:13-45
+206            android:targetActivity="tk.glucodata.MainActivity" >
+206-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:99:13-51
+207            <intent-filter>
+207-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:100:13-104:29
+208                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+208-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:55:24-84
+208-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:55:32-81
+209
+210                <category android:name="android.intent.category.DEFAULT" />
+210-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:17-76
+210-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:27-73
+211            </intent-filter>
+212
+213            <meta-data
+213-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:13-116
+214                android:name="android.nfc.action.TECH_DISCOVERED"
+214-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:24-73
+215                android:resource="@xml/nfc_tech_filter" />
+215-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:91:74-113
+216        </activity-alias>
+217        <activity-alias
+217-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:77:3-86:20
+218            android:name="tk.glucodata.ViewPermissionUsageActivity"
+218-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:78:7-49
+219            android:exported="true"
+219-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:79:7-30
+220            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+220-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:81:7-74
+221            android:targetActivity="tk.glucodata.MainActivity" >
+221-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:80:7-45
+222            <intent-filter>
+222-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:82:5-85:21
+223                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+223-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:7-76
+223-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:83:15-73
+224
+225                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+225-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:84:7-77
+225-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:84:17-74
+226            </intent-filter>
+227        </activity-alias>
+228
+229        <service
+229-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:88:9-100:19
+230            android:name="tk.glucodata.MessageReceiver"
+230-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:89:13-44
+231            android:exported="true" >
+231-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:90:13-36
+232            <intent-filter>
+232-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:91:13-99:29
+233                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+233-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:17-91
+233-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:92:25-88
+234
+235                <data
+235-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
+236                    android:host="*"
+236-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
+237                    android:pathPrefix="/data"
+237-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
+238                    android:scheme="wear" />
+238-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
+239                <data
+239-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
+240                    android:host="*"
+240-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
+241                    android:pathPrefix="/messages"
+241-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
+242                    android:scheme="wear" />
+242-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
+243                <data
+243-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
+244                    android:host="*"
+244-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
+245                    android:pathPrefix="/netinfo"
+245-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
+246                    android:scheme="wear" />
+246-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
+247                <data
+247-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
+248                    android:host="*"
+248-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
+249                    android:pathPrefix="/wake"
+249-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
+250                    android:scheme="wear" />
+250-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
+251                <data
+251-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
+252                    android:host="*"
+252-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
+253                    android:pathPrefix="/wakestream"
+253-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
+254                    android:scheme="wear" />
+254-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
+255                <data
+255-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:17-91
+256                    android:host="*"
+256-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:23-39
+257                    android:pathPrefix="/askforstart"
+257-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:40-66
+258                    android:scheme="wear" />
+258-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/mobile/AndroidManifest.xml:93:67-88
+259            </intent-filter>
+260        </service>
+261
+262        <receiver
+262-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:110:9-119:20
+263            android:name="tk.glucodata.NumAlarm"
+263-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:111:13-37
+264            android:enabled="true"
+264-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:112:13-35
+265            android:exported="true" >
+265-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:113:13-36
+266            <intent-filter>
+266-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:114:13-118:29
+267                <action android:name="android.intent.action.BOOT_COMPLETED" />
+267-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:115:17-79
+267-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:115:25-76
+268                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+268-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:116:17-82
+268-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:116:25-79
+269
+270                <category android:name="android.intent.category.DEFAULT" />
+270-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:17-76
+270-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:89:27-73
+271            </intent-filter>
+272        </receiver>
+273        <receiver
+273-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:120:9-123:38
+274            android:name="tk.glucodata.DeleteReceiver"
+274-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:121:13-43
+275            android:enabled="true"
+275-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:122:13-35
+276            android:exported="true" />
+276-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:123:13-36
+277        <receiver
+277-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:124:9-127:38
+278            android:name="tk.glucodata.LossOfSensorAlarm"
+278-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:125:13-46
+279            android:enabled="true"
+279-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:126:13-35
+280            android:exported="true" />
+280-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:127:13-36
+281        <receiver
+281-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:128:9-131:38
+282            android:name="tk.glucodata.ConnectReceiver"
+282-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:129:13-44
+283            android:enabled="true"
+283-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:130:13-35
+284            android:exported="true" />
+284-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:131:13-36
+285        <receiver
+285-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:132:9-135:38
+286            android:name="tk.glucodata.Maintenance"
+286-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:133:13-40
+287            android:enabled="true"
+287-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:134:13-35
+288            android:exported="true" />
+288-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:135:13-36
+289
+290        <service
+290-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:137:9-141:63
+291            android:name="tk.glucodata.keeprunning"
+291-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:138:13-40
+292            android:enabled="true"
+292-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:139:13-35
+293            android:exported="true"
+293-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:140:13-36
+294            android:foregroundServiceType="connectedDevice" />
+294-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:141:13-60
+295        <service
+295-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:148:9-155:19
+296            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+296-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:149:13-82
+297            android:enabled="false"
+297-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:150:13-36
+298            android:exported="false" >
+298-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:151:13-37
+299            <meta-data
+299-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:152:13-154:40
+300                android:name="autoStoreLocales"
+300-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:153:17-48
+301                android:value="true" />
+301-->/home/hossein/AndroidStudioProjects/juggluco/Common/src/main/AndroidManifest.xml:154:17-37
+302        </service>
+303        <service
+303-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:24:9-32:19
+304            android:name="androidx.health.platform.client.impl.sdkservice.HealthDataSdkService"
+304-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:25:13-96
+305            android:enabled="true"
+305-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:26:13-35
+306            android:exported="true" >
+306-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:27:13-36
+307            <intent-filter>
+307-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:29:13-31:29
+308                <action android:name="androidx.health.platform.client.ACTION_BIND_SDK_SERVICE" />
+308-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:30:17-98
+308-->[androidx.health.connect:connect-client:1.1.0-rc02] /home/hossein/.gradle/caches/8.11.1/transforms/e25012b24c91519be94474ea3589c7e1/transformed/jetified-connect-client-1.1.0-rc02/AndroidManifest.xml:30:25-95
+309            </intent-filter>
+310        </service>
+311        <!--
+312        This activity is an invisible delegate activity to start scanner activity
+313        and receive result, so it's unnecessary to support screen orientation and
+314        we can avoid any side effect from activity recreation in any case.
+315        -->
+316        <activity
+316-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:15:9-20:20
+317            android:name="com.google.mlkit.vision.codescanner.internal.GmsBarcodeScanningDelegateActivity"
+317-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:16:13-107
+318            android:exported="false"
+318-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:17:13-37
+319            android:screenOrientation="portrait" >
+319-->[com.google.android.gms:play-services-code-scanner:16.1.0] /home/hossein/.gradle/caches/8.11.1/transforms/3dcc42a52c82be53dfba442af84638f0/transformed/jetified-play-services-code-scanner-16.1.0/AndroidManifest.xml:18:13-49
+320        </activity>
+321
+322        <service
+322-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:9:9-15:19
+323            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
+323-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:10:13-91
+324            android:directBootAware="true"
+324-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:17:13-43
+325            android:exported="false" >
+325-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:11:13-37
+326            <meta-data
+326-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:12:13-14:85
+327                android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar"
+327-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:13:17-124
+328                android:value="com.google.firebase.components.ComponentRegistrar" />
+328-->[com.google.mlkit:vision-common:17.0.0] /home/hossein/.gradle/caches/8.11.1/transforms/a912fa0c46cee1dfd23f9f4bee85597d/transformed/jetified-vision-common-17.0.0/AndroidManifest.xml:14:17-82
+329            <meta-data
+329-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:20:13-22:85
+330                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
+330-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:21:17-120
+331                android:value="com.google.firebase.components.ComponentRegistrar" />
+331-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:22:17-82
+332        </service>
+333
+334        <provider
+334-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:9:9-13:38
+335            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
+335-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:10:13-78
+336            android:authorities="tk.glucodata.debug.mlkitinitprovider"
+336-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:11:13-69
+337            android:exported="false"
+337-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:12:13-37
+338            android:initOrder="99" />
+338-->[com.google.mlkit:common:18.9.0] /home/hossein/.gradle/caches/8.11.1/transforms/5bf364fcef54a53770d956c26dd34bf1/transformed/jetified-common-18.9.0/AndroidManifest.xml:13:13-35
+339
+340        <activity
+340-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:20:9-22:45
+341            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+341-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:20:19-85
+342            android:exported="false"
+342-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:22:19-43
+343            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+343-->[com.google.android.gms:play-services-base:18.7.0] /home/hossein/.gradle/caches/8.11.1/transforms/02a443ff8db3f9b8fa6b4cca9662c5d3/transformed/jetified-play-services-base-18.7.0/AndroidManifest.xml:21:19-78
+344
+345        <service
+345-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:24:9-28:63
+346            android:name="androidx.room.MultiInstanceInvalidationService"
+346-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:25:13-74
+347            android:directBootAware="true"
+347-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:26:13-43
+348            android:exported="false" />
+348-->[androidx.room:room-runtime:2.6.1] /home/hossein/.gradle/caches/8.11.1/transforms/6d67c02241823072d7a91eb27a58f70d/transformed/room-runtime-2.6.1/AndroidManifest.xml:27:13-37
+349
+350        <receiver
+350-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:34:9-52:20
+351            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+351-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:35:13-76
+352            android:directBootAware="false"
+352-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:36:13-44
+353            android:enabled="true"
+353-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:37:13-35
+354            android:exported="true"
+354-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:38:13-36
+355            android:permission="android.permission.DUMP" >
+355-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:39:13-57
+356            <intent-filter>
+356-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:40:13-42:29
+357                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+357-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:41:17-91
+357-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:41:25-88
+358            </intent-filter>
+359            <intent-filter>
+359-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:43:13-45:29
+360                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+360-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:44:17-85
+360-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:44:25-82
+361            </intent-filter>
+362            <intent-filter>
+362-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:46:13-48:29
+363                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+363-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:47:17-88
+363-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:47:25-85
+364            </intent-filter>
+365            <intent-filter>
+365-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:49:13-51:29
+366                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+366-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:50:17-95
+366-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/hossein/.gradle/caches/8.11.1/transforms/49f096fb7bbab9e7fb1b13e8e33a8ec4/transformed/jetified-profileinstaller-1.4.0/AndroidManifest.xml:50:25-92
+367            </intent-filter>
+368        </receiver>
+369
+370        <service
+370-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:29:9-35:19
+371            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+371-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:30:13-103
+372            android:exported="false" >
+372-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:31:13-37
+373            <meta-data
+373-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:32:13-34:39
+374                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+374-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:33:17-94
+375                android:value="cct" />
+375-->[com.google.android.datatransport:transport-backend-cct:2.3.3] /home/hossein/.gradle/caches/8.11.1/transforms/56a97ff623d2dce51dddc4d769760396/transformed/jetified-transport-backend-cct-2.3.3/AndroidManifest.xml:34:17-36
+376        </service>
+377        <service
+377-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:26:9-30:19
+378            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+378-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:27:13-117
+379            android:exported="false"
+379-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:28:13-37
+380            android:permission="android.permission.BIND_JOB_SERVICE" >
+380-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:29:13-69
+381        </service>
+382
+383        <receiver
+383-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:32:9-34:40
+384            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+384-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:33:13-132
+385            android:exported="false" />
+385-->[com.google.android.datatransport:transport-runtime:2.2.6] /home/hossein/.gradle/caches/8.11.1/transforms/9342fefd4364f4981e51a85e7f739edf/transformed/jetified-transport-runtime-2.2.6/AndroidManifest.xml:34:13-37
+386
+387        <activity
+387-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:47:9-53:63
+388            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+388-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:48:13-74
+389            android:clearTaskOnLaunch="true"
+389-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:49:13-45
+390            android:screenOrientation="sensorLandscape"
+390-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:50:13-56
+391            android:stateNotNeeded="true"
+391-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:51:13-42
+392            android:theme="@style/zxing_CaptureTheme"
+392-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:52:13-54
+393            android:windowSoftInputMode="stateAlwaysHidden" />
+393-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/hossein/.gradle/caches/8.11.1/transforms/883c730a0c3803d87d0274a079a401a3/transformed/jetified-zxing-android-embedded-4.3.0/AndroidManifest.xml:53:13-60
+394    </application>
+395
+396</manifest>
