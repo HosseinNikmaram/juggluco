@@ -321,6 +321,11 @@ void showSystemBarsAppearance() {
     private void initialJuggluco() {
         // Initialize Juggluco
         jugglucoExample = UsageExample.getInstance();
+        try {
+            jugglucoExample.init(this);
+        } catch (Throwable th) {
+            Log.stack(LOG_ID, "UsageExample.init", th);
+        }
         jugglucoExample.startBluetoothScanning();
     }
 
@@ -1158,7 +1163,7 @@ void switchSystemUI() {
         }
     }
 
-    @Override
+/*    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         {
             if (doLog) {
@@ -1204,9 +1209,9 @@ void switchSystemUI() {
         }
         return super.onKeyDown(keyCode, event);
 
-    }
+    }*/
 
-    @Override
+/*    @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
         {
             if (doLog) {
@@ -1238,7 +1243,7 @@ void switchSystemUI() {
             }
         }
         return super.onKeyLongPress(keyCode, event);
-    }
+    }*/
 
     // Design method commented out for headless module usage
     // public NumberView getnumberview() {
@@ -1293,24 +1298,7 @@ void switchSystemUI() {
 
     @Override
     public void onBackPressed() {
-        {
-            if (doLog) {
-                Log.d(LOG_ID, "onBackPressed");
-            }
-            ;
-        }
-        ;
-        if (!backinapp()) {
-            {
-                if (doLog) {
-                    Log.d(LOG_ID, "moveTaskToBack");
-                }
-                ;
-            }
-            ;
-            //        moveTaskToBack(true);
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     void tonotaccesssettings() {
@@ -1382,47 +1370,8 @@ void switchSystemUI() {
     }
 
     void showindialog(String message, boolean cancel) {
-        {
-            if (doLog) {
-                Log.i(LOG_ID, "showindialog " + message);
-            }
-            ;
-        }
-        ;
-        var cont = this;
-        if (cancel) {
-            cancelglucosedialog();
-        }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(cont);
-        final var dialog = builder.setNegativeButton(R.string.cancel, (dia, id) -> {
-            if (cancel) {
-                shownglucosealert = null;
-            }
-            if (!isWearable) {
-               // Applic.getContext().numdata.stopalarm();
-            }
-        }).setTitle("  ").setMessage(message).create();
-        ;
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnShowListener(a -> {
-//            final var colres= android.R.color.holo_red_light;
-                    final var colres = android.R.color.holo_orange_light;
-//            final var colres= android.R.color.holo_blue_bright;
-//            final var colres= android.R.color.holo_blue_light; //Very infrequently button not shown. Maybe this helps.
-                    final var col =
-                            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ? getResources().getColor(colres, getTheme()) :
-                                    getResources().getColor(colres);
-                    var negbut = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                    negbut.setTextColor(col);
-//        negbut.setAllCaps(false);
-//        var dens=GlucoseCurve.getDensity();
-//        negbut.setPadding((int)(dens*10),0,0,0);
-                }
-        );
-
-        dialog.show();
-
-        if (cancel) shownglucosealert = dialog;
+        if (doLog) Log.i(LOG_ID, "showindialog (headless ignored): " + message);
+        if (cancel) cancelglucosedialog();
     }
 
     call fineres = null;
@@ -1502,20 +1451,7 @@ catch (Throwable th) {
 }
 */
     private static void needsLocation() {
-        MainActivity main = thisone;
-        if (main != null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(main);
-            builder.setTitle("Location").
-                    setMessage("System Location needs to be turned on to find Bluetooth devices").
-                    setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            enableLocationSettings();
-                        }
-                    }).setOnCancelListener(l -> enableLocationSettings()).show().setCanceledOnTouchOutside(false);
-        } else {
-            Applic.Toaster("Turn on Location in System settings");
-        }
+        Log.i(LOG_ID, "needsLocation (headless ignored)");
     }
 
     private static void enableLocationSettings() {

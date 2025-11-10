@@ -157,6 +157,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
 {
 const jclass cl=env->FindClass("tk/glucodata/GlucoseCurve");
 if(!cl) {
+   if (env->ExceptionCheck()) env->ExceptionClear();
    summaryready=nullptr;
    LOGAR("Can't find GlucoseCurve");
    }
@@ -176,6 +177,7 @@ if(cl) {
    JNIString = (jclass)env->NewGlobalRef(cl);
    env->DeleteLocalRef(cl);
    }
+else if (env->ExceptionCheck()) env->ExceptionClear();
 }
 {
 const static jclass cl=env->FindClass("tk/glucodata/Applic");

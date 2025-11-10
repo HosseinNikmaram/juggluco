@@ -201,6 +201,10 @@ public class HeadlessJugglucoManager {
         glucoseListener = null;
     }
 
+    public void finishSensor(String serial) {
+        cleanup();
+        SensorBluetooth.sensorEnded(serial);
+    }
 }
 
 

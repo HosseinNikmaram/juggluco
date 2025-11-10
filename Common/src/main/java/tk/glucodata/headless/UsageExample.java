@@ -2,7 +2,6 @@ package tk.glucodata.headless;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
 import android.util.Log;
 
 import java.util.List;
@@ -52,49 +51,49 @@ public class UsageExample {
                     @Override
                     public void onDeviceConnected(String serialNumber, String deviceAddress) {
                         Log.i(TAG, "Device connected: " + serialNumber + " at " + deviceAddress);
-                        Toast.makeText(context, "Device connected: " + serialNumber, Toast.LENGTH_SHORT).show();
+                        // Headless: no UI toast
                     }
                     
                     @Override
                     public void onDeviceDisconnected(String serialNumber, String deviceAddress) {
                         Log.i(TAG, "Device disconnected: " + serialNumber + " from " + deviceAddress);
-                        Toast.makeText(context, "Device disconnected: " + serialNumber, Toast.LENGTH_SHORT).show();
+                        // Headless: no UI toast
                     }
                     
                     @Override
                     public void onDeviceConnectionFailed(String serialNumber, String deviceAddress, int errorCode) {
                         Log.e(TAG, "Device connection failed: " + serialNumber + " error: " + errorCode);
-                        Toast.makeText(context, "Connection failed: " + serialNumber, Toast.LENGTH_LONG).show();
+                        // Headless: no UI toast
                     }
                     
                     @Override
                     public void onDevicePaired(String serialNumber, String deviceAddress) {
                         Log.i(TAG, "Device paired: " + serialNumber + " at " + deviceAddress);
-                        Toast.makeText(context, "Device paired: " + serialNumber, Toast.LENGTH_SHORT).show();
+                        // Headless: no UI toast
                     }
                     
                     @Override
                     public void onDeviceUnpaired(String serialNumber, String deviceAddress) {
                         Log.i(TAG, "Device unpaired: " + serialNumber + " from " + deviceAddress);
-                        Toast.makeText(context, "Device unpaired: " + serialNumber, Toast.LENGTH_SHORT).show();
+                        // Headless: no UI toast
                     }
 
                     @Override
                     public void onDeviceFound(String serialNumber, String deviceAddress) {
                         Log.i(TAG, "Device found: " + serialNumber + " at " + deviceAddress);
-                        Toast.makeText(context, "Found device: " , Toast.LENGTH_SHORT).show();
+                        // Headless: no UI toast
                     }
 
                     @Override
                     public void onBluetoothEnabled() {
                         Log.i(TAG, "Bluetooth enabled");
-                        Toast.makeText(context, "Bluetooth enabled", Toast.LENGTH_SHORT).show();
+                        // Headless: no UI toast
                     }
                     
                     @Override
                     public void onBluetoothDisabled() {
                         Log.i(TAG, "Bluetooth disabled");
-                        Toast.makeText(context, "Bluetooth disabled", Toast.LENGTH_SHORT).show();
+                        // Headless: no UI toast
                     }
 
                 });
@@ -239,14 +238,10 @@ public class UsageExample {
         if (result == null) return;
         
         String message = String.format("NFC Scan: %s", result.getMessage());
-        if (result.isSuccess()) {
-            if (result.hasGlucoseReading()) {
-                message += String.format(" - Glucose: %d mg/dL", result.getGlucoseValue());
-            }
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        if (result.isSuccess() && result.hasGlucoseReading()) {
+            message += String.format(" - Glucose: %d mg/dL", result.getGlucoseValue());
         }
+        Log.i(TAG, message);
     }
     
     /**

@@ -899,6 +899,7 @@ void initlibreviewjni(JNIEnv *env) {
 	       env->DeleteLocalRef(cl);
 	       }
       else  {
+      	if (env->ExceptionCheck()) env->ExceptionClear();
       	LOGGER("FindClass(%s) failed\n",librclassstr);
       	}
        }
