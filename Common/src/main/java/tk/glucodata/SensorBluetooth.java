@@ -722,7 +722,7 @@ boolean updateDevicers() {
 //           startScan(0);
     }
 
-static boolean updateDevices() {
+public static boolean updateDevices() {
     if(blueone==null) {
         return false;
         }
